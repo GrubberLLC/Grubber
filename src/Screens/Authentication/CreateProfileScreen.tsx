@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 
 
-const LogoutScreen = () => {
+const CreateProfileScreen = () => {
   return (
     <View>
       <Text>Screen</Text>
@@ -10,4 +10,4 @@ const LogoutScreen = () => {
   )
 }
 
-export default LogoutScreen
+export default CreateProfileScreen
