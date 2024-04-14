@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react';
-import { getCurrentUser } from 'aws-amplify/auth';
+import { getCurrentUser, signIn } from 'aws-amplify/auth';
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -45,25 +45,30 @@ const AuthContext = createContext<AuthContextType>({
     bio: '',
     public: 1,
   },
-  grabCurrentUser: () => {}
+  grabCurrentUser: () => {},
+  signInUser: () => {}
 });
 
 interface AuthContextType {
   currentUser: string | null;
   userAccount: UserAccount | null;
   userProfile: UserProfile | null;
-  grabCurrentUser: () => void
+  grabCurrentUser: () => void;
+  signInUser: (username: string, password: string) => void;
 }
 
 // the main provider
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const currentUser = ''
 
+  const [loginLoading, setLoginLoading] = useState<boolean>()
+  const [invalidLogin, setInvalidLogin] = useState<boolean>()
   const [userAccount, setUserAccount] = useState<UserAccount | null>({
                                                                 username: null,
                                                                 email: null,
                                                                 userId: null
                                                               })
+
   const [userProfile, setUserProfile] = useState<UserProfile>({
                                                                 user_id: '',
                                                                 username: '',
@@ -87,6 +92,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log(err)
       })
   }
+
+  const signInUser = (username: string, password: string) => {
+    setLoginLoading(true)
+    signIn({username, password})
+      .then((response) => {
+        getCurrentUser()
+      })
+      .catch((error) => {
+        setLoginLoading(false)
+        setInvalidLogin(true)
+        console.log(error)
+      })
+  }
   
   return (
     <AuthContext.Provider
@@ -94,7 +112,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         currentUser,
         userAccount,
         userProfile,
-        grabCurrentUser
+        grabCurrentUser,
+        signInUser
       }}
     >
       {children}
