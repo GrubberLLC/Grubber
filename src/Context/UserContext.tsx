@@ -1,4 +1,5 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react';
+import { getCurrentUser } from 'aws-amplify/auth';
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -42,13 +43,16 @@ const AuthContext = createContext<AuthContextType>({
     full_name: '',
     profile_picture: '',
     bio: '',
-    public: 1,}
+    public: 1,
+  },
+  grabCurrentUser: () => {}
 });
 
 interface AuthContextType {
   currentUser: string | null;
   userAccount: UserAccount | null;
   userProfile: UserProfile | null;
+  grabCurrentUser: () => void
 }
 
 // the main provider
@@ -73,13 +77,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                                                                 bio: '',
                                                                 public: 1,
                                                               })
+
+  const grabCurrentUser = () => {
+    getCurrentUser()
+      .then((user) => {
+        console.log(user)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   
   return (
     <AuthContext.Provider
       value={{
         currentUser,
         userAccount,
-        userProfile
+        userProfile,
+        grabCurrentUser
       }}
     >
       {children}

@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native'
+import { Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Background from '../../Assets/restaurant.jpg'
 import LoginInputComponent from '../../Components/Inputs/LoginInputComponent';
 import LoginButtonComponent from '../../Components/Inputs/LoginButtonComponent';
+import { useAuth } from '../../Context/UserContext';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
+  const navigation = useNavigation()
+  const { grabCurrentUser } = useAuth()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [keyboardMargin, setKeyboardMargin] = useState('mb-12');
 
   useEffect(() => {
+    grabCurrentUser()
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardMargin('mb-4');
     });
@@ -75,9 +80,11 @@ const LoginScreen = () => {
                 <Text className="text-white font-semibold">
                   Create an account:  
                 </Text>
-                <Text className="text-white font-bold ml-1">
-                  Signup
-                </Text>
+                <TouchableOpacity onPress={() => {navigation.navigate('SignupScreen')}}>
+                  <Text className="text-white font-bold ml-1">
+                    Signup
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>

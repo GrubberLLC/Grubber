@@ -8,6 +8,10 @@ import {
 } from 'react-native';
 import { AuthProvider, useAuth } from './src/Context/UserContext';
 import AuthenticationNavigation from './src/Navigation/AuthenticationNavigation';
+import { Amplify } from 'aws-amplify';
+import amplifyconfig from './src/amplifyconfiguration.json';
+
+Amplify.configure(amplifyconfig);
 
 function App(): React.JSX.Element {
 
