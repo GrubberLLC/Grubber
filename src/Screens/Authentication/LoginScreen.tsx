@@ -20,7 +20,7 @@ const LoginScreen = () => {
       setKeyboardMargin('mb-4');
     });
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardMargin('mb-12');
+      setKeyboardMargin('mb-8');
     });
 
     return () => {
