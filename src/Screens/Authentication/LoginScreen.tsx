@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Background from '../../Assets/restaurant.jpg'
-import LoginInputComponent from '../../Components/Inputs/LoginInputComponent';
 import LoginButtonComponent from '../../Components/Inputs/LoginButtonComponent';
+import AuthInputComponent from '../../Components/Inputs/AuthInputComponent';
 import { useAuth } from '../../Context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 
@@ -59,7 +59,7 @@ const LoginScreen = () => {
               <View className="w-full flex flex-col items-start">
                 <Text className="text-white text-4xl font-semibold mb-b">Login</Text>
               </View>
-              <LoginInputComponent 
+              <AuthInputComponent 
                 label='User'
                 value={username}
                 handleFunction={updateUsername}
@@ -67,7 +67,7 @@ const LoginScreen = () => {
                 placeholder={'username'}
                 multiline={false}
               />
-              <LoginInputComponent 
+              <AuthInputComponent 
                 label='Lock'
                 value={password}
                 handleFunction={updatePassword}

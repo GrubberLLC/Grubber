@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Background from '../../Assets/restaurant.jpg'
-import LoginInputComponent from '../../Components/Inputs/LoginInputComponent';
 import LoginButtonComponent from '../../Components/Inputs/LoginButtonComponent';
+import AuthInputComponent from '../../Components/Inputs/AuthInputComponent';
 import { useAuth } from '../../Context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 
@@ -99,7 +99,7 @@ const SignupScreen = () => {
               <View className="w-full flex flex-col items-start">
                 <Text className="text-white text-4xl font-semibold mb-b">Signup</Text>
               </View>
-              <LoginInputComponent 
+              <AuthInputComponent 
                 label='User'
                 value={username}
                 handleFunction={updateUsername}
@@ -112,7 +112,7 @@ const SignupScreen = () => {
                   ? null 
                   : <Text className="text-white mt-3 font-bold">Username is not available.</Text>
               }
-              <LoginInputComponent 
+              <AuthInputComponent 
                 label='Mail'
                 value={email}
                 handleFunction={updateEmail}
@@ -125,7 +125,7 @@ const SignupScreen = () => {
                   ? null 
                   : <Text className="text-white mt-3 font-bold">Email is already in use.</Text>
               }
-              <LoginInputComponent 
+              <AuthInputComponent 
                 label='Lock'
                 value={password}
                 handleFunction={updatePassword}
@@ -138,7 +138,7 @@ const SignupScreen = () => {
                   ? null 
                   : <Text className="text-white mt-3 font-bold">A_Z, a_z, 0_9, 8+ char.</Text>
               }
-              <LoginInputComponent 
+              <AuthInputComponent 
                 label='Lock'
                 value={verify}
                 handleFunction={updateVerify}
