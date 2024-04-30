@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react';
-import { getCurrentUser, signIn, signOut } from 'aws-amplify/auth';
+import { confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
 import axios from 'axios';
 
 export function useAuth() {
@@ -16,16 +16,35 @@ interface UserAccount {
   userId: string | null;
 }
 
+interface SignupAttributesObject {
+  email: string, 
+  given_name: string,
+  family_name: string,
+  nickname: string,
+  name: string,
+  locale: string,
+  preferred_username: string
+}
+
+interface SignupOptionsObject {
+  userAttributes: SignupAttributesObject
+}
+
 interface SignupObject {
   username: string,
-  email: string,
-  firstName: string,
-  lastName: string,
-  name: string,
-  location: string, 
-  public: boolean,
+  password: string,
+  email: string, 
   phone: string,
-  password: string
+  given_name: string,
+  family_name: string,
+  nickname: string,
+  name: string,
+  locale: string,
+  preferred_username: string,
+  bio: string,
+  profile_picture: string,
+  public: boolean,
+  notifications: boolean,
 }
 
 interface UserProfile {
@@ -43,8 +62,7 @@ interface UserProfile {
 }
 
 const AuthContext = createContext<AuthContextType>({
-  currentUser: null,
-  userAccount: {username: null, email: null, userId: null},
+  userAccount: null,
   userProfile: {
     user_id: '',
     username: '',
@@ -58,34 +76,39 @@ const AuthContext = createContext<AuthContextType>({
     bio: '',
     public: 1,
   },
+  validAccessCode: false,
+  loginLoading: false,
   grabCurrentUser: () => {},
   signInUser: () => {},
   signOutUser: () => {},
-  handleSignupObject: () => {}
+  handleSignupObject: () => {},
+  confirmEmailSignup: () => {},
+  resendConfirmationCode: () => {},
+  ResetUsersPassword: () => {}
 });
 
 interface AuthContextType {
-  currentUser: string | null;
   userAccount: UserAccount | null;
   userProfile: UserProfile | null;
+  validAccessCode: boolean;
+  loginLoading: boolean;
   grabCurrentUser: () => void;
   signInUser: (username: string, password: string) => void;
-  signOutUser: (user_id: string) => void;
-  handleSignupObject: (data: SignupObject) => void;
+  signOutUser: () => void;
+  handleSignupObject: (data: SignupObject, navigation: any) => void;
+  confirmEmailSignup: (username: string, confirmationCode: string, navigation: any) => void;
+  resendConfirmationCode: (username: string) => void;
+  ResetUsersPassword: (username: string, navigation: any) => void,
 }
 
 // the main provider
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const currentUser = ''
 
-  const [loginLoading, setLoginLoading] = useState<boolean>()
+  const [loginLoading, setLoginLoading] = useState<boolean>(false)
   const [invalidLogin, setInvalidLogin] = useState<boolean>()
+  const [validAccessCode, setValidAccessCode] = useState<boolean>(false)
 
-  const [userAccount, setUserAccount] = useState<UserAccount | null>({
-                                                                username: null,
-                                                                email: null,
-                                                                userId: null
-                                                              })
+  const [userAccount, setUserAccount] = useState<UserAccount | null>(null)
   const [userProfile, setUserProfile] = useState<UserProfile>({
                                                                 user_id: '',
                                                                 username: '',
@@ -100,24 +123,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                                                                 public: 1,
                                                               })
 
-  const [signupUserObject, setSignupUserObject] = useState<SignupObject>({
-                                                                          first_name: '',
-                                                                          last_name: '',
-                                                                          name: '',
-                                                                          username: '',
-                                                                          email: '',
-                                                                          phone: '',
-                                                                          location: '',
-                                                                          public: true,
-                                                                          profile_picture: ''
-                                                                        })
+  const toggleValidAccessCode = () => {
+    setValidAccessCode(!validAccessCode)
+  }
 
   const grabCurrentUser = () => {
     getCurrentUser()
       .then((user) => {
-        console.log(user)
+        setUserAccount({
+          username: user.username,
+          email: user.username,
+          userId: user.userId
+        })
+        setLoginLoading(false)
         getUserProfile(user.userId)
-        // setUserAccount(user)
       })
       .catch((err) => {
         console.log(err)
@@ -125,10 +144,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const signInUser = (username: string, password: string) => {
+    console.log('logging in: ', username)
     setLoginLoading(true)
     signIn({username, password})
       .then((response) => {
-        getCurrentUser()
+        grabCurrentUser()
       })
       .catch((error) => {
         setLoginLoading(false)
@@ -137,7 +157,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       })
   }
 
-  const signOutUser = (user_id: string) => {
+  const signOutUser = () => {
+    console.log('log out of your accoubnt')
     signOut()
       .then(response => {
         setUserAccount(null)
@@ -152,6 +173,61 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     axios.get(url)
       .then(response => {
         setUserProfile(response.data[0])
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const handleSignupObject = (data: SignupObject, navigation: any) => {
+    const signupData = {
+      username: data.username,
+      password: data.password,
+      options: {
+        userAttributes: {
+          email: data.email,
+          given_name: data.given_name,
+          family_name: data.family_name,
+          nickname: data.given_name,
+          name: `${data.given_name} ${data.family_name}`,
+          locale: data.locale,
+          preferred_username: data.preferred_username,
+        }
+      }
+    }
+    console.log(signupData)
+    // createUserProfile('afew-bras-ad-sd-gsadf', data)
+    signUp(signupData)
+      .then((currentUser: any) => {
+        createUserProfile(currentUser.userId, data, navigation)
+      })
+      .catch((err: any) => {
+        console.log('Could not create user:', err);
+      });
+  }
+
+  const createUserProfile = (userId: string, data: SignupObject, navigation: any) => {
+    const profileData = {
+      userId: userId, //
+      username: data.username, //
+      email: data.email, //
+      phone: data.phone, //
+      location: data.locale,
+      first_name: data.given_name,
+      last_name: data.family_name,
+      name: data.name,
+      bio: data.bio,
+      nickname: data.given_name,
+      profile_picture: data.profile_picture,
+      preferred_username: data.username,
+      public: data.public,
+      notifications: true,
+    }
+    let url = `https://grubberapi.com/api/v1/profiles/`
+    axios.post(url, profileData)
+      .then(response => {
+        navigation.navigate('AccessCodeScreen', {username: data.username})
         setLoginLoading(false)
       })
       .catch(error => {
@@ -160,20 +236,56 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   }
 
-  const handleSignupObject = (data: SignupObject) => {
-    setSignupUserObject(data)
+  const confirmEmailSignup = (username: string, confirmationCode: string, navigation: any) => {
+    confirmSignUp({
+      username: username,
+      confirmationCode: confirmationCode
+    })
+    .then(response => {
+      navigation.navigate('LoginScreen');
+    })
+    .catch(error => {
+        console.log('Error confirming sign up', error);
+        toggleValidAccessCode()
+    });
+  }
+
+  const resendConfirmationCode = (username: string) => {
+    resendSignUpCode({
+      username: username
+    })
+    .then(response => {
+      console.log('new email with code sent')
+    })
+    .catch(error => {
+        console.log('Error confirming sign up', error);
+    });
+  }
+
+  const ResetUsersPassword = (username: string, navigation: any) => {
+    resetPassword({username})
+      .then(response => {
+        navigation.navigate('LoginScreen')
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
   
   return (
     <AuthContext.Provider
       value={{
-        currentUser,
         userAccount,
         userProfile,
+        validAccessCode,
+        loginLoading,
         grabCurrentUser,
         signInUser,
         signOutUser,
-        handleSignupObject
+        handleSignupObject,
+        confirmEmailSignup,
+        resendConfirmationCode,
+        ResetUsersPassword
       }}
     >
       {children}

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   SafeAreaView,
   StatusBar,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { AuthProvider, useAuth } from './src/Context/UserContext';
@@ -15,7 +16,7 @@ Amplify.configure(amplifyconfig);
 
 function App(): React.JSX.Element {
 
-  const { currentUser } = useAuth();
+  const { signOutUser, userAccount } = useAuth()
 
   const navigateAuth = () => {
     return(
@@ -33,6 +34,9 @@ function App(): React.JSX.Element {
         <SafeAreaView>
           {/* <BottomTabNavigation /> */}
           <Text className={`text-white`}>Content</Text>
+          <TouchableOpacity onPress={() => {signOutUser()}}>
+            <Text className={`text-white mt-8`}>logout</Text>
+          </TouchableOpacity>
         </SafeAreaView>
       </View>
     )
@@ -40,13 +44,11 @@ function App(): React.JSX.Element {
 
   return (
     <View className={`bg-neutral-900 h-screen w-screen`}>
-      <AuthProvider>
-        {
-          currentUser === null 
-            ? navigateAuth()
-            : navigateContent()
-        }
-      </AuthProvider>
+      {
+        userAccount?.userId
+          ? navigateContent()
+          : navigateAuth()
+      }
     </View>
   );
 }

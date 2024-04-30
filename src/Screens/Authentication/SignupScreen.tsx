@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Background from '../../Assets/restaurant.jpg'
+import Background from '../../Assets/background2.jpg'
 import LoginButtonComponent from '../../Components/Inputs/LoginButtonComponent';
 import AuthInputComponent from '../../Components/Inputs/AuthInputComponent';
 import { useAuth } from '../../Context/UserContext';
@@ -29,8 +29,8 @@ const SignupScreen = () => {
   const [verify, setVerify] = useState<string>('')
   const [validUsername, setValidusername] = useState<boolean>(true)
   const [validEmai, setValidEmail] = useState<boolean>(true)
-  const [validPassword, setValidPassword] = useState<boolean>(true)
-  const [validVerify, setValidVerify] = useState<boolean>(true)
+  const [validPassword, setValidPassword] = useState<boolean>(false)
+  const [validVerify, setValidVerify] = useState<boolean>(false)
   const [keyboardMargin, setKeyboardMargin] = useState('mb-12');
 
   const updateUsername = (text: string) => {
@@ -60,20 +60,15 @@ const SignupScreen = () => {
     setVerify(text)
   }
 
-  const checkAccount = () => {
-    console.log('login into account')
-    
-    navigation.navigate('ProfileScreen')
-  }
-
+  
   const validateUsername = (username: string) => {
     console.log('validated')
   }
-
+  
   const validateEmail = (username: string) => {
     console.log('validated')
   }
-
+  
   function isValidPassword(password: string) {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
@@ -82,6 +77,16 @@ const SignupScreen = () => {
       setValidPassword(true)
     } else {
       setValidPassword(false)
+    }
+  }
+  
+  const checkAccount = () => {
+    if(validEmai && validUsername && validPassword && validVerify){
+      navigation.navigate('ProfileScreen', {
+        username: username,
+        email: email,
+        password: password
+      });
     }
   }
   

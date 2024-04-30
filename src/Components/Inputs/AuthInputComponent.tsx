@@ -21,7 +21,7 @@ const AuthInputComponent: React.FC<LoginInputProps> = (props) => {
   return (
     <View 
       className="flex flex-row px-4 pt-1 pb-2 mt-3 items-center rounded-xl"
-      style={{ backgroundColor: 'rgba(211, 211, 211, 0.40)' }}
+      style={{ backgroundColor: 'rgba(150, 150, 150, 0.50)' }}
     >
       {IconComponent ? <IconComponent className="mr-2" height={24} width={24} color="white" /> : null}
       <TextInput
@@ -33,7 +33,7 @@ const AuthInputComponent: React.FC<LoginInputProps> = (props) => {
         value={value}
         onChangeText={(text) => {handleFunction(text)}}
         multiline={multiline ? true : false}
-        className="bg-white flex-1 mr-2 border-b-2 border-b-white text-white text-lg mb-2"
+        className="bg-white flex-1 mr-2 border-b-2 border-b-white text-white text-lg mb-2 font-semibold"
         style={{ backgroundColor: 'rgba(108, 122, 137, 0)' }}
       />
     </View>

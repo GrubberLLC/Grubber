@@ -2,12 +2,14 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from '../Screens/Authentication/LoginScreen';
 import SignupScreen from '../Screens/Authentication/SignupScreen';
-import ProfileScreen from '../Screens/Authentication/ProfileScreen';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import CreateProfileScreen from '../Screens/Authentication/CreateProfileScreen';
 import AccessCodeScreen from '../Screens/Authentication/AccessCodeScreen';
 import ForgotScreen from '../Screens/Authentication/ForgotScreen';
-const StackNav = createStackNavigator();
+import ProfileScreen from '../Screens/Authentication/ProfileScreen';
+import { RootStackParamList } from '../Types/NavigationTypes';
+
+const StackNav = createStackNavigator<RootStackParamList>();
 
 const AuthenticationNavigation = () => {
   return (

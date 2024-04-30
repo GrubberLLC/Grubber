@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Background from '../../Assets/restaurant.jpg'
+import Background from '../../Assets/background2.jpg'
 import LoginButtonComponent from '../../Components/Inputs/LoginButtonComponent';
 import AuthInputComponent from '../../Components/Inputs/AuthInputComponent';
-import { useAuth } from '../../Context/UserContext';
-import { useNavigation } from '@react-navigation/native';
 import AuthSwitchComponent from '../../Components/Inputs/AuthSwitchComponent';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../Types/NavigationTypes'; 
+import { useAuth } from '../../Context/UserContext';
+import { Phone } from 'react-native-feather';
 
-const ProfileScreen = () => {
+type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'ProfileScreen'>;
+
+const ProfileScreen: React.FC = () => {
   const navigation = useNavigation()
+  const route = useRoute<ProfileScreenRouteProp>();
+  const params = route.params
+
+  const {handleSignupObject} = useAuth()
   
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -24,63 +32,75 @@ const ProfileScreen = () => {
     };
   }, []);
 
-  const [username, setUsername] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [verify, setVerify] = useState<string>('')
-  const [validUsername, setValidusername] = useState<boolean>(true)
-  const [validEmai, setValidEmail] = useState<boolean>(true)
-  const [validPassword, setValidPassword] = useState<boolean>(true)
-  const [validVerify, setValidVerify] = useState<boolean>(true)
+  const username = params.username
+  const email = params.email
+  const password = params.password
+  const [firstName, setFirstName] = useState<string >('')
+  const [lastName, setLastName] = useState<string >('')
+  const [bio, setBio] = useState<string >('')
+  const [location, setLocation] = useState<string >('')
+  const [phone, setPhone] = useState<string >('')
+  const [isPublic, setIsPublic] = useState<boolean >(true)
   const [keyboardMargin, setKeyboardMargin] = useState('mb-12');
 
-  const updateUsername = (text: string) => {
-    validateUsername(text)
-    setUsername(text)
+  const updateFirstName = (text: string) => {
+    setFirstName(text)
   }
 
-  const updateEmail = (text: string) => {
-    validateEmail(text)
-    setEmail(text)
+  const updateLastName = (text: string) => {
+    setLastName(text)
   }
 
-  const updatePassword = (text: string) => {
-    text.length > 0
-      ? isValidPassword(text)
-      : setValidPassword(true)
-    text === verify 
-      ? setValidVerify(true)
-      : setValidVerify(false)
-    setPassword(text)
+  const updateBio = (text: string) => {
+    setBio(text)
   }
 
-  const updateVerify = () => {
+  const updatePhone = (text: string) => {
+    setPhone(text)
+  }
+
+  const updateLocation = (text: string) => {
+    setLocation(text)
+  }
+
+  const updateIsPublic = (view: boolean) => {
+    setIsPublic(view)
+  }
+
+  const completeSignupProcess = () => {
+    console.log('create account')
+    // const signupData = {
+    //   username,
+    //   password,
+    //   options: {
+    //     userAttributes: {
+    //       email: email, 
+    //       given_name: firstName,
+    //       family_name: lastName,
+    //       nickname: firstName,
+    //       name: `${firstName} ${lastName}`,
+    //       locale: location,
+    //       preferred_username: username
+    //     }
+    //   }
+    // }
+
+    navigation.navigate('CreateProfileScreen', {
+      username: username,
+      email: email,
+      password: password,
+      given_name: firstName,
+      family_name: lastName,
+      phone: phone,
+      nickname: firstName,
+      name: `${firstName} ${lastName}`,
+      locale: location,
+      preferred_username: username,
+      isPublic: isPublic,
+      bio: bio
+    })
     
-  }
-
-  const checkAccount = () => {
-    console.log('login into account')
-    
-    navigation.navigate('ProfileScreen')
-  }
-
-  const validateUsername = (username: string) => {
-    console.log('validated')
-  }
-
-  const validateEmail = (username: string) => {
-    console.log('validated')
-  }
-
-  function isValidPassword(password: string) {
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasDigit = /\d/.test(password);
-    if (password.length > 8 && hasUpperCase && hasLowerCase && hasDigit) {
-      setValidPassword(true)
-    } else {
-      setValidPassword(false)
-    }
+    // handleSignupObject(signupData)
   }
   
   return (
@@ -99,45 +119,58 @@ const ProfileScreen = () => {
               </View>
               <AuthInputComponent 
                 label='User'
-                value={username}
-                handleFunction={updateUsername}
+                value={firstName}
+                handleFunction={updateFirstName}
                 secure={false}
                 placeholder={'First name'}
                 multiline={false}
               />
               <AuthInputComponent 
                 label='User'
-                value={username}
-                handleFunction={updateUsername}
+                value={lastName}
+                handleFunction={updateLastName}
                 secure={false}
                 placeholder={'Last name'}
                 multiline={false}
               />
               <AuthInputComponent 
                 label='Phone'
-                value={password}
-                handleFunction={updatePassword}
-                secure={true}
-                placeholder={'123-456-7890'}
-                multiline={false}
+                value={phone}
+                handleFunction={updatePhone}
+                secure={false}
+                placeholder={'Phone'}
+                multiline={true}
+              />
+              <AuthInputComponent 
+                label='MessageSquare'
+                value={bio}
+                handleFunction={updateBio}
+                secure={false}
+                placeholder={'Bio...'}
+                multiline={true}
               />
               <AuthInputComponent 
                 label='MapPin'
-                value={verify}
-                handleFunction={updateVerify}
-                secure={true}
+                value={location}
+                handleFunction={updateLocation}
+                secure={false}
                 placeholder={'Irvine, CA'}
                 multiline={false}
               />
               <AuthSwitchComponent 
                 label='Eye'
-                value={verify}
-                handleFunction={updateVerify}
-                secure={true}
+                value={isPublic}
+                handleFunction={updateIsPublic}
+                secure={false}
                 placeholder={'Public'}
                 multiline={false}
               />
-              <LoginButtonComponent label={'Signup'} handleFunction={checkAccount}/>
+              <LoginButtonComponent label={'Signup'} handleFunction={completeSignupProcess}/>
+              <TouchableOpacity onPress={() => {navigation.goBack()}}>
+                <Text className="text-white font-bold ml-1 mt-4">
+                  Go Back
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>

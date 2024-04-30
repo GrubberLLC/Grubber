@@ -4,8 +4,8 @@ import * as Icons from 'react-native-feather';
 
 interface LoginInputProps {
   label: string;
-  value: string;
-  handleFunction: () => void;
+  value: boolean;
+  handleFunction: (view: boolean) => void;
   secure: boolean;
   placeholder: string;
   multiline: boolean;
@@ -20,7 +20,7 @@ const AuthSwitchComponent: React.FC<LoginInputProps> = (props) => {
   return (
     <View 
       className="w-full h-12 flex flex-row px-4 mt-3 items-center justify-between rounded-xl"
-      style={{ backgroundColor: 'rgba(211, 211, 211, 0.40)' }}
+      style={{ backgroundColor: 'rgba(150, 150, 150, 0.50)' }}
     >
       <View className="flex flex-row items-center justify-center">
         {IconComponent ? <IconComponent className="mr-2" height={24} width={24} color="white" /> : null}
@@ -29,7 +29,7 @@ const AuthSwitchComponent: React.FC<LoginInputProps> = (props) => {
       <View>
         <Switch
           className="scale-85"
-          onValueChange={() => handleFunction()}
+          onValueChange={() => handleFunction(!value)}
           trackColor={{false: 'white', true: '#e94f4e'}}
           value={value}
         />
