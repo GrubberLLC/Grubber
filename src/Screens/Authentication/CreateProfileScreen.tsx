@@ -73,7 +73,7 @@ const CreateProfileScreen: React.FC = () => {
             accessLevel: 'guest',
         }
     }).result;
-    let uploadedImage = `https://seekify-storage-da999112230453-staging.s3.us-west-1.amazonaws.com/public/${result.key}`
+    let uploadedImage = `https://grubber-mobile-storage-8be2b031175523-staging.s3.us-west-1.amazonaws.com/public/${result.key}`
     createAccountAndProfile(uploadedImage)
   };
 

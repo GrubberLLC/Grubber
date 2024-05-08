@@ -11,6 +11,7 @@ import { AuthProvider, useAuth } from './src/Context/UserContext';
 import AuthenticationNavigation from './src/Navigation/AuthenticationNavigation';
 import { Amplify } from 'aws-amplify';
 import amplifyconfig from './src/amplifyconfiguration.json';
+import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
 
 Amplify.configure(amplifyconfig);
 
@@ -20,7 +21,7 @@ function App(): React.JSX.Element {
 
   const navigateAuth = () => {
     return(
-      <View className={`flex-1`}>
+      <View className={`flex-1 w-full h-full`}>
         <StatusBar barStyle="light-content"/>
         <AuthenticationNavigation />
       </View>
@@ -29,14 +30,9 @@ function App(): React.JSX.Element {
 
   const navigateContent = () => {
     return(
-      <View>
-        <StatusBar barStyle="light-content" translucent={false} backgroundColor={'black'} />
-        <SafeAreaView>
-          {/* <BottomTabNavigation /> */}
-          <Text className={`text-white`}>Content</Text>
-          <TouchableOpacity onPress={() => {signOutUser()}}>
-            <Text className={`text-white mt-8`}>logout</Text>
-          </TouchableOpacity>
+      <View className={'flex-1'}>
+        <SafeAreaView className={'flex-1'}>
+          <BottomTabNavigation />
         </SafeAreaView>
       </View>
     )

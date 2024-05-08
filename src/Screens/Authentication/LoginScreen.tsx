@@ -54,7 +54,7 @@ const LoginScreen = () => {
   }
   
   return (
-    <ImageBackground source={Background} resizeMode="cover" className="w-screen h-screen absolute z-0">
+    <ImageBackground source={Background} resizeMode="cover" className="w-screen h-screen absolute z-0 bg-neutral-900">
       <View className="w-screen h-screen bg-black opacity-60 absolute z-1"></View>
       <KeyboardAvoidingView
         className="flex-1"
@@ -104,11 +104,6 @@ const LoginScreen = () => {
                     Signup
                   </Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity onPress={() => {SignoutUser()}}>
-                  <Text className="text-white font-bold ml-1">
-                    Logout
-                  </Text>
-                </TouchableOpacity> */}
               </View>
             </View>
           </View>
