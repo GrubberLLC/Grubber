@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
 import axios from 'axios';
 import { YELP_API_KEY } from '../API/Authorizatgion';
@@ -57,7 +57,8 @@ const PostContext = createContext<PostContextType>({
   updatePicture: () => {},
   searchYelp: () => {},
   updatePostPlace: () => {},
-  createPost: () => {}
+  createPost: () => {},
+  getUsersPosts: () => {}
 });
 
 interface PostContextType {
@@ -76,6 +77,7 @@ interface PostContextType {
   searchYelp: () => void;
   updatePostPlace: (place: PlaceProps) => void;
   createPost: (navigation: any) => void;
+  getUsersPosts: (user_id: string) => void;
 }
 
 // the main provider
@@ -96,6 +98,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   const [place, setPlace] = useState<string>('')
   const [location, setLocation] = useState<string>('')
 
+  const [loggedInUsersPosts, setLoggedInUserPosts] = useState<any>([])
+
   const updatePlace = (text:string) => {
     setPlace(text)
   }
@@ -114,6 +118,18 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
 
   const updatePostPlace = (place: PlaceProps) => {
     setPostPlace(place)
+  }
+
+  const getUsersPosts = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/posts/user/${user_id}`
+    axios.get(url)
+      .then(response => {
+        console.log('users posts list: ', response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
   }
 
   const searchYelp = async () => {
@@ -252,7 +268,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         updatePicture,
         updatePostPlace,
         searchYelp,
-        createPost
+        createPost,
+        getUsersPosts
       }}
     >
       {children}
