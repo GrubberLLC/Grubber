@@ -38,6 +38,32 @@ interface PlaceProps {
   address_formatted: string
 }
 
+interface SinglePostProps {
+  address_city: string,
+  address_formatted: string,
+  address_state: string, 
+  address_street: string,
+  address_zip_code: string,
+  caption: string | null,
+  closed: boolean,
+  created_at: string,
+  image: string,
+  latitude: string,
+  longitude: string,
+  media: string,
+  media_type: string,
+  name: string, 
+  phone: string,
+  place_id: string,
+  post_id: string,
+  price: string,
+  rating: number,
+  review_count: number,
+  user_id: string,
+  yelp_id: string,
+  yelp_url: string,
+}
+
 const PostContext = createContext<PostContextType>({
   postPicture: {
     uri: '',
@@ -51,6 +77,7 @@ const PostContext = createContext<PostContextType>({
   location: '',
   postPlace: null,
   createPostLoading: false,
+  loggedInUsersPosts: null,
   updatePlace: () => {},
   updateLocation:  () => {},
   updateCaption: () => {},
@@ -70,6 +97,7 @@ interface PostContextType {
   location: string,
   postPlace: PlaceProps | null;
   createPostLoading: boolean;
+  loggedInUsersPosts: SinglePostProps[] | null;
   updatePlace: (text:string) => void,
   updateLocation:  (text:string) => void,
   updateCaption: (text: string) => void;
@@ -98,7 +126,13 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   const [place, setPlace] = useState<string>('')
   const [location, setLocation] = useState<string>('')
 
-  const [loggedInUsersPosts, setLoggedInUserPosts] = useState<any>([])
+  const [loggedInUsersPosts, setLoggedInUserPosts] = useState<SinglePostProps[] | null>([])
+
+  useEffect(() => {
+    userProfile && userProfile.user_id != ''
+      ? getUsersPosts(userProfile.user_id)
+      : null
+  }, [userProfile])
 
   const updatePlace = (text:string) => {
     setPlace(text)
@@ -125,12 +159,15 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     axios.get(url)
       .then(response => {
         console.log('users posts list: ', response.data)
+        setLoggedInUserPosts(response.data)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
         throw error;
       });
   }
+
+ 
 
   const searchYelp = async () => {
     setPostSearchLoading(true)
@@ -262,6 +299,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         place,
         location,
         createPostLoading,
+        loggedInUsersPosts,
         updatePlace,
         updateLocation,
         updateCaption,

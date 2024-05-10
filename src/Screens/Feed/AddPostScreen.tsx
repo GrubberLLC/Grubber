@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import { usePost } from '../../Context/PostContext'
 import LargeTextInputComponent from '../../Components/Inputs/LargeTextInputComponent'
 import PageHeaderComponent from '../../Components/Headers/PageHeaderComponent'
+import NewSelectImageComponent from '../../Components/Select/NewSelectImageComponent'
 
 const AddPostScreen = () => {
   const navigation = useNavigation()
@@ -23,7 +24,7 @@ const AddPostScreen = () => {
       <PageHeaderComponent backing={true} leftLabel='New Post'/>
       <View className='flex-1 flex flex-col justify-between'>
         <View className='flex-1'>
-          <SelectImageComponent picture={postPicture} selectingImage={updatePicture}/>
+          <NewSelectImageComponent picture={postPicture} selectingImage={updatePicture}/>
           <ScrollView className='mt-3 pb-3 border-b-2 border-b-neutral-700'>
             <LargeTextInputComponent
               value={postCaption}

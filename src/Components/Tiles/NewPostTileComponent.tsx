@@ -34,7 +34,7 @@ interface SinglePostProps {
   post: SinglePost
 }
 
-const PostTileComponent: React.FC<SinglePostProps> = ({post}) => {
+const FullPostTileComponent: React.FC<SinglePostProps> = ({post}) => {
 
   const {userProfile} = useAuth()
 
@@ -49,4 +49,4 @@ const PostTileComponent: React.FC<SinglePostProps> = ({post}) => {
   )
 }
 
-export default PostTileComponent
+export default FullPostTileComponent
