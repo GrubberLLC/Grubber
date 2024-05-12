@@ -5,18 +5,18 @@ import { launchImageLibrary } from 'react-native-image-picker'
 
 const imageWidth = Dimensions.get('window').width
 
-interface imageProps {
+interface SingleImageProp {
   uri: string | undefined,
   type: string | undefined,
   fileName: string | undefined
 }
 
 interface ImageProps {
-  picture: imageProps,
+  picture: SingleImageProp,
   selectingImage: () => {}
 }
 
-const SelectImageComponent = ({picture, selectingImage}) => {
+const SelectGalleryImage: React.FC<ImageProps> = ({picture, selectingImage}) => {
   
   const selectAnImage = () => {
     launchImageLibrary({ mediaType: 'mixed' }, (response) => {
@@ -63,4 +63,4 @@ const SelectImageComponent = ({picture, selectingImage}) => {
   )
 }
 
-export default SelectImageComponent
+export default SelectGalleryImage

@@ -9,7 +9,7 @@ interface HeaderProps {
   leftLabel: string,
 }
 
-const PageHeaderComponent: React.FC<HeaderProps> = (props) => {
+const NoMenuPageHeader: React.FC<HeaderProps> = (props) => {
   const {backing, leftLabel} = props
   
   const navigation = useNavigation()
@@ -28,4 +28,4 @@ const PageHeaderComponent: React.FC<HeaderProps> = (props) => {
   )
 }
 
-export default PageHeaderComponent
+export default NoMenuPageHeader

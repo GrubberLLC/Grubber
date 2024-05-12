@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { usePost } from '../../Context/PostContext'
 import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader'
 
-const AddPostScreen = () => {
+const NewPostScreen = () => {
   const navigation = useNavigation()
 
   const {postPicture, postCaption, updatePicture, updateCaption} = usePost()
@@ -20,4 +20,4 @@ const AddPostScreen = () => {
   )
 }
 
-export default AddPostScreen
+export default NewPostScreen

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Background from '../../Assets/background2.jpg'
-import LoginButtonComponent from '../../Components/Inputs/LoginButtonComponent';
-import AuthInputComponent from '../../Components/Inputs/AuthInputComponent';
+import LoginButtonComponent from '../../Components/Auth/LoginButtonComponent';
+import AuthInputComponent from '../../Components/Auth/AuthInputComponent';
 import { useAuth } from '../../Context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { signOut } from 'aws-amplify/auth';

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import * as Icons from 'react-native-feather';
-import LargeTextInputComponent from './LargeTextInputComponent'
+import LargeTextInputComponent from '../Inputs/LargeTextInputComponent'
 
 interface SearchProps {
   term: string, 
@@ -26,7 +26,6 @@ const SearchBarComponent: React.FC<SearchProps> = (props) => {
         capitalize='none'
         placeholder={placeholder}
         multiline={false}
-        className='text-base'
       />
     </View>
   )

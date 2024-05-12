@@ -3,7 +3,7 @@ import { ActivityIndicator, Alert, Dimensions, Image, ImageBackground, KeyboardA
 import Background from '../../Assets/background2.jpg'
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../Types/NavigationTypes'; 
-import LoginButtonComponent from '../../Components/Inputs/LoginButtonComponent';
+import LoginButtonComponent from '../../Components/Auth/LoginButtonComponent';
 import { Plus, RefreshCcw, X } from 'react-native-feather';
 import { launchImageLibrary } from 'react-native-image-picker'; 
 import { useAuth } from '../../Context/UserContext';

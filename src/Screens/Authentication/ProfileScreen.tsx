@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Background from '../../Assets/background2.jpg'
-import LoginButtonComponent from '../../Components/Inputs/LoginButtonComponent';
-import AuthInputComponent from '../../Components/Inputs/AuthInputComponent';
-import AuthSwitchComponent from '../../Components/Inputs/AuthSwitchComponent';
+import LoginButtonComponent from '../../Components/Auth/LoginButtonComponent';
+import AuthInputComponent from '../../Components/Auth/AuthInputComponent';
+import AuthSwitchComponent from '../../Components/Auth/AuthSwitchComponent';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../Types/NavigationTypes'; 
 import { useAuth } from '../../Context/UserContext';

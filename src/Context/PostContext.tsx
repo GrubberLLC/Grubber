@@ -73,7 +73,7 @@ const PostContext = createContext<PostContextType>({
   postCaption: '',
   postSearchLoading: false,
   postSearchResults: [],
-  place: '',
+  place: null,
   location: '',
   postPlace: null,
   createPostLoading: false,
@@ -93,7 +93,7 @@ interface PostContextType {
   postCaption: string;
   postSearchLoading: boolean;
   postSearchResults: any[];
-  place: string,
+  place: string | null,
   location: string,
   postPlace: PlaceProps | null;
   createPostLoading: boolean;

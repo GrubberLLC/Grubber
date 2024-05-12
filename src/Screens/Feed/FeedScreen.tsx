@@ -4,7 +4,7 @@ import FeedHeader from '../../Components/Headers/FeedHeader'
 import { useAuth } from '../../Context/UserContext'
 import { usePost } from '../../Context/PostContext'
 import { ScrollView } from 'react-native-gesture-handler'
-import PostTileComponent from '../../Components/Tiles/PostTileComponent'
+// import PostTileComponent from '../../Components/Tiles/PostTileComponent'
 
 interface SinglePostProps {
   address_city: string,
@@ -54,7 +54,7 @@ const FeedScreen = () => {
                 loggedInUsersPosts.map((singlePost: SinglePostProps) => {
                   return(
                     <View>
-                      <PostTileComponent post={singlePost}/>
+                      {/* <PostTileComponent post={singlePost}/> */}
                     </View>
                   )
                 })
@@ -66,4 +66,4 @@ const FeedScreen = () => {
   )
 }
 
-export default FeedScreen
+export default FeedScreen 
