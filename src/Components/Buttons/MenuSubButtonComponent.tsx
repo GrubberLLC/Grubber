@@ -13,7 +13,7 @@ const MenuSubButtonComponent: React.FC<NextButtonProps> = (props) => {
   const {justify, label, handleFunction, loading} = props
 
   return (
-    <View className={`w-full flex flex-row justify-${justify} p-4`}>
+    <View className={`w-full flex flex-row justify-${justify} p-4 pr-2`}>
       <TouchableOpacity onPress={() => {handleFunction()}}>
         <View className='flex flex-row rounded-md p-2 items-center' style={{backgroundColor: '#e94f4e'}}>
           {

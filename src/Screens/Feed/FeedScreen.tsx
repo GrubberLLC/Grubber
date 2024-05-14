@@ -4,7 +4,7 @@ import FeedHeader from '../../Components/Headers/FeedHeader'
 import { useAuth } from '../../Context/UserContext'
 import { usePost } from '../../Context/PostContext'
 import { ScrollView } from 'react-native-gesture-handler'
-// import PostTileComponent from '../../Components/Tiles/PostTileComponent'
+import PostTile from '../../Components/Tile/PostTile'
 
 interface SinglePostProps {
   address_city: string,
@@ -52,9 +52,11 @@ const FeedScreen = () => {
           ? <ScrollView className='flex-1'>
               {
                 loggedInUsersPosts.map((singlePost: SinglePostProps) => {
+                  console.log('single post: ', singlePost)
+                  console.log('user profile: ', userProfile)
                   return(
                     <View>
-                      {/* <PostTileComponent post={singlePost}/> */}
+                      <PostTile post={singlePost} profile={userProfile}/>
                     </View>
                   )
                 })

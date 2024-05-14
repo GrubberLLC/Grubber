@@ -7,14 +7,12 @@ interface CaptionProps {
 
 const CaptionComponent: React.FC<CaptionProps> = ({caption}) => {
   return (
-    <View className='px-2'>
-      <Text className='text-white text-base'>
-        {
-          caption
-            ? caption
-            : null
-        }
-      </Text>
+    <View> 
+      {
+        caption
+          ? <Text className='text-white text-base px-2 pt-3'>{caption}</Text>
+          : null
+      }
     </View>
   )
 }
