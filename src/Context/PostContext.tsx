@@ -73,11 +73,12 @@ const PostContext = createContext<PostContextType>({
   postCaption: '',
   postSearchLoading: false,
   postSearchResults: [],
-  place: null,
+  place: '',
   location: '',
   postPlace: null,
   createPostLoading: false,
   loggedInUsersPosts: null,
+  searchingPlaces: false,
   updatePlace: () => {},
   updateLocation:  () => {},
   updateCaption: () => {},
@@ -85,7 +86,8 @@ const PostContext = createContext<PostContextType>({
   searchYelp: () => {},
   updatePostPlace: () => {},
   createPost: () => {},
-  getUsersPosts: () => {}
+  getUsersPosts: () => {},
+  handleSetSearchingPlaces: () => {}
 });
 
 interface PostContextType {
@@ -93,11 +95,12 @@ interface PostContextType {
   postCaption: string;
   postSearchLoading: boolean;
   postSearchResults: any[];
-  place: string | null,
+  place: string,
   location: string,
   postPlace: PlaceProps | null;
   createPostLoading: boolean;
   loggedInUsersPosts: SinglePostProps[] | null;
+  searchingPlaces: boolean;
   updatePlace: (text:string) => void,
   updateLocation:  (text:string) => void,
   updateCaption: (text: string) => void;
@@ -106,6 +109,7 @@ interface PostContextType {
   updatePostPlace: (place: PlaceProps) => void;
   createPost: (navigation: any) => void;
   getUsersPosts: (user_id: string) => void;
+  handleSetSearchingPlaces: () => void;
 }
 
 // the main provider
@@ -125,6 +129,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
 
   const [place, setPlace] = useState<string>('')
   const [location, setLocation] = useState<string>('')
+  const [searchingPlaces, setSearchingPlaces] = useState<boolean>(false)
 
   const [loggedInUsersPosts, setLoggedInUserPosts] = useState<SinglePostProps[] | null>([])
 
@@ -152,6 +157,11 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
 
   const updatePostPlace = (place: PlaceProps) => {
     setPostPlace(place)
+  }
+
+  const handleSetSearchingPlaces = () => {
+    setSearchingPlaces(true)
+    searchYelp()
   }
 
   const getUsersPosts = (user_id: string) => {
@@ -187,6 +197,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
       });
       setPostSearchResults(response.data.businesses)
       setPostSearchLoading(false)
+      setSearchingPlaces(false)
       return response.data;
     } catch (error) {
       setPostSearchLoading(false)
@@ -300,6 +311,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         location,
         createPostLoading,
         loggedInUsersPosts,
+        searchingPlaces,
         updatePlace,
         updateLocation,
         updateCaption,
@@ -307,7 +319,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         updatePostPlace,
         searchYelp,
         createPost,
-        getUsersPosts
+        getUsersPosts,
+        handleSetSearchingPlaces
       }}
     >
       {children}

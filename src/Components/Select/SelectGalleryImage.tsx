@@ -7,13 +7,13 @@ const imageWidth = Dimensions.get('window').width
 
 interface SingleImageProp {
   uri: string | undefined,
-  type: string | undefined,
+  fileType: string | undefined,
   fileName: string | undefined
 }
 
 interface ImageProps {
-  picture: SingleImageProp,
-  selectingImage: () => {}
+  picture: SingleImageProp | null,
+  selectingImage: (picture) => void
 }
 
 const SelectGalleryImage: React.FC<ImageProps> = ({picture, selectingImage}) => {

@@ -13,7 +13,7 @@ const FeedHeader = () => {
     <View className='h-16 w-full bg-neutral-900 px-4 flex flex-row items-center justify-between border-b-2 border-b-neutral-600'>
       <Text className='text-white text-xl font-extrabold'>{userProfile?.username}</Text>
       <View className='flex flex-row items-center'>
-        <TouchableOpacity onPress={() => {navigation.navigate('AddPostScreen')}}>
+        <TouchableOpacity onPress={() => {navigation.navigate('NewPostScreen')}}>
           <PlusSquare height={24} width={24} color={'white'}/>
         </TouchableOpacity>
         <Bell className='ml-3' height={24} width={24} color={'white'}/>

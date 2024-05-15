@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import FeedScreen from '../Screens/Feed/FeedScreen';
 import ReviewPostScreen from '../Screens/Feed/ReviewPostScreen';
 import NewPostScreen from '../Screens/Feed/NewPostScreen';
-import AddPlaceScreen from '../Screens/Feed/AddPlaceScreen';
+import NewPostPlaceScreen from '../Screens/Feed/NewPostPlaceScreen';
 
 const StackNav = createStackNavigator();
 
@@ -14,7 +14,7 @@ const FeedNavigation = () => {
       screenOptions={{headerShown: false}}>
       <StackNav.Screen name="FeedScreen" component={FeedScreen} />
       <StackNav.Screen name="NewPostScreen" component={NewPostScreen} />
-      <StackNav.Screen name="AddPlaceScreen" component={AddPlaceScreen} />
+      <StackNav.Screen name="NewPostPlaceScreen" component={NewPostPlaceScreen} />
       <StackNav.Screen name="ReviewPostScreen" component={ReviewPostScreen} />
     </StackNav.Navigator>
   );
