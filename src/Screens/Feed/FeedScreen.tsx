@@ -40,6 +40,7 @@ const FeedScreen = () => {
 
   useEffect(() => {
     console.log(loggedInUsersPosts)
+    getUsersPosts(userProfile && userProfile.user_id ? userProfile.user_id : '')
   }, [])
 
   return (
@@ -51,10 +52,8 @@ const FeedScreen = () => {
           ? <ScrollView className='flex-1'>
               {
                 loggedInUsersPosts.map((singlePost: SinglePostProps) => {
-                  console.log('single post: ', singlePost)
-                  console.log('user profile: ', userProfile)
                   return(
-                    <View>
+                    <View key={singlePost.yelp_id}>
                       <PostTile post={singlePost} profile={userProfile}/>
                     </View>
                   )

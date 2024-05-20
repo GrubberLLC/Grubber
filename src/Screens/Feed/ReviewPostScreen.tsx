@@ -9,24 +9,28 @@ import { usePost } from '../../Context/PostContext'
 // import PlacePostTileComponent from '../../Components/Tiles/PlacePostTileComponent'
 import MenuSubButtonComponent from '../../Components/Buttons/MenuSubButtonComponent'
 import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader'
+import ReviewPostTile from '../../Components/Tile/ReviewPostTile'
 
 const ReviewPostScreen = () => {
   const navigation = useNavigation()
 
   const {userProfile} = useAuth()
-  const {postCaption, postPicture, postPlace, createPost, createPostLoading} = usePost()
+  const {createPost, createPostLoading} = usePost()
 
-  useEffect(() => {
-    console.log('review photo: ', postPlace)
-  }, [])
 
   const CreateANewPost = () => {
     createPost(navigation)
   }
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
-      <NoMenuPageHeader backing={true} leftLabel='New Post'/>
+    <View className={'flex-1 bg-neutral-900 flex flex-col justify-between'}>
+      <View className='flex-1'>
+        <NoMenuPageHeader backing={true} leftLabel='Confirm Post'/>
+        <View className='flex-1'>
+          <ReviewPostTile />
+        </View>
+      </View>
+      <MenuSubButtonComponent justify='end' label='Create Post' loading={createPostLoading} handleFunction={() => {CreateANewPost()}}/>
     </View>
   )
 }

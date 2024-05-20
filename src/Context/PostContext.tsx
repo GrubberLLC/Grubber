@@ -20,22 +20,22 @@ interface PictureProps {
 }
 
 interface PlaceProps {
-  image: string,
-  name: string,
-  phone: string,
-  price: string,
-  rating: number,
-  review_count: number,
-  closed: boolean,
-  yelp_url: string,
-  yelp_id: string,
-  longitude: number,
-  latitude: number,
-  address_street: string,
-  address_city: string,
-  address_state: string,
-  address_zip_code: string,
-  address_formatted: string
+  image?: string,
+  name?: string,
+  phone?: string,
+  price?: string,
+  rating?: number,
+  review_count?: number,
+  closed?: boolean,
+  yelp_url?: string,
+  yelp_id?: string,
+  longitude?: number,
+  latitude?: number,
+  address_street?: string,
+  address_city?: string,
+  address_state?: string,
+  address_zip_code?: string,
+  address_formatted?: string
 }
 
 interface SinglePostProps {
@@ -168,7 +168,6 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/posts/user/${user_id}`
     axios.get(url)
       .then(response => {
-        console.log('users posts list: ', response.data)
         setLoggedInUserPosts(response.data)
       })
       .catch(error => {
@@ -176,8 +175,6 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         throw error;
       });
   }
-
- 
 
   const searchYelp = async () => {
     setPostSearchLoading(true)
@@ -195,6 +192,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         },
         params: query,
       });
+      console.log('yelp response: ', response.data[0])
       setPostSearchResults(response.data.businesses)
       setPostSearchLoading(false)
       setSearchingPlaces(false)
@@ -206,12 +204,10 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   };
 
   const createPost = (navigation: any) => {
-    console.log('places place_id: ', postPlace?.yelp_id)
     setCreatePostLoading(true)
     let url = `https://grubberapi.com/api/v1/places/check/${postPlace?.yelp_id}`
     axios.get(url)
       .then(response => {
-        console.log('response data from place add: ', response.data)
         response.data.length > 0
           ? uploadImage(response.data[0]['place_id'], navigation)
           : postPlace != null 
@@ -228,11 +224,9 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   };
 
   const addPlace = (postPlace: PlaceProps, navigation: any) => {
-    console.log('adding a new place')
     let url = `https://grubberapi.com/api/v1/places`
     axios.post(url, postPlace)
       .then(response => {
-        console.log('added place: ', response.data)
         uploadImage(response.data[0]['place_id'], navigation)
       })
       .catch(error => {
@@ -279,12 +273,10 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
           caption: postCaption, 
           place_id: place_id
         }
-        console.log('post data: ', newPost)
 
         let url = `https://grubberapi.com/api/v1/posts`
         axios.post(url, newPost)
           .then(response => {
-            console.log(response.data)
             setCreatePostLoading(false)
             navigation.navigate('FeedScreen')
           })
