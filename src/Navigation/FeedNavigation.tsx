@@ -4,6 +4,7 @@ import FeedScreen from '../Screens/Feed/FeedScreen';
 import ReviewPostScreen from '../Screens/Feed/ReviewPostScreen';
 import NewPostScreen from '../Screens/Feed/NewPostScreen';
 import NewPostPlaceScreen from '../Screens/Feed/NewPostPlaceScreen';
+import PostDetailsScreen from '../Screens/Feed/PostDetailsScreen';
 
 const StackNav = createStackNavigator();
 
@@ -16,6 +17,7 @@ const FeedNavigation = () => {
       <StackNav.Screen name="NewPostScreen" component={NewPostScreen} />
       <StackNav.Screen name="NewPostPlaceScreen" component={NewPostPlaceScreen} />
       <StackNav.Screen name="ReviewPostScreen" component={ReviewPostScreen} />
+      <StackNav.Screen name="PostDetailsScreen" component={PostDetailsScreen} />
     </StackNav.Navigator>
   );
 };

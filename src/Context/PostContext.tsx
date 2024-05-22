@@ -64,6 +64,29 @@ interface SinglePostProps {
   yelp_url: string,
 }
 
+interface CommentPropsd {
+  bio: string,
+  comment: string,
+  comment_id: number,
+  created_at: string,
+  email: string,
+  first_name: string,
+  followers: number,
+  following: number,
+  full_name: string,
+  last_name: string,
+  location: string,
+  nickname: string,
+  notifications: boolean,
+  phone: string,
+  post_id: number,
+  profile_id: string,
+  profile_picture: string,
+  public: boolean,
+  user_id: string,
+  username: string
+}
+
 const PostContext = createContext<PostContextType>({
   postPicture: {
     uri: '',
@@ -79,6 +102,7 @@ const PostContext = createContext<PostContextType>({
   createPostLoading: false,
   loggedInUsersPosts: null,
   searchingPlaces: false,
+  postComments: null,
   updatePlace: () => {},
   updateLocation:  () => {},
   updateCaption: () => {},
@@ -87,7 +111,9 @@ const PostContext = createContext<PostContextType>({
   updatePostPlace: () => {},
   createPost: () => {},
   getUsersPosts: () => {},
-  handleSetSearchingPlaces: () => {}
+  handleSetSearchingPlaces: () => {},
+  createPostComment: () => {},
+  grabPostComments: () => {}
 });
 
 interface PostContextType {
@@ -101,6 +127,7 @@ interface PostContextType {
   createPostLoading: boolean;
   loggedInUsersPosts: SinglePostProps[] | null;
   searchingPlaces: boolean;
+  postComments: CommentPropsd[] | null;
   updatePlace: (text:string) => void,
   updateLocation:  (text:string) => void,
   updateCaption: (text: string) => void;
@@ -110,6 +137,8 @@ interface PostContextType {
   createPost: (navigation: any) => void;
   getUsersPosts: (user_id: string) => void;
   handleSetSearchingPlaces: () => void;
+  createPostComment: (post_id: string, comment: string, user_id: string) => void;
+  grabPostComments: (post_id: string) => void;
 }
 
 // the main provider
@@ -132,6 +161,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   const [searchingPlaces, setSearchingPlaces] = useState<boolean>(false)
 
   const [loggedInUsersPosts, setLoggedInUserPosts] = useState<SinglePostProps[] | null>([])
+
+  const [postComments, setPostComments] = useState<CommentPropsd[] | null>(null)
 
   useEffect(() => {
     userProfile && userProfile.user_id != ''
@@ -289,7 +320,40 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     } catch (error) {
         console.error("Error uploading file:", error);
     }
-}
+  }
+
+  const createPostComment = (post_id: string, comment: string, user_id: string) => {
+    setCreatePostLoading(true)
+    const newData = {
+      post_id: post_id,
+      comment: comment,
+      user_id: user_id
+    }
+    let url = `https://grubberapi.com/api/v1/postComments`
+    axios.post(url, newData)
+      .then(response => {
+        console.log('response: ', response.data)
+        grabPostComments(post_id)
+        setCreatePostLoading(false)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  };
+
+  const grabPostComments = (post_id: string) => {
+    let url = `https://grubberapi.com/api/v1/postComments/${post_id}`
+    axios.get(url)
+      .then(response => {
+        console.log('response: ', response.data)
+        setPostComments(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
 
   return ( 
     <PostContext.Provider
@@ -304,6 +368,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         createPostLoading,
         loggedInUsersPosts,
         searchingPlaces,
+        postComments,
+        createPostComment,
         updatePlace,
         updateLocation,
         updateCaption,
@@ -312,7 +378,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         searchYelp,
         createPost,
         getUsersPosts,
-        handleSetSearchingPlaces
+        handleSetSearchingPlaces,
+        grabPostComments
       }}
     >
       {children}

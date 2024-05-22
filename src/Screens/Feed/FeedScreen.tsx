@@ -39,7 +39,6 @@ const FeedScreen = () => {
   const {getUsersPosts, loggedInUsersPosts} = usePost()
 
   useEffect(() => {
-    console.log(loggedInUsersPosts)
     getUsersPosts(userProfile && userProfile.user_id ? userProfile.user_id : '')
   }, [])
 

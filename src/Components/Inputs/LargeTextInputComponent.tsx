@@ -16,7 +16,7 @@ const LargeTextInputComponent: React.FC<InputProps> = (props) => {
   const {value, onChange, placeholder, multiline, icon} = props
 
   return (
-    <View  className='w-full'>
+    <View  className='flex-1'>
       <TextInput 
         className='text-white text-lg pb-2 pl-2 text-base'
         placeholderTextColor={'white'}

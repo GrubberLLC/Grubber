@@ -59,12 +59,8 @@ interface PostTileProps {
   profile?: ProfileProps | null,
 }
 
-const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
+const PostNoNextTile: React.FC<PostTileProps> = ({post, profile}) => {
   const navigation = useNavigation()
-
-  const redirectToPostPlace = () => {
-    navigation.navigate('PostDetailsScreen', {post})
-  }
 
   return (
     <View className='bg-skys-500 w-full'>
@@ -73,9 +69,8 @@ const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
       <PostSubMenu />
       <PlacePostSummary image={post.image} name={post.name} rating={post.rating} reviews={post.review_count}/>
       <CaptionComponent caption={post.caption}/>
-      <MenuSubButtonComponent justify='end' label='Post Details' handleFunction={() => {redirectToPostPlace()}}/>
     </View>
   )
 }
 
-export default PostTile
+export default PostNoNextTile
