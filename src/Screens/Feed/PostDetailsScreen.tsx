@@ -151,7 +151,7 @@ const PostDetailsScreen = () => {
       <ScrollView className=''>
         <PostProfile profile={profile}/>
         <FullImageComponent image={params.post.media} addImageLike={checkImageLike}/>
-        <PostSubMenu  postLikes={postLikes}/>
+        <PostSubMenu postLikes={postLikes} post_id={params.post.post_id} post={params.post}/>
         <PlacePostSummary image={params.post.image} name={params.post.name} rating={params.post.rating} reviews={params.post.review_count}/>
         <CaptionComponent caption={params.post.caption}/>
         <Text className='text-lg text-white font-bold mt-4 px-2'>Comments: </Text>

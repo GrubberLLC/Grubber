@@ -122,6 +122,7 @@ const PostContext = createContext<PostContextType>({
   handleSetSearchingPlaces: () => {},
   createPostComment: () => {},
   grabPostComments: () => {},
+  deletePost: () => {}
 });
 
 interface PostContextType {
@@ -148,6 +149,7 @@ interface PostContextType {
   handleSetSearchingPlaces: () => void;
   createPostComment: (post_id: string, comment: string, user_id: string) => void;
   grabPostComments: (post_id: string) => void;
+  deletePost: (post_id: string, navigation: any) => void;
 }
 
 // the main provider
@@ -263,6 +265,20 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     // check if the place id is in places
         // yes: create post
         // no: add to place => create post
+  };
+
+  const deletePost = (post_id: string, user_id: string) => {
+    console.log('new post id: ', post_id)
+    let url = `https://grubberapi.com/api/v1/posts/${post_id}`
+    axios.delete(url)
+      .then(response => {
+        console.log(response.data)
+        getUsersPosts(user_id)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
   };
 
   const addPlace = (postPlace: PlaceProps, navigation: any) => {
@@ -392,7 +408,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         createPost,
         getUsersPosts,
         handleSetSearchingPlaces,
-        grabPostComments
+        grabPostComments,
+        deletePost
       }}
     >
       {children}

@@ -142,7 +142,7 @@ const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
     <View className='bg-skys-500 w-full'>
       <PostProfile profile={profile ? profile : null}/>
       <FullImageComponent image={post.media} addImageLike={checkImageLike}/>
-      <PostSubMenu postLikes={postLikes}/>
+      <PostSubMenu postLikes={postLikes} post_id={post.post_id} post={post}/>
       <PlacePostSummary image={post.image} name={post.name} rating={post.rating} reviews={post.review_count}/>
       <CaptionComponent caption={post.caption}/>
       <MenuSubButtonComponent justify='end' label='Post Details' handleFunction={() => {redirectToPostPlace()}}/>
