@@ -19,6 +19,13 @@ interface PictureProps {
   fileType: string
 }
 
+interface LikesProps {
+  created_at: string,
+  like_id: number,
+  post_id: number,
+  user_id: string
+}
+
 interface PlaceProps {
   image?: string,
   name?: string,
@@ -103,6 +110,7 @@ const PostContext = createContext<PostContextType>({
   loggedInUsersPosts: null,
   searchingPlaces: false,
   postComments: null,
+  postLikes: null,
   updatePlace: () => {},
   updateLocation:  () => {},
   updateCaption: () => {},
@@ -113,7 +121,7 @@ const PostContext = createContext<PostContextType>({
   getUsersPosts: () => {},
   handleSetSearchingPlaces: () => {},
   createPostComment: () => {},
-  grabPostComments: () => {}
+  grabPostComments: () => {},
 });
 
 interface PostContextType {
@@ -128,6 +136,7 @@ interface PostContextType {
   loggedInUsersPosts: SinglePostProps[] | null;
   searchingPlaces: boolean;
   postComments: CommentPropsd[] | null;
+  postLikes: LikesProps[] | null;
   updatePlace: (text:string) => void,
   updateLocation:  (text:string) => void,
   updateCaption: (text: string) => void;
@@ -163,6 +172,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   const [loggedInUsersPosts, setLoggedInUserPosts] = useState<SinglePostProps[] | null>([])
 
   const [postComments, setPostComments] = useState<CommentPropsd[] | null>(null)
+
+  const [postLikes, setPostLikes] = useState<LikesProps[] | null>(null)
 
   useEffect(() => {
     userProfile && userProfile.user_id != ''
@@ -355,6 +366,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
       });
   }
 
+
   return ( 
     <PostContext.Provider
       value={{
@@ -369,6 +381,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         loggedInUsersPosts,
         searchingPlaces,
         postComments,
+        postLikes,
         createPostComment,
         updatePlace,
         updateLocation,

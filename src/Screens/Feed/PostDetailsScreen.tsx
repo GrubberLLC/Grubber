@@ -12,8 +12,17 @@ import LargeTextInputComponent from '../../Components/Inputs/LargeTextInputCompo
 import { ArrowRight, ArrowUp } from 'react-native-feather';
 import { usePost } from '../../Context/PostContext';
 import PostComment from '../../Components/Comments/PostComment';
+import axios from 'axios';
+import { useAuth } from '../../Context/UserContext';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'AccessCodeScreen'>;
+
+interface LikesProps {
+  created_at: string,
+  like_id: number,
+  post_id: number,
+  user_id: string
+}
 
 interface ProfileProp {
   user_id: string,
@@ -39,6 +48,7 @@ interface ProfileProp {
 const PostDetailsScreen = () => {
   const route = useRoute<ProfileScreenRouteProp>();
   const params = route.params
+  const {userProfile} = useAuth()
 
   const {createPostComment, createPostLoading, grabPostComments, postComments} = usePost()
 
@@ -63,9 +73,12 @@ const PostDetailsScreen = () => {
     profile_id: params.post.profile_id
   })
   const [newComment, setNewComment] = useState<string>('')
+  const [postLikes, setPostLikes] = useState<LikesProps[]>([])
+
 
   useEffect(() => { // look into use memo
     grabPostComments(params.post.post_id)
+    getAllPostLikes(params.post.post_id)
   }, [])
 
   const updateNewComment = (text: string) => {
@@ -77,13 +90,68 @@ const PostDetailsScreen = () => {
     setNewComment('')
   }
 
+  const addPostLike = (post_id: string, user_id: string) => {
+    const newData = {
+      post_id,
+      user_id
+    }
+    let url = `https://grubberapi.com/api/v1/likes`
+    axios.post(url, newData)
+      .then(response => {
+        console.log('response: ', response.data)
+        getAllPostLikes(post_id)
+      })
+      .catch(error => {
+        console.error('Error adding like:', error);
+        throw error;
+      });
+  }
+
+  const removePostLike = (post_id: string) => {
+    console.log('remopving the post like: ', post_id)
+    let url = `https://grubberapi.com/api/v1/likes/${post_id}`
+    axios.delete(url)
+      .then(response => {
+        console.log('delete a like: ', response.data)
+        // setPostComments(response.data)
+        getAllPostLikes(post_id)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const getAllPostLikes = (post_id: string) => {
+    console.log(post_id)
+    let url = `https://grubberapi.com/api/v1/likes/${post_id}`
+    axios.get(url)
+      .then(response => {
+        console.log('response: ', response.data)
+        setPostLikes(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching post likes:', error);
+        throw error;
+      });
+  }
+
+  const checkImageLike = () => {
+    const userLikedPost = postLikes.filter((post) => post.user_id === userProfile?.user_id)
+    console.log('user liked the image', userLikedPost)
+    userLikedPost.length > 0
+      ? removePostLike(userLikedPost[0]['like_id'].toString())
+      : addPostLike(params.post.post_id, params.post.user_id)
+
+  }
+
   return (
     <View className={'flex-1 bg-neutral-900'}>
       <NoMenuPageHeader backing={true} leftLabel='Post'/>
       <ScrollView className=''>
         <PostProfile profile={profile}/>
-        <FullImageComponent image={params.post.media}/>
-        <PostSubMenu />
+        <FullImageComponent image={params.post.media} addImageLike={checkImageLike}/>
+        <PostSubMenu  postLikes={postLikes}/>
         <PlacePostSummary image={params.post.image} name={params.post.name} rating={params.post.rating} reviews={params.post.review_count}/>
         <CaptionComponent caption={params.post.caption}/>
         <Text className='text-lg text-white font-bold mt-4 px-2'>Comments: </Text>
