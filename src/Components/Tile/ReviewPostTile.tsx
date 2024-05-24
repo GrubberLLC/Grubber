@@ -21,7 +21,6 @@ const ReviewPostTile = () => {
     <ScrollView className='bg-skys-500 w-full'>
       {/* <PostProfile profile={userProfile}/> */}
       <NewPostImageComponent image={postPicture ? postPicture.uri : null}/>
-      <PostSubMenu />
       <NewPostPlaceSummary 
         image={postPlace && postPlace.image ? postPlace.image : ''} 
         name={postPlace && postPlace.name ? postPlace.name : ''} 

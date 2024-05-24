@@ -19,7 +19,7 @@ const ReviewPostScreen = () => {
 
 
   const CreateANewPost = () => {
-    createPost(navigation)
+    createPost(navigation, userProfile ? userProfile.user_id : '')
   }
 
   return (

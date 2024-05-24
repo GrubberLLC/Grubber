@@ -144,7 +144,7 @@ interface PostContextType {
   updatePicture: (picture: PictureProps) => void;
   searchYelp: () => void;
   updatePostPlace: (place: PlaceProps) => void;
-  createPost: (navigation: any) => void;
+  createPost: (navigation: any, user_id: string) => void;
   getUsersPosts: (user_id: string) => void;
   handleSetSearchingPlaces: () => void;
   createPostComment: (post_id: string, comment: string, user_id: string) => void;
@@ -247,15 +247,15 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     }
   };
 
-  const createPost = (navigation: any) => {
+  const createPost = (navigation: any, user_id: string) => {
     setCreatePostLoading(true)
     let url = `https://grubberapi.com/api/v1/places/check/${postPlace?.yelp_id}`
     axios.get(url)
       .then(response => {
         response.data.length > 0
-          ? uploadImage(response.data[0]['place_id'], navigation)
+          ? uploadImage(response.data[0]['place_id'], navigation, user_id)
           : postPlace != null 
-              ? addPlace(postPlace, navigation)
+              ? addPlace(postPlace, navigation, user_id)
               : null
       })
       .catch(error => {
@@ -281,11 +281,11 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
       });
   };
 
-  const addPlace = (postPlace: PlaceProps, navigation: any) => {
+  const addPlace = (postPlace: PlaceProps, navigation: any, user_id: string) => {
     let url = `https://grubberapi.com/api/v1/places`
     axios.post(url, postPlace)
       .then(response => {
-        uploadImage(response.data[0]['place_id'], navigation)
+        uploadImage(response.data[0]['place_id'], navigation, user_id)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
@@ -293,12 +293,12 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
       });
   }
 
-  const uploadImage = (place_id: number, navigation: any) => {
+  const uploadImage = (place_id: number, navigation: any, user_id: string) => {
     postPicture
       ? fetch(postPicture.uri)
           .then(response => response.blob()) // Correctly wait for blob
           .then(blob => {
-              startUploading(blob, place_id, navigation);
+              startUploading(blob, place_id, navigation, user_id);
           })
           .catch(error => {
               console.error("Error fetching blob:", error);
@@ -306,7 +306,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
       : null
   }
 
-  const startUploading = async (blob: any, place_id: number, navigation: any) => {
+  const startUploading = async (blob: any, place_id: number, navigation: any, user_id: string) => {
     try {
         const fileName = blob._data.name || `file-${Date.now()}`;
         const fileType = blob._data.type || 'image/jpeg'; // Default type if not specified
@@ -336,6 +336,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         axios.post(url, newPost)
           .then(response => {
             setCreatePostLoading(false)
+            getUsersPosts(user_id)
             navigation.navigate('FeedScreen')
           })
           .catch(error => {

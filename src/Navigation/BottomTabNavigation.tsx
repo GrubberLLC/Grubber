@@ -1,9 +1,10 @@
 import React from 'react'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import {Activity, AlignCenter, Grid, Heart, Layers, List, Search, User} from 'react-native-feather';
+import {Activity, AlignCenter, Globe, Grid, Heart, Layers, List, Search, User} from 'react-native-feather';
 import { View } from 'react-native';
 import FeedNavigation from './FeedNavigation';
+import ExploreNavigation from './ExploreNavigation';
 
 const Tab = createBottomTabNavigator()
 
@@ -44,9 +45,9 @@ const BottomTabNavigation = () => {
             ),
           }}/>
         <Tab.Screen
-          name="Activity"
-          key="Activity"
-          component={FeedNavigation}
+          name="Explore"
+          key="Explore"
+          component={ExploreNavigation}
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
@@ -56,11 +57,11 @@ const BottomTabNavigation = () => {
                   focused 
                     ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
-                        <Grid style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Globe style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                     : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
-                        <Grid style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Globe style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                 }
               </View>
