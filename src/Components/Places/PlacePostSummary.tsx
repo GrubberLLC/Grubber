@@ -1,17 +1,26 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
 import { Star } from 'react-native-feather'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 interface PlacePostProps {
   image: string,
   name: string,
   rating: number,
-  reviews: number
+  reviews: number,
+  place_id: string
 }
 
-const PlacePostSummary: React.FC<PlacePostProps> = ({image, name, rating, reviews}) => {
+const PlacePostSummary: React.FC<PlacePostProps> = ({image, name, rating, reviews, place_id}) => {
+  const navigation = useNavigation()
+
+  const redirectToPlace = () => {
+    navigation.navigate('PlaceScreen', {place_id: place_id})
+  }
+
   return (
-    <View className='w-full px-2 flex flex-row pt-4'>
+    <TouchableOpacity onPress={() => {redirectToPlace()}} className='w-full px-2 flex flex-row pt-4'>
       <View className='mr-4'>
         <Image height={48} width={48} source={{uri: image}}/>
       </View>
@@ -25,7 +34,7 @@ const PlacePostSummary: React.FC<PlacePostProps> = ({image, name, rating, review
           <Text className='text-white'>({reviews}) Reviews</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

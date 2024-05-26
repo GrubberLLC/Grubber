@@ -35,11 +35,7 @@ interface SinglePostProps {
   user_id: string,
   yelp_id: string,
   yelp_url: string,
-}
-
-interface ProfileProps {
   bio: string
-  created_at: string,
   email: string,
   first_name: string,
   followers: number,
@@ -49,11 +45,9 @@ interface ProfileProps {
   location: string, 
   nickname: string,
   notifications: boolean,
-  phone: string,
   profile_id: string,
   profile_picture: string,
   public: boolean,
-  user_id: string,
   username: string
 }
 
@@ -65,19 +59,39 @@ interface LikesProps {
 }
 
 interface PostTileProps {
-  post: SinglePostProps,
-  profile?: ProfileProps | null,
+  post: SinglePostProps
 }
 
-const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
+const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
   const navigation = useNavigation()
   const {userProfile} = useAuth()
 
   const [postLikes, setPostLikes] = useState<LikesProps[]>([])
 
+
+  let profileData = {
+    bio: post.bio,
+    created_at: post.created_at,
+    email: post.email,
+    first_name: post.first_name,
+    followers: post.followers,
+    following: post.first_name,
+    full_name: post.full_name,
+    last_name: post.last_name,
+    location: post.location, 
+    nickname: post.nickname,
+    notifications: post.notifications,
+    phone: post.phone,
+    profile_id: post.profile_id,
+    profile_picture: post.profile_picture,
+    public: post.public,
+    user_id: post.user_id,
+    username: post.username
+  }
+
   useEffect(() => {
     getAllPostLikes(post.post_id)
-  }, []) 
+  }, [])
 
   const addPostLike = (post_id: string, user_id: string) => {
     const newData = {
@@ -140,7 +154,7 @@ const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
 
   return (
     <View className='w-full'>
-      <PostProfile profile={profile ? profile : null}/>
+      <PostProfile profile={profileData != null ? profileData : null}/>
       <FullImageComponent image={post.media} addImageLike={checkImageLike}/>
       <PostSubMenu postLikes={postLikes} post_id={post.post_id} post={post}/>
       <PlacePostSummary image={post.image} name={post.name} rating={post.rating} reviews={post.review_count} place_id={post.place_id}/>
@@ -150,4 +164,4 @@ const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
   )
 }
 
-export default PostTile
+export default PostTileWithProfile

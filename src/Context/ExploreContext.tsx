@@ -11,6 +11,46 @@ interface ExploreProviderProps {
 }
 
 interface SinglePostProps {
+  media: string,
+  media_type: string,
+  user_id: string,
+  created_at: string,
+  caption: string,
+  place_id: string,
+  post_id: string,
+  name: string,
+  phone: string,
+  price: string,
+  rating: number,
+  review_count: number,
+  closed: boolean,
+  yelp_url: string,
+  yelp_id: string,
+  address_street: string,
+  address_city: string,
+  address_state: string,
+  address_zip_code: string,
+  image: string,
+  longitude: number,
+  latitude: number,
+  address_formatted: string,
+  username: string,
+  first_name: string,
+  last_name: string,
+  full_name: string,
+  nickname: string,
+  email: string,
+  location: string,
+  profile_picture: string,
+  bio: string,
+  public: boolean,
+  notifications: boolean,
+  followers: number,
+  following: number,
+  profile_id: string
+}
+
+interface SinglePlaceProps {
   address_city: string,
   address_formatted: string,
   address_state: string, 
@@ -22,45 +62,82 @@ interface SinglePostProps {
   image: string,
   latitude: string,
   longitude: string,
-  media: string,
-  media_type: string,
   name: string, 
   phone: string,
   place_id: string,
-  post_id: string,
   price: string,
   rating: number,
   review_count: number,
-  user_id: string,
   yelp_id: string,
   yelp_url: string,
 }
 
 const ExploreContext = createContext<ExploreContextType>({
+  loadingPlace: false,
   loadingPosts: false,
+  placePosts: null,
   allPosts: null,
-  grabAllPosts: () => {}
+  selectedPlace: null,
+  grabPlaceById: () => {},
+  grabTotalPosts: () => {}
 });
 
 interface ExploreContextType {
-  loadingPosts: boolean;
+  loadingPlace: boolean;
+  loadingPosts: boolean
+  placePosts: SinglePostProps[] | null
   allPosts: SinglePostProps[] | null
-  grabAllPosts: () => void
+  selectedPlace: SinglePlaceProps | null
+  grabPlaceById: (place_id: string) => void
+  grabTotalPosts: () => void
 }
 
 // the main provider
 export const ExploreProvider: React.FC<ExploreProviderProps> = ({ children }) => {
 
+  const [loadingPlace, setLoadingPlace] = useState<boolean>(false)
+  const [placePosts, setPlacePosts] = useState<SinglePostProps[] | null>(null)
+  const [selectedPlace, setSelectedPlace] = useState<SinglePlaceProps | null>(null)
+
   const [loadingPosts, setLoadingPosts] = useState<boolean>(false)
   const [allPosts, setAllPosts] = useState<SinglePostProps[] | null>(null)
 
-  const grabAllPosts = () => {
+  const grabPlaceById = (place_id: string) => {
+    setLoadingPlace(true)
+    let url = `https://grubberapi.com/api/v1/places/${place_id}`
+    axios.get(url)
+      .then(response => {
+        setSelectedPlace(response.data)
+        grabAllPosts(place_id)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const grabAllPosts = (place_id: string) => {
+    console.log('search all posts')
+    let url = `https://grubberapi.com/api/v1/posts/place/${place_id}`
+    axios.get(url)
+      .then(response => {
+        console.log('results grabbing posts: ', JSON.stringify(response.data))
+        setPlacePosts(response.data)
+        setLoadingPlace(false)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  };
+
+  const grabTotalPosts = () => {
     console.log('search all posts')
     setLoadingPosts(true)
     let url = `https://grubberapi.com/api/v1/posts`
     axios.get(url)
       .then(response => {
-        console.log('results: ', response.data)
+        console.log('results grabbing posts: ', JSON.stringify(response.data))
         setAllPosts(response.data)
         setLoadingPosts(false)
       })
@@ -73,9 +150,13 @@ export const ExploreProvider: React.FC<ExploreProviderProps> = ({ children }) =>
   return (
     <ExploreContext.Provider
       value={{
+        loadingPlace,
         loadingPosts,
+        placePosts,
         allPosts,
-        grabAllPosts
+        selectedPlace,
+        grabPlaceById,
+        grabTotalPosts
       }}
     >
       {children}

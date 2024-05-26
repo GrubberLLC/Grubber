@@ -111,6 +111,7 @@ const PostContext = createContext<PostContextType>({
   searchingPlaces: false,
   postComments: null,
   postLikes: null,
+  selectedPlace: null,
   updatePlace: () => {},
   updateLocation:  () => {},
   updateCaption: () => {},
@@ -122,7 +123,8 @@ const PostContext = createContext<PostContextType>({
   handleSetSearchingPlaces: () => {},
   createPostComment: () => {},
   grabPostComments: () => {},
-  deletePost: () => {}
+  deletePost: () => {},
+  getPlaceById: () => {}
 });
 
 interface PostContextType {
@@ -138,6 +140,7 @@ interface PostContextType {
   searchingPlaces: boolean;
   postComments: CommentPropsd[] | null;
   postLikes: LikesProps[] | null;
+  selectedPlace: any;
   updatePlace: (text:string) => void,
   updateLocation:  (text:string) => void,
   updateCaption: (text: string) => void;
@@ -150,6 +153,7 @@ interface PostContextType {
   createPostComment: (post_id: string, comment: string, user_id: string) => void;
   grabPostComments: (post_id: string) => void;
   deletePost: (post_id: string, navigation: any) => void;
+  getPlaceById: (place_id: string) => void;
 }
 
 // the main provider
@@ -176,6 +180,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   const [postComments, setPostComments] = useState<CommentPropsd[] | null>(null)
 
   const [postLikes, setPostLikes] = useState<LikesProps[] | null>(null)
+
+  const [selectedPlace, setSelectedPlaCe] = useState<any>()
 
   useEffect(() => {
     userProfile && userProfile.user_id != ''
@@ -213,6 +219,20 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     axios.get(url)
       .then(response => {
         setLoggedInUserPosts(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const getPlaceById = (place_id: string) => {
+    console.log(place_id)
+    let url = `https://grubberapi.com/api/v1/places/check/${place_id}`
+    axios.get(url)
+      .then(response => {
+        console.log('place checked: ', response.data)
+        setSelectedPlaCe(response.data)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
@@ -399,6 +419,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         searchingPlaces,
         postComments,
         postLikes,
+        selectedPlace,
         createPostComment,
         updatePlace,
         updateLocation,
@@ -410,7 +431,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         getUsersPosts,
         handleSetSearchingPlaces,
         grabPostComments,
-        deletePost
+        deletePost,
+        getPlaceById
       }}
     >
       {children}

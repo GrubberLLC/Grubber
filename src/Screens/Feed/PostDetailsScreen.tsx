@@ -15,7 +15,7 @@ import PostComment from '../../Components/Comments/PostComment';
 import axios from 'axios';
 import { useAuth } from '../../Context/UserContext';
 
-type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'AccessCodeScreen'>;
+type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'PostDetailsScreen'>;
 
 interface LikesProps {
   created_at: string,
@@ -49,6 +49,8 @@ const PostDetailsScreen = () => {
   const route = useRoute<ProfileScreenRouteProp>();
   const params = route.params
   const {userProfile} = useAuth()
+
+  console.log('all params: ', JSON.stringify(params))
 
   const {createPostComment, createPostLoading, grabPostComments, postComments} = usePost()
 
@@ -142,7 +144,6 @@ const PostDetailsScreen = () => {
     userLikedPost.length > 0
       ? removePostLike(userLikedPost[0]['like_id'].toString())
       : addPostLike(params.post.post_id, params.post.user_id)
-
   }
 
   return (
@@ -152,7 +153,7 @@ const PostDetailsScreen = () => {
         <PostProfile profile={profile}/>
         <FullImageComponent image={params.post.media} addImageLike={checkImageLike}/>
         <PostSubMenu postLikes={postLikes} post_id={params.post.post_id} post={params.post}/>
-        <PlacePostSummary image={params.post.image} name={params.post.name} rating={params.post.rating} reviews={params.post.review_count}/>
+        <PlacePostSummary image={params.post.image} name={params.post.name} rating={params.post.rating} reviews={params.post.review_count} place_id={params.post.place_id}/>
         <CaptionComponent caption={params.post.caption}/>
         <Text className='text-lg text-white font-bold mt-4 px-2'>Comments: </Text>
         <View>

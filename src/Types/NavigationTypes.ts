@@ -48,5 +48,8 @@ export type RootStackParamList = {
     user_id: string, 
     yelp_id: string,
     yelp_url: string
+  },
+  PlaceScreen: {
+    place_id: string
   }
 };

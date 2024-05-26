@@ -4,6 +4,8 @@ import { useExplore } from '../../Context/ExploreContext'
 import { RefreshCw } from 'react-native-feather'
 import ExploreHeader from '../../Components/Headers/ExploreHeader'
 import { useNavigation } from '@react-navigation/native'
+import SearchBarComponent from '../../Components/Search/SearchBarComponent'
+import { usePost } from '../../Context/PostContext'
 
 interface SinglePostProps {
   address_city: string,
@@ -34,26 +36,29 @@ interface SinglePostProps {
 const ExploreScreen = () => {
   const navigation = useNavigation()
 
-  const {loadingPosts, allPosts, grabAllPosts} = useExplore()
+  const {loadingPosts, allPosts, grabTotalPosts} = useExplore()
 
   useEffect(() => {
-    grabAllPosts()
+    grabTotalPosts()
   }, [])
 
   const redirectToDetailScreen = (post: SinglePostProps) => {
-    navigation.navigate('PostDetailsScreen', {post: post})
+    navigation.navigate('PostDetailsScreenExplore', {post: post})
   }
 
   return (
     <View className='flex-1 bg-neutral-900'>
       <ExploreHeader/>
+      {/* <View className='h-16 m-2 mt-3'>
+        <SearchBarComponent term={''} updateTerm={() => {console.log('')}} icon='Search' placeholder='search...'/>
+      </View> */}
       <ScrollView className='flex-1'>
         {loadingPosts ? (
           <View className='flex-1 my-80 flex justify-center items-center'><ActivityIndicator className='m-auto' size="large" color="#fff" /></View>
         ) : (
           <View className='flex flex-wrap flex-row'>
-            {allPosts &&
-              allPosts.map((post: SinglePostProps, index: number) => (
+            {allPosts != null &&
+              allPosts.map((post, index) => (
                 <TouchableOpacity onPress={() => {redirectToDetailScreen(post)}} key={index} className='w-1/3 p-1'>
                   <Image className='w-full h-32' source={{ uri: post.media }} />
                 </TouchableOpacity>
