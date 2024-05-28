@@ -10,7 +10,7 @@ const ExploreHeader = () => {
   const { userProfile } = useAuth()
 
   return (
-    <View className='h-16 w-full bg-neutral-900 px-4 flex flex-row items-center justify-between border-b-2 border-b-neutral-600'>
+    <View className='h-16 w-full bg-neutral-900 px-4 flex flex-row items-center justify-between border-b-2 border-b-neutral-800'>
       <Text className='text-white text-xl font-extrabold'>Explore</Text>
       {/* <View className='flex flex-row items-center'>
         <TouchableOpacity onPress={() => {navigation.navigate('NewPostScreen')}}>

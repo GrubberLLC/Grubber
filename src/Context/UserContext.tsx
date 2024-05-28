@@ -59,6 +59,8 @@ interface UserProfile {
   profile_picture: string | null;
   bio: string | null;
   public: number;
+  followers: number;
+  following: number
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -75,16 +77,20 @@ const AuthContext = createContext<AuthContextType>({
     profile_picture: '',
     bio: '',
     public: 1,
+    following: 0,
+    followers: 0
   },
   validAccessCode: false,
   loginLoading: false,
+  currentProfileView: 'posts',
   grabCurrentUser: () => {},
   signInUser: () => {},
   signOutUser: () => {},
   handleSignupObject: () => {},
   confirmEmailSignup: () => {},
   resendConfirmationCode: () => {},
-  ResetUsersPassword: () => {}
+  ResetUsersPassword: () => {},
+  handleProfileViewChange: () => {}
 });
 
 interface AuthContextType {
@@ -92,13 +98,15 @@ interface AuthContextType {
   userProfile: UserProfile | null;
   validAccessCode: boolean;
   loginLoading: boolean;
+  currentProfileView: string;
   grabCurrentUser: () => void;
   signInUser: (username: string, password: string) => void;
   signOutUser: () => void;
   handleSignupObject: (data: SignupObject, navigation: any) => void;
   confirmEmailSignup: (username: string, confirmationCode: string, navigation: any) => void;
   resendConfirmationCode: (username: string) => void;
-  ResetUsersPassword: (username: string, navigation: any) => void,
+  ResetUsersPassword: (username: string, navigation: any) => void;
+  handleProfileViewChange: (text: string) => void;
 }
 
 // the main provider
@@ -106,7 +114,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const [loginLoading, setLoginLoading] = useState<boolean>(false)
   const [invalidLogin, setInvalidLogin] = useState<boolean>()
-  const [validAccessCode, setValidAccessCode] = useState<boolean>(false)
+  const [validAccessCode, setValidAccessCode] = useState<boolean>(false) 
+  const [currentProfileView, setCurrentProfileView] = useState<string>('posts')
 
   const [userAccount, setUserAccount] = useState<UserAccount | null>(null)
   const [userProfile, setUserProfile] = useState<UserProfile>({
@@ -121,10 +130,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                                                                 profile_picture: '',
                                                                 bio: '',
                                                                 public: 1,
+                                                                followers: 0,
+                                                                following: 0
                                                               })
 
   const toggleValidAccessCode = () => {
     setValidAccessCode(!validAccessCode)
+  }
+
+  const handleProfileViewChange = (text: string) => {
+    setCurrentProfileView(text)
   }
 
   const grabCurrentUser = () => {
@@ -279,13 +294,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         userProfile,
         validAccessCode,
         loginLoading,
+        currentProfileView,
         grabCurrentUser,
         signInUser,
         signOutUser,
         handleSignupObject,
         confirmEmailSignup,
         resendConfirmationCode,
-        ResetUsersPassword
+        ResetUsersPassword,
+        handleProfileViewChange
       }}
     >
       {children}

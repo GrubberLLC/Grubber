@@ -219,6 +219,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/posts/user/${user_id}`
     axios.get(url)
       .then(response => {
+        
         setLoggedInUserPosts(response.data)
       })
       .catch(error => {
