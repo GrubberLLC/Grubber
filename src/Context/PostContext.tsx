@@ -215,13 +215,14 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   }
 
   const getUsersPosts = (user_id: string) => {
+    console.log(user_id)
     let url = `https://grubberapi.com/api/v1/posts/user/${user_id}`
     axios.get(url)
       .then(response => {
         setLoggedInUserPosts(response.data)
       })
       .catch(error => {
-        console.error('Error fetching profile:', error);
+        console.error('Error fetching user posts:', error);
         throw error;
       });
   }
