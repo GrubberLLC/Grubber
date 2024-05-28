@@ -48,7 +48,6 @@ const ExploreScreen = () => {
 
   return (
     <View className='flex-1 bg-neutral-900'>
-      <ExploreHeader/>
       {/* <View className='h-16 m-2 mt-3'>
         <SearchBarComponent term={''} updateTerm={() => {console.log('')}} icon='Search' placeholder='search...'/>
       </View> */}

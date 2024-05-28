@@ -5,6 +5,7 @@ import {Activity, AlignCenter, Globe, Grid, Heart, Layers, List, Search, User} f
 import { View } from 'react-native';
 import FeedNavigation from './FeedNavigation';
 import ExploreNavigation from './ExploreNavigation';
+import SearchNavigation from './SearchNavigation';
 
 const Tab = createBottomTabNavigator()
 
@@ -70,7 +71,7 @@ const BottomTabNavigation = () => {
         <Tab.Screen
           name="Search"
           key="Search"
-          component={FeedNavigation}
+          component={SearchNavigation}
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
@@ -80,11 +81,11 @@ const BottomTabNavigation = () => {
                   focused 
                     ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
-                        <Grid style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Search style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                     : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
-                        <Grid style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Search style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                 }
               </View>

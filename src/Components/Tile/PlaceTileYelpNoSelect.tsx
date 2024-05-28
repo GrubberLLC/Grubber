@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Dimensions, Text, View, Image, TouchableOpacity} from 'react-native'
 import { Star } from 'react-native-feather';
 import { usePost } from '../../Context/PostContext';
+import { useNavigation } from '@react-navigation/native';
 
 interface Ambience {
   casual?: boolean;
@@ -100,49 +101,21 @@ interface PlaceTileProps {
 }
 
 const screenWidth = Dimensions.get('screen').width
-const screenHeight = screenWidth * .55
+const screenHeight = screenWidth * .85
 
-const PlaceTileYelp: React.FC<PlaceTileProps> = ({place}) => {
+const PlaceTileYelpNoSelect: React.FC<PlaceTileProps> = ({place}) => {
+  const navigation = useNavigation()
 
-  const {updatePostPlace, postPlace} = usePost()
-  
-  const [firstCategory, setFirstCategory] = useState(place.categories ? place.categories[0].alias : '')
-
-  const selectingPlace = () => {
-    const postPlaceData = {
-      image: place.image_url,
-      name: place.name,
-      phone: place.phone,
-      price: place.price,
-      rating: place.rating,
-      review_count: place.review_count,
-      closed: place.is_closed,
-      yelp_url: place.url,
-      yelp_id: place.id,
-      longitude: place.coordinates?.longitude,
-      latitude: place.coordinates?.latitude,
-      address_street: place.location?.address1,
-      address_city: place.location?.city,
-      address_state: place.location?.state,
-      address_zip_code: place.location?.zip_code,
-      address_formatted: `${place.location?.address1} ${place.location?.city}, ${place.location?.state} ${place.location?.zip_code}`
-    }
-    updatePostPlace(postPlaceData)
+  const redirectToPlaceScreen = () => {
+    navigation.navigate('PlaceDetailsScreenSearch', {place_id: place.id})
   }
 
   return (
-    <TouchableOpacity onPress={() => {selectingPlace()}} className='bg-sky-500 w-full my-3'>
+    <TouchableOpacity onPress={redirectToPlaceScreen} className='bg-sky-500 w-full my-3'>
       <View style={{height: screenHeight, width: screenWidth}} className='bg-red-300'>
         <Image className='flex-1' source={{uri: place.image_url}}/>
         <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', height: screenHeight, width: screenWidth}} className='absolute z-5 flex flex-col justify-between  p-2'>
-          <View>
-            {
-              postPlace?.yelp_id === place.id
-                ? <View  className='rounded-md overflow-hidden'><Text className='bg-red-500 text-white text-base font-bold p-2'>Selected</Text></View>
-                : <View></View>
-            }
-          </View>
-          <View>
+          <View className='flex-1 flex flex-column justify-end'>
             <View className='flex flex-row items-end'>
               <Text className='text-white text-2xl font-bold'>{place.name}</Text>
             </View>
@@ -165,4 +138,4 @@ const PlaceTileYelp: React.FC<PlaceTileProps> = ({place}) => {
   )
 }
 
-export default PlaceTileYelp
+export default PlaceTileYelpNoSelect

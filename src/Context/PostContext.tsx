@@ -349,7 +349,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
           media_type: fileType,
           user_id:  userProfile?.user_id,
           caption: postCaption, 
-          place_id: place_id
+          place_id: place_id,
+          yelp_id: postPlace?.yelp_id
         }
 
         let url = `https://grubberapi.com/api/v1/posts`
@@ -375,7 +376,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     const newData = {
       post_id: post_id,
       comment: comment,
-      user_id: user_id
+      user_id: user_id,
+
     }
     let url = `https://grubberapi.com/api/v1/postComments`
     axios.post(url, newData)
