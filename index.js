@@ -6,13 +6,16 @@ import { AuthProvider } from './src/Context/UserContext'; // Adjust path as need
 import { PostProvider } from './src/Context/PostContext';
 import { ExploreProvider } from './src/Context/ExploreContext';
 import { SearchProvider } from './src/Context/SearchContext';
+import { ListProvider } from './src/Context/ListContext';
 
 const RootApp = () => (
   <AuthProvider>
     <PostProvider>
       <ExploreProvider>
         <SearchProvider>
-          <App />
+          <ListProvider>
+            <App />
+          </ListProvider>
         </SearchProvider>
       </ExploreProvider>
     </PostProvider>

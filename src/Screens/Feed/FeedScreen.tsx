@@ -47,7 +47,6 @@ const FeedScreen = () => {
   return (
     <View className={'flex-1 bg-neutral-900'}>
       <FeedHeader />
-      <TouchableOpacity onPress={() => {signOutUser()}}><Text className={'text-white font-bold'}>Logout</Text></TouchableOpacity>
       {
         loggedInUsersPosts && loggedInUsersPosts.length > 0
           ? <ScrollView className='flex-1'>

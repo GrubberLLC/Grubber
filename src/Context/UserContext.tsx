@@ -60,7 +60,8 @@ interface UserProfile {
   bio: string | null;
   public: number;
   followers: number;
-  following: number
+  following: number;
+  notifications: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -78,11 +79,13 @@ const AuthContext = createContext<AuthContextType>({
     bio: '',
     public: 1,
     following: 0,
-    followers: 0
+    followers: 0,
+    notifications: true
   },
   validAccessCode: false,
   loginLoading: false,
   currentProfileView: 'posts',
+  allProfiles: [],
   grabCurrentUser: () => {},
   signInUser: () => {},
   signOutUser: () => {},
@@ -99,6 +102,7 @@ interface AuthContextType {
   validAccessCode: boolean;
   loginLoading: boolean;
   currentProfileView: string;
+  allProfiles: UserProfile[]
   grabCurrentUser: () => void;
   signInUser: (username: string, password: string) => void;
   signOutUser: () => void;
@@ -116,6 +120,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [invalidLogin, setInvalidLogin] = useState<boolean>()
   const [validAccessCode, setValidAccessCode] = useState<boolean>(false) 
   const [currentProfileView, setCurrentProfileView] = useState<string>('posts')
+  const [allProfiles, setAllProfiles] = useState<UserProfile[]>([])
 
   const [userAccount, setUserAccount] = useState<UserAccount | null>(null)
   const [userProfile, setUserProfile] = useState<UserProfile>({
@@ -131,7 +136,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                                                                 bio: '',
                                                                 public: 1,
                                                                 followers: 0,
-                                                                following: 0
+                                                                following: 0,
+                                                                notifications: true
                                                               })
 
   const toggleValidAccessCode = () => {
@@ -188,6 +194,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     axios.get(url)
       .then(response => {
         setUserProfile(response.data[0])
+        getAllUserProfile()
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const getAllUserProfile = () => {
+    let url = `https://grubberapi.com/api/v1/profiles`
+    axios.get(url)
+      .then(response => {
+        setAllProfiles(response.data)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
@@ -295,6 +314,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         validAccessCode,
         loginLoading,
         currentProfileView,
+        allProfiles,
         grabCurrentUser,
         signInUser,
         signOutUser,

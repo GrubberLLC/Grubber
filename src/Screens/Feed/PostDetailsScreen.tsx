@@ -125,7 +125,6 @@ const PostDetailsScreen = () => {
   }
 
   const getAllPostLikes = (post_id: string) => {
-    console.log(post_id)
     let url = `https://grubberapi.com/api/v1/likes/${post_id}`
     axios.get(url)
       .then(response => {

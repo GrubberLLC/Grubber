@@ -44,7 +44,7 @@ const PlaceDetailsScreen = () => {
   const route = useRoute<ProfileScreenRouteProp>();
   const params = route.params
 
-  console.log('place id: ', typeof params.place_id)
+  console.log('place id: ', params.place_id)
 
   const {searchYelpFull, loadingPlaces, yelpResultsFull, yelpResultsFullPosts} = useSearch()
 

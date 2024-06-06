@@ -19,7 +19,7 @@ const LargeTextInputComponent: React.FC<InputProps> = (props) => {
     <View  className='flex-1'>
       <TextInput 
         className='text-white text-lg pb-2 pl-2 text-base'
-        placeholderTextColor={'white'}
+        placeholderTextColor={'#878787'}
         value={value}
         onChangeText={(text) => {onChange(text)}}
         autoCapitalize={'none'}

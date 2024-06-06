@@ -1,9 +1,13 @@
 import React from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader'
 import { Activity, AlertCircle, Bell, Bookmark, ChevronsRight, Edit2, Grid, Heart, HelpCircle, Lock, LogOut, MessageSquare, User, X } from 'react-native-feather'
+import { useAuth } from '../../Context/UserContext'
 
 const SettingsScreen = () => {
+
+  const {signOutUser} = useAuth()
+
   return (
     <View className={'flex-1 bg-neutral-900'}>
       <NoMenuPageHeader backing={true} leftLabel='Settings'/>
@@ -94,12 +98,12 @@ const SettingsScreen = () => {
           <View className='pb-4 border-b-2 border-b-neutral-700 mt-8'>
             <Text className='text-white text-xl font-bold'>Login</Text>
           </View>
-          <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
+          <TouchableOpacity onPress={signOutUser} className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <LogOut height={18} width={18} color={'#0ea5e9'}/>
               <Text className='text-sky-500 text-lg ml-2'>Logout</Text>
             </View>
-          </View>
+          </TouchableOpacity>
           <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <X height={18} width={18} color={'red'}/>

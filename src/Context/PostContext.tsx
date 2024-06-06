@@ -215,11 +215,10 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   }
 
   const getUsersPosts = (user_id: string) => {
-    console.log(user_id)
     let url = `https://grubberapi.com/api/v1/posts/user/${user_id}`
     axios.get(url)
       .then(response => {
-        
+
         setLoggedInUserPosts(response.data)
       })
       .catch(error => {
@@ -229,7 +228,6 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   }
 
   const getPlaceById = (place_id: string) => {
-    console.log(place_id)
     let url = `https://grubberapi.com/api/v1/places/check/${place_id}`
     axios.get(url)
       .then(response => {
@@ -294,7 +292,6 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/posts/${post_id}`
     axios.delete(url)
       .then(response => {
-        console.log(response.data)
         getUsersPosts(user_id)
       })
       .catch(error => {

@@ -1,3 +1,19 @@
+interface ListProps {
+  created_at: string,
+  created_by: string,
+  description: string,
+  last_activity: string,
+  list_id: number,
+  member_id: number,
+  name: string,
+  picture: string,
+  public: boolean,
+  sent_request: string,
+  status: string,
+  type: string,
+  user_id: string,
+}
+
 export type RootStackParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
@@ -51,5 +67,12 @@ export type RootStackParamList = {
   },
   PlaceScreen: {
     place_id: string
+  },
+  ListDetailScreen: {
+    list: ListProps
+  },
+  SearchPlaceListScreen: {
+    list_id: string,
+    list: any
   }
 };
