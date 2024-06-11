@@ -45,7 +45,7 @@ interface PostSumProps {
   post: SinglePostProps
 }
 
-const PostSubMenu: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
+const PostSubMenuNoEdit: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
   const navigation = useNavigation()
   const { userProfile } = useAuth();
   const { deletePost, addPlaceList, handleAddPlaceList } = usePost();
@@ -82,8 +82,8 @@ const PostSubMenu: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
   };
 
   return (
-    <View className='flex flex-row w-full px-2 pt-2 justify-between'>
-      <View className='flex flex-row items-center'>
+    <View className='flex flex-row w-full px-2 py-2 justify-between items-center'>
+      <View className='flex flex-row items-center mt-2'>
         {userLikedPost ? (
           <Heart className='mr-2' height={26} width={26} color='#e94f4e' fill='#e94f4e' />
         ) : (
@@ -96,9 +96,9 @@ const PostSubMenu: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
       {
         editPost 
           ? <View className='absolute flex flex-col top-[-100px] right-1 z-10 rounded-lg' style={{backgroundColor: ColorGuide['bg-dark']}}>
-              <TouchableOpacity onPress={() => {}} className='flex flex-row items-row px-5 py-3'>
-                <Bookmark height={22} width={22} color={'white'}/>
-                <Text className='text-white text-base font-semibold ml-2'>Favorite</Text>
+              <TouchableOpacity onPress={handleAddPlaceList} className='flex flex-row items-row px-5 py-3'>
+                <PlusSquare height={22} width={22} color={'white'}/>
+                <Text className='text-white text-base font-semibold ml-2'>Add To list</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={confirmDelete} className='flex flex-row items-row px-5 py-3'>
                 <Trash height={22} width={22} color={'white'}/>
@@ -107,18 +107,15 @@ const PostSubMenu: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
             </View>
           : <View></View>
       }
-      {
+      {/* {
         post.user_id === userProfile?.user_id
           ? <TouchableOpacity onPress={() => {setEditPost(!editPost)}} className='p-1'>
               <MoreHorizontal height={26} width={26} color='white' />
             </TouchableOpacity>
-          : <TouchableOpacity onPress={() => {}} className='flex flex-row items-row px-5 py-3'>
-              <Bookmark height={22} width={22} color={'white'}/>
-              <Text className='text-white text-base font-semibold ml-2'>Favorite</Text>
-            </TouchableOpacity>
-      }
+          : null
+      } */}
     </View>
   );
 };
 
-export default PostSubMenu;
+export default PostSubMenuNoEdit;

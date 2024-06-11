@@ -6,12 +6,17 @@ import { useSearch } from '../../Context/SearchContext'
 import { ScrollView } from 'react-native-gesture-handler'
 import PlaceTileYelp from '../../Components/Tile/PlaceTileYelp'
 import PlaceTileYelpNoSelect from '../../Components/Tile/PlaceTileYelpNoSelect'
+import ColorGuide from '../../ColorGuide'
 
 const SearchScreen = () => {
   const {yelpResults, loadingPlaces, searchYelp, termSearch, locationSearch, updateSearchTerm, updateLocationSearch} = useSearch()
 
+  useEffect(() => {
+    searchYelp()
+  }, [])
+
   return (
-    <View className='flex-1 bg-neutral-900'>
+    <View className='flex-1' style={{backgroundColor: ColorGuide['bg-dark']}}>
       <View className='pt-2 px-2 flex flex-row w-full'>
         <SearchBarComponent icon='Home' placeholder='restaurant...' term={termSearch} updateTerm={updateSearchTerm}/>
       </View>

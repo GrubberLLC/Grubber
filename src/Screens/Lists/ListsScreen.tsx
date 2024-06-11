@@ -5,6 +5,7 @@ import ListHeader from '../../Components/Headers/ListHeader'
 import { useList } from '../../Context/ListContext'
 import { useAuth } from '../../Context/UserContext'
 import ListTile from '../../Components/Tile/ListTile'
+import ColorGuide from '../../ColorGuide'
 
 const ListsScreen = () => {
 
@@ -16,7 +17,7 @@ const ListsScreen = () => {
   }, [])
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <ListHeader />
       <ScrollView className='flex-1'>
         {

@@ -95,6 +95,8 @@ const ListContext = createContext<ListContextType>({
   listMembers: [],
   loadingListMembers: false,
   addMember: false, 
+  listPublic: false,
+  selectedUserLists: [],
   handleAddMember: () => {},
   updatePicture: () => {},
   updateListName: () => {},
@@ -111,7 +113,9 @@ const ListContext = createContext<ListContextType>({
   getAllListMembers: () => { },
   removeMemberFromList: () => {},
   addSelectedMembers: () => {},
-  addSelectedMembersList: () => {}
+  addSelectedMembersList: () => {},
+  updateListPublic: () => {},
+  getSelectedUserLists: () => {}
 });
 
 interface ListContextType {
@@ -130,6 +134,8 @@ interface ListContextType {
   listMembers: MemberProps[]
   loadingListMembers: boolean
   addMember: boolean
+  listPublic: boolean
+  selectedUserLists: any
   handleAddMember: () => void
   updatePicture: (picture: PictureProps) => void
   updateListName: (text: string) => void
@@ -147,6 +153,8 @@ interface ListContextType {
   removeMemberFromList: (member_id: number, list_id: number) => void
   addSelectedMembers: (list_id: string, navigation: any) => void
   addSelectedMembersList: (list_id: number, navigation: any, list: any) => void
+  updateListPublic: () => void
+  getSelectedUserLists: (user_id: string) => void
 }
 
 // the main provider
@@ -156,6 +164,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
   const [listPicture, setListPicture] = useState<PictureProps | null>(null)
   const [listName, setListName] = useState<string>('')
   const [listDescription, setListDescription] = useState<string>('')
+  const [listPublic, setListPublic] = useState<boolean>(false)
   const [currentlyUploading, setCurrentlyUploading] = useState<boolean>(false)
 
   const [selectgedUsers, setSelectedUsers] = useState<UserProfile[]>([])
@@ -177,6 +186,8 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
 
   const [addMember, setAddMember] = useState<boolean>(false);
 
+  const [selectedUserLists, setSelectedUserLIsts] = useState<any>([])
+
   const handleAddMember = () => {
     setAddMember(!addMember)
   }
@@ -187,6 +198,10 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
 
   const updatePicture = (picutre: PictureProps) => {
     setListPicture(picutre)
+  }
+
+  const updateListPublic = () => {
+    setListPublic(!listPublic)
   }
 
   const updateListName = (text: string) => {
@@ -273,7 +288,6 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
   }
 
   const addPlaceToList = (place_id: string, list_id: string, navigation: any, list: any) => {
-
     const placeBody = {
       place_id: place_id,
       list_id: list_id
@@ -281,7 +295,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/placeinlist`
     axios.post(url, placeBody)
       .then(response => {
-        // setUserLists(response.data)
+        // setUserLists(refsponse.data)
         navigation.navigate('ListDetailsScreen', {list: list})
       })
       .catch(error => {
@@ -486,6 +500,18 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
       });
   }
 
+  const getSelectedUserLists = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/lists/user/${user_id}`
+    axios.get(url)
+      .then(response => {
+        setSelectedUserLIsts(response.data)
+      })
+      .catch(error => {
+        console.error('Error add first member:', error);
+        throw error;
+      });
+  }
+
   return (
     <ListContext.Provider
       value={{
@@ -504,6 +530,8 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
         listMembers,
         loadingListMembers,
         addMember, 
+        listPublic,
+        selectedUserLists,
         handleAddMember,
         updatePicture,
         updateListName,
@@ -520,7 +548,9 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
         getAllListMembers,
         removeMemberFromList,
         addSelectedMembers,
-        addSelectedMembersList
+        addSelectedMembersList,
+        updateListPublic,
+        getSelectedUserLists
       }}
     >
       {children}

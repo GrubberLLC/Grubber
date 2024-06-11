@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import { usePost } from '../../Context/PostContext'
 import axios from 'axios'
 import { useAuth } from '../../Context/UserContext'
+import PostSubMenuNoEdit from '../Menus/PostSubMenuNoEdit'
 
 interface SinglePostProps {
   address_city: string,
@@ -156,7 +157,11 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
     <View className='w-full'>
       <PostProfile profile={profileData != null ? profileData : null}/>
       <FullImageComponent image={post.media} addImageLike={checkImageLike}/>
-      <PostSubMenu postLikes={postLikes} post_id={post.post_id} post={post}/>
+      {
+        profileData.user_id === userProfile?.user_id
+          ?  <PostSubMenu postLikes={postLikes} post_id={post.post_id} post={post}/>
+          : <PostSubMenuNoEdit postLikes={postLikes} post_id={post.post_id} post={post}/>
+      }
       <PlacePostSummary image={post.image} name={post.name} rating={post.rating} reviews={post.review_count} place_id={post.place_id}/>
       <CaptionComponent caption={post.caption}/>
       <MenuSubButtonComponent justify='end' label='Post Details' handleFunction={() => {redirectToPostPlace()}}/>

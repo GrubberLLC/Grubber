@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import { usePost } from '../../Context/PostContext'
 import axios from 'axios'
 import { useAuth } from '../../Context/UserContext'
+import PostSubMenuNoEdit from '../Menus/PostSubMenuNoEdit'
 
 interface SinglePostProps {
   address_city: string,

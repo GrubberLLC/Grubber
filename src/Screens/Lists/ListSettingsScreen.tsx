@@ -21,6 +21,7 @@ import { useList } from '../../Context/ListContext';
 import { useAuth } from '../../Context/UserContext';
 import ResultsProfile from '../../Components/Profiles/ResultsProfile';
 import AddMemberProfile from '../../Components/Profiles/AddMemberProfile';
+import ColorGuide from '../../ColorGuide';
 
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = screenWidth * 0.7;
@@ -104,9 +105,9 @@ const ListSettingsScreen = () => {
   };
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <ListSettingHeader list_name={params.list.name} list_id={params.list.list_id} list={params.list} />
-      <View style={{ height: screenHeight, width: screenWidth }} className='bg-red-300'>
+      <View style={{ height: screenHeight, width: screenWidth, backgroundColor: ColorGuide.primary }} className='bg-red-300'>
         <Image className='flex-1' source={{ uri: params.list.picture }} />
         <View
           style={{ backgroundColor: 'rgba(0, 0, 0, .5)', height: screenHeight, width: screenWidth }}
@@ -147,7 +148,7 @@ const ListSettingsScreen = () => {
         )}
       </ScrollView>
       <Modal animationType='slide' transparent={false} visible={addMember}>
-        <SafeAreaView className='flex-1 bg-neutral-900'>
+        <SafeAreaView className='flex-1' style={{backgroundColor: ColorGuide['bg-dark']}}>
           <View className='flex-1'>
             <AddMemberHeader closeModal={handleAddMember} />
             <View className='h-20 p-2'>

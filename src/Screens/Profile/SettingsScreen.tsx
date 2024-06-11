@@ -3,13 +3,14 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader'
 import { Activity, AlertCircle, Bell, Bookmark, ChevronsRight, Edit2, Grid, Heart, HelpCircle, Lock, LogOut, MessageSquare, User, X } from 'react-native-feather'
 import { useAuth } from '../../Context/UserContext'
+import ColorGuide from '../../ColorGuide'
 
 const SettingsScreen = () => {
 
   const {signOutUser} = useAuth()
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NoMenuPageHeader backing={true} leftLabel='Settings'/>
       <ScrollView>
         <View className='p-3'>
@@ -101,13 +102,13 @@ const SettingsScreen = () => {
           <TouchableOpacity onPress={signOutUser} className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <LogOut height={18} width={18} color={'#0ea5e9'}/>
-              <Text className='text-sky-500 text-lg ml-2'>Logout</Text>
+              <Text style={{color: '#0ea5e9'}} className='text-sky-500 text-lg ml-2'>Logout</Text>
             </View>
           </TouchableOpacity>
           <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <X height={18} width={18} color={'red'}/>
-              <Text className='text-red-500 text-lg ml-2'>Delete Account</Text>
+              <Text style={{color: ColorGuide.primary}} className='text-red-500 text-lg ml-2'>Delete Account</Text>
             </View>
           </View>
         </View>

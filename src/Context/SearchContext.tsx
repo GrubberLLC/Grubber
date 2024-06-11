@@ -1,6 +1,7 @@
 import React, { ReactNode, createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import { YELP_API_KEY } from '../API/Authorizatgion';
+import { useAuth } from './UserContext';
 
 export function useSearch() {
   return useContext(SearchContext);
@@ -41,9 +42,11 @@ interface SearchContextType {
 // the main provider
 export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
 
+  const {userProfile} = useAuth()
+
   const [loadingPlaces, setLoadingPlaces] = useState<boolean>(false)
   const [termSearch, setSearchTermSearch] = useState<string>('') 
-  const [locationSearch, setLocationSearch] = useState<string>('') 
+  const [locationSearch, setLocationSearch] = useState<string>(userProfile && userProfile.location && userProfile.location != '' ? userProfile.location : 'Los Angeles, CA') 
   const [yelpResults, setYelpResults] = useState<any[]>([])
   const [yelpResultsFull, setYelpResultsFull] = useState<any[]>([])
   const [yelpResultsFullPosts, setYelpResultsFullPosts] = useState<any[]>([])

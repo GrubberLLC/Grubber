@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Dimensions, Text, View, Image, TouchableOpacity} from 'react-native'
 import { Star } from 'react-native-feather';
 import { usePost } from '../../Context/PostContext';
+import ColorGuide from '../../ColorGuide';
 
 interface SinglePlaceProps {
   address_city: string,
@@ -36,7 +37,7 @@ const PlaceTileDatabase: React.FC<PlaceTileProps> = ({place}) => {
 
   return (
     <View className='w-full'>
-      <View style={{height: screenHeight, width: screenWidth}} className='bg-red-300'>
+      <View style={{height: screenHeight, width: screenWidth, backgroundColor: ColorGuide.primary}}>
         <Image className='flex-1' source={{uri: place?.image}}/>
         <View style={{backgroundColor: 'rgba(0, 0, 0, .6)', height: screenHeight, width: screenWidth}} className='absolute z-5 flex flex-col justify-end p-2'>
           <View>

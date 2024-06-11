@@ -3,6 +3,7 @@ import { Dimensions, Text, View, Image, TouchableOpacity} from 'react-native'
 import { Star } from 'react-native-feather';
 import { usePost } from '../../Context/PostContext';
 import { useNavigation } from '@react-navigation/native';
+import ColorGuide from '../../ColorGuide';
 
 interface Ambience {
   casual?: boolean;
@@ -111,8 +112,8 @@ const PlaceTileYelpNoSelect: React.FC<PlaceTileProps> = ({place}) => {
   }
 
   return (
-    <TouchableOpacity onPress={redirectToPlaceScreen} className='bg-sky-500 w-full my-3'>
-      <View style={{height: screenHeight, width: screenWidth}} className='bg-red-300'>
+    <TouchableOpacity onPress={redirectToPlaceScreen} className='bg-sky-500 w-full my-3' style={{backgroundColor: ColorGuide.primary}}>
+      <View style={{height: screenHeight, width: screenWidth, backgroundColor: ColorGuide.primary}} className='bg-red-300'>
         <Image className='flex-1' source={{uri: place.image_url}}/>
         <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', height: screenHeight, width: screenWidth}} className='absolute z-5 flex flex-col justify-between  p-2'>
           <View className='flex-1 flex flex-column justify-end'>

@@ -8,6 +8,7 @@ import PlaceTileDatabase from '../../Components/Tile/PlaceTileDatabase';
 import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader';
 import PostTile from '../../Components/Tile/PostTile';
 import PostTileWithProfile from '../../Components/Tile/PostTileWithProfile';
+import ColorGuide from '../../ColorGuide';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'AccessCodeScreen'>;
 
@@ -50,7 +51,7 @@ const PlaceScreen = () => {
   }, [])
 
   return (
-    <View className='flex-1 bg-neutral-900 w-full'>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NoMenuPageHeader backing={true} leftLabel={selectedPlace?.name}/>
       {
         loadingPlace

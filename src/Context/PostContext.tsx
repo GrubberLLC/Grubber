@@ -112,6 +112,8 @@ const PostContext = createContext<PostContextType>({
   postComments: null,
   postLikes: null,
   selectedPlace: null,
+  addPlaceList: false,
+  selectedUserPosts: [],
   updatePlace: () => {},
   updateLocation:  () => {},
   updateCaption: () => {},
@@ -124,7 +126,9 @@ const PostContext = createContext<PostContextType>({
   createPostComment: () => {},
   grabPostComments: () => {},
   deletePost: () => {},
-  getPlaceById: () => {}
+  getPlaceById: () => {},
+  handleAddPlaceList: () => {},
+  getSelectedUserPosts: () => {}
 });
 
 interface PostContextType {
@@ -141,6 +145,8 @@ interface PostContextType {
   postComments: CommentPropsd[] | null;
   postLikes: LikesProps[] | null;
   selectedPlace: any;
+  addPlaceList: boolean
+  selectedUserPosts: SinglePostProps[]
   updatePlace: (text:string) => void,
   updateLocation:  (text:string) => void,
   updateCaption: (text: string) => void;
@@ -154,6 +160,8 @@ interface PostContextType {
   grabPostComments: (post_id: string) => void;
   deletePost: (post_id: string, navigation: any) => void;
   getPlaceById: (place_id: string) => void;
+  handleAddPlaceList: () => void
+  getSelectedUserPosts: (user_id: string) => void
 }
 
 // the main provider
@@ -182,12 +190,20 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   const [postLikes, setPostLikes] = useState<LikesProps[] | null>(null)
 
   const [selectedPlace, setSelectedPlaCe] = useState<any>()
+  const [addPlaceList, setAddPlaceList] = useState<boolean>(false)
+
+  const [selectedUserPosts, setSelectedUserPosts] = useState<SinglePostProps[]>([])
+
 
   useEffect(() => {
     userProfile && userProfile.user_id != ''
       ? getUsersPosts(userProfile.user_id)
       : null
   }, [userProfile])
+
+  const handleAddPlaceList = () => {
+    setAddPlaceList(!addPlaceList)
+  }
 
   const updatePlace = (text:string) => {
     setPlace(text)
@@ -231,7 +247,7 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/places/check/${place_id}`
     axios.get(url)
       .then(response => {
-        console.log('place checked: ', response.data)
+        console.log('users requests: ', JSON.stringify(response.data))
         setSelectedPlaCe(response.data)
       })
       .catch(error => {
@@ -404,6 +420,18 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
       });
   }
 
+  const getSelectedUserPosts = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/posts/user/${user_id}`
+    axios.get(url)
+      .then(response => {
+        setSelectedUserPosts(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching user posts:', error);
+        throw error;
+      });
+  }
+
 
   return ( 
     <PostContext.Provider
@@ -421,6 +449,8 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         postComments,
         postLikes,
         selectedPlace,
+        addPlaceList,
+        selectedUserPosts,
         createPostComment,
         updatePlace,
         updateLocation,
@@ -433,7 +463,9 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         handleSetSearchingPlaces,
         grabPostComments,
         deletePost,
-        getPlaceById
+        getPlaceById,
+        handleAddPlaceList,
+        getSelectedUserPosts
       }}
     >
       {children}

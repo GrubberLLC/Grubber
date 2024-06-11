@@ -14,6 +14,7 @@ import { usePost } from '../../Context/PostContext';
 import PostComment from '../../Components/Comments/PostComment';
 import axios from 'axios';
 import { useAuth } from '../../Context/UserContext';
+import ColorGuide from '../../ColorGuide';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'PostDetailsScreen'>;
 
@@ -49,6 +50,7 @@ const PostDetailsScreen = () => {
   const route = useRoute<ProfileScreenRouteProp>();
   const params = route.params
   const {userProfile} = useAuth()
+  const {addPlaceList, handleAddPlaceList} = usePost()
 
   console.log('all params: ', JSON.stringify(params))
 
@@ -146,7 +148,7 @@ const PostDetailsScreen = () => {
   }
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NoMenuPageHeader backing={true} leftLabel='Post'/>
       <ScrollView className=''>
         <PostProfile profile={profile}/>
@@ -174,15 +176,22 @@ const PostDetailsScreen = () => {
         <View className='mb-1'>
           {
             createPostLoading
-              ? <View className='This is  p-1.5 bg-red-500 rounded-md'>
+              ? <View className='This is  p-1.5 bg-red-500 rounded-md' style={{backgroundColor: ColorGuide.primary}}>
                   <ActivityIndicator size={'small'} color={'white'}/>
                 </View>
-              : <TouchableOpacity onPress={() => {createComment()}} className='mr-2 p-1 bg-red-500 rounded-md'>
+              : <TouchableOpacity onPress={() => {createComment()}} className='mr-2 p-1 bg-red-500 rounded-md' style={{backgroundColor: ColorGuide.primary}}>
                   <ArrowRight height={24} width={24} color={'white'}/>
                 </TouchableOpacity>
           }
         </View>
       </View>
+      {
+        addPlaceList
+          ? <View className='absolute z-15 w-full h-full' style={{backgroundColor: ColorGuide['bg-dark-8']}}>
+              <Text className='text-white'>Hello this i the first thing adskjfnalksdjnalsdkfjhasljkd</Text>
+            </View>
+          : null
+      }
     </View>
   )
 }

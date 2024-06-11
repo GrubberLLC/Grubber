@@ -11,6 +11,7 @@ import PlaceTileYelpList from '../../Components/Tile/PlaceTileYelpList'
 import MenuSubButtonComponent from '../../Components/Buttons/MenuSubButtonComponent'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../Types/NavigationTypes';
+import ColorGuide from '../../ColorGuide'
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'SearchPlaceListScreen'>;
 
@@ -22,7 +23,7 @@ const SearchPlaceListScreen = () => {
   const {search, location, updateSearch, updateLocation, loadingResults, searchYelp, yelpResults, checkPlace, selectedPlace} = useList()
 
   return (
-    <View className='flex-1 bg-neutral-900'>
+    <View className='flex-1 ' style={{backgroundColor: ColorGuide['bg-dark']}}>
       <View className='pt-2 px-2 flex flex-row w-full'>
         <SearchBarComponent icon='Home' placeholder='restaurant...' term={search} updateTerm={updateSearch}/>
       </View>

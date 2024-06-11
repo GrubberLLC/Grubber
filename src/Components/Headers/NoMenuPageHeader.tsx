@@ -3,6 +3,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { ChevronsLeft } from 'react-native-feather'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import ColorGuide from '../../ColorGuide'
 
 interface HeaderProps {
   backing: boolean,
@@ -15,7 +16,7 @@ const NoMenuPageHeader: React.FC<HeaderProps> = (props) => {
   const navigation = useNavigation()
 
   return (
-    <View className='h-16 w-full bg-neutral-900 px-4 flex flex-row items-center justify-start border-b-2 border-b-neutral-800'>
+    <View className='h-16 w-full px-4 flex flex-row items-center justify-start border-b-2 border-b-neutral-800' style={{backgroundColor: ColorGuide['bg-dark']}}>
       {
         backing
           ? <TouchableOpacity onPress={() => {navigation.goBack()}}>

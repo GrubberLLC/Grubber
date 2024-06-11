@@ -121,7 +121,6 @@ export const ExploreProvider: React.FC<ExploreProviderProps> = ({ children }) =>
     let url = `https://grubberapi.com/api/v1/posts/place/${place_id}`
     axios.get(url)
       .then(response => {
-        console.log('results grabbing posts: ', JSON.stringify(response.data))
         setPlacePosts(response.data)
         setLoadingPlace(false)
       })
@@ -137,7 +136,6 @@ export const ExploreProvider: React.FC<ExploreProviderProps> = ({ children }) =>
     let url = `https://grubberapi.com/api/v1/posts`
     axios.get(url)
       .then(response => {
-        console.log('results grabbing posts: ', JSON.stringify(response.data))
         setAllPosts(response.data)
         setLoadingPosts(false)
       })

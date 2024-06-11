@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Dimensions, Image, TouchableOpacity, View } from 'react-native'
 import { Plus, RefreshCcw, X } from 'react-native-feather'
 import { launchImageLibrary } from 'react-native-image-picker'
+import ColorGuide from '../../ColorGuide'
 
 const imageWidth = Dimensions.get('window').width
 
@@ -40,7 +41,7 @@ const SelectGalleryImageFlex: React.FC<ImageProps> = ({picture, selectingImage, 
   return (
     <View>
       <TouchableOpacity>
-        <View style={{height: size, width: size}} className='bg-neutral-800'>
+        <View style={{height: size, width: size, backgroundColor: ColorGuide['bg-dark-8']}}>
           {
             picture
               ? <View className='flex-1 items-center justify-start'>

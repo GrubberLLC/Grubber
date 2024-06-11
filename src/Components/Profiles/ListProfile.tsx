@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { useList } from '../../Context/ListContext'
 import { useAuth } from '../../Context/UserContext'
+import ColorGuide from '../../ColorGuide'
 
 interface MemberProps {
   bio: string,
@@ -41,7 +42,7 @@ const ListProfile: React.FC<PostProfileProps> = ({ profile }) => {
 
   return (
     <View className='w-full flex flex-row items-center p-1 py-3 border-y-2 border-y-neutral-800'>
-      <View className='h-10 w-10 bg-neutral-600 rounded-full overflow-hidden'>
+      <View className='h-10 w-10 rounded-full overflow-hidden' style={{backgroundColor: ColorGuide['bg-dark-6']}}>
         <Image className='flex-1' source={{ uri: profile?.profile_picture }} />
       </View>
       <View className='ml-3 flex-1'>
@@ -54,7 +55,7 @@ const ListProfile: React.FC<PostProfileProps> = ({ profile }) => {
             className="rounded-md overflow-hidden"
             onPress={() => removeMemberFromList(profile?.member_id, profile?.list_id)}
           >
-            <Text className='text-white p-2 font-bold bg-red-500'>
+            <Text className='text-white p-2 font-bold' style={{backgroundColor: ColorGuide['primary']}}>
               Remove
             </Text>
           </TouchableOpacity>

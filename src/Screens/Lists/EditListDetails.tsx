@@ -13,6 +13,7 @@ import ListSettingHeader from '../../Components/Headers/ListSettingHeader';
 import { Edit } from 'react-native-feather';
 import SelectGalleryImage from '../../Components/Select/SelectGalleryImage';
 import LargeTextInputComponent from '../../Components/Inputs/LargeTextInputComponent';
+import ColorGuide from '../../ColorGuide';
 
 const screenWidth = Dimensions.get('screen').width
 const screenHeight = screenWidth * .6
@@ -36,7 +37,7 @@ const ListSettingsScreen = () => {
   }
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <ListSettingHeader list_name={params.list.name} list_id={params.list.list_id} list={params.list}/>
       <View className='flex flex-row w-full'>
         <Image className='h-24 w-24' source={{uri: params.list.picture}}/>

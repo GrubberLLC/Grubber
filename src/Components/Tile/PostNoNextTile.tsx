@@ -7,6 +7,7 @@ import PostSubMenu from '../Menus/PostSubMenu'
 import PlacePostSummary from '../Places/PlacePostSummary'
 import MenuSubButtonComponent from '../Buttons/MenuSubButtonComponent'
 import { useNavigation } from '@react-navigation/native'
+import ColorGuide from '../../ColorGuide'
 
 interface SinglePostProps {
   address_city: string,
@@ -63,7 +64,7 @@ const PostNoNextTile: React.FC<PostTileProps> = ({post, profile}) => {
   const navigation = useNavigation()
 
   return (
-    <View className='bg-skys-500 w-full'>
+    <View className='bg-skys-500 w-full'style={{backgroundColor: ColorGuide.primary}}>
       <PostProfile profile={profile ? profile : null}/>
       <FullImageComponent image={post.media}/>
       <PostSubMenu />

@@ -10,6 +10,7 @@ import { usePost } from '../../Context/PostContext'
 import MenuSubButtonComponent from '../../Components/Buttons/MenuSubButtonComponent'
 import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader'
 import ReviewPostTile from '../../Components/Tile/ReviewPostTile'
+import ColorGuide from '../../ColorGuide'
 
 const ReviewPostScreen = () => {
   const navigation = useNavigation()
@@ -23,7 +24,7 @@ const ReviewPostScreen = () => {
   }
 
   return (
-    <View className={'flex-1 bg-neutral-900 flex flex-col justify-between'}>
+    <View className={'flex-1 flex flex-col justify-between'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <View className='flex-1'>
         <NoMenuPageHeader backing={true} leftLabel='Confirm Post'/>
         <View className='flex-1'>

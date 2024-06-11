@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import React, { createContext, useContext, ReactNode, useState, ProfilerProps } from 'react';
 import { confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
 import axios from 'axios';
 
@@ -86,6 +86,15 @@ const AuthContext = createContext<AuthContextType>({
   loginLoading: false,
   currentProfileView: 'posts',
   allProfiles: [],
+  userGroupRequest: [],
+  selectedUserProfile: null,
+  selectedUserProfileView: 'posts',
+  searchedUserResults: [],
+  searchedUsers: '',
+  userFollowing: [],
+  userFollowers: [],
+  followingPosts: [],
+  pendingFollowRequests: [],
   grabCurrentUser: () => {},
   signInUser: () => {},
   signOutUser: () => {},
@@ -93,7 +102,20 @@ const AuthContext = createContext<AuthContextType>({
   confirmEmailSignup: () => {},
   resendConfirmationCode: () => {},
   ResetUsersPassword: () => {},
-  handleProfileViewChange: () => {}
+  handleProfileViewChange: () => {},
+  getUserListRequests: () => {},
+  acceptListRequest: () => {},
+  rejectListRequest: () => {},
+  getSelectedUserProfile: () => {},
+  toggleSelectedUserProfileView: () => {},
+  updateUserSearchTerm: () => {},
+  grabUserFollowing: () => {},
+  grabUserFollowers: () => {},
+  createFollowUser: () => {},
+  removeFollowing: () => {},
+  getFollowingPosts: () => {},
+  getAllFolloingRequests: () => {},
+  acceptFollowingRequest: () => {}
 });
 
 interface AuthContextType {
@@ -103,6 +125,15 @@ interface AuthContextType {
   loginLoading: boolean;
   currentProfileView: string;
   allProfiles: UserProfile[]
+  userGroupRequest: any[]
+  selectedUserProfile: UserProfile | null
+  selectedUserProfileView: string
+  searchedUserResults: UserProfile[]
+  searchedUsers: string
+  userFollowing: any[]
+  userFollowers: any[]
+  followingPosts: any[]
+  pendingFollowRequests: any[]
   grabCurrentUser: () => void;
   signInUser: (username: string, password: string) => void;
   signOutUser: () => void;
@@ -111,6 +142,19 @@ interface AuthContextType {
   resendConfirmationCode: (username: string) => void;
   ResetUsersPassword: (username: string, navigation: any) => void;
   handleProfileViewChange: (text: string) => void;
+  getUserListRequests: (user_id: string) => void
+  acceptListRequest: (member_id: number, user_id: string) => void
+  rejectListRequest: (member_id: number, user_id: string) => void
+  getSelectedUserProfile: (user_id: string) => void
+  toggleSelectedUserProfileView: (text: string) => void
+  updateUserSearchTerm: (text:string) => void
+  grabUserFollowing: (user_id: string) => void
+  grabUserFollowers: (user_id: string) => void
+  createFollowUser: (user: any) => void
+  removeFollowing: (friend_id: number) => void
+  getFollowingPosts: (user_id: string) => void
+  getAllFolloingRequests: (user_id: string) => void
+  acceptFollowingRequest: (friend_id: number) => void
 }
 
 // the main provider
@@ -121,6 +165,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [validAccessCode, setValidAccessCode] = useState<boolean>(false) 
   const [currentProfileView, setCurrentProfileView] = useState<string>('posts')
   const [allProfiles, setAllProfiles] = useState<UserProfile[]>([])
+
+  const [userGroupRequest, setUserGroupRequest] = useState<any[]>([])
+  const [userUserRequest, setUserUserRequest] = useState<any[]>([])
 
   const [userAccount, setUserAccount] = useState<UserAccount | null>(null)
   const [userProfile, setUserProfile] = useState<UserProfile>({
@@ -139,13 +186,47 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                                                                 following: 0,
                                                                 notifications: true
                                                               })
+                                                            
+  const [searchedUsers, setSearchedUsers] = useState<string>('')
+  const [searchedUserResults, setSearchedUserResults] = useState<UserProfile[]>([])
+
+  const [selectedUserProfile, setSelectedUserProfile] = useState<UserProfile | null>(null)
+  const [selectedUserProfileView, setSelectedUserProfileView] = useState<string>('posts')
+
+  const [userFollowing, setUserFollowing] = useState<any[]>([])
+  const [userFollowers, setUserFollowers] = useState<any>([])
+
+  const [followingPosts, setFollowingPosts] = useState<any>([])
+
+  const [pendingFollowRequests, setPendingFollowRequest] = useState<any>([])
 
   const toggleValidAccessCode = () => {
     setValidAccessCode(!validAccessCode)
   }
 
+  const toggleSelectedUserProfileView = (text: string) => {
+    setSelectedUserProfileView(text)
+  }
+
   const handleProfileViewChange = (text: string) => {
     setCurrentProfileView(text)
+  }
+
+  const updateUserSearchTerm = (text: string) => {
+    setSearchedUsers(text)
+    searchForUsers(text)
+  }
+
+  const searchForUsers = (text: string) => {
+    let url = `https://grubberapi.com/api/v1/profiles/search/${text}`
+    axios.get(url)
+      .then(response => {
+        setSearchedUserResults(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
   }
 
   const grabCurrentUser = () => {
@@ -305,6 +386,157 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log(error)
       })
   }
+
+  const getAllFolloingRequests = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/friends/requests/${user_id}`
+    axios.get(url)
+      .then(response => {
+        console.log('users pending requests: ', response.data)
+        setPendingFollowRequest(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const getFollowingPosts = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/posts/friend/${user_id}`
+    axios.get(url)
+      .then(response => {
+        console.log('users requests: ', response.data)
+        setFollowingPosts(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const getUserListRequests = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/members/request/${user_id}`
+    axios.get(url)
+      .then(response => {
+        console.log('users requests: ', response.data)
+        setUserGroupRequest(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const acceptListRequest = (member_id: number, user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/members/request/accept/${member_id}`
+    axios.put(url)
+      .then(response => {
+        console.log('users requests: ', response.data)
+        getUserListRequests(user_id)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const rejectListRequest = (member_id: number, user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/members/request/reject/${member_id}`
+    axios.delete(url)
+      .then(response => {
+        console.log('users requests: ', response.data)
+        getUserListRequests(user_id)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const getSelectedUserProfile = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/profiles/${user_id}`
+    axios.get(url)
+      .then(response => {
+        setSelectedUserProfile(response.data[0])
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const createFollowUser = (user: any) => {
+    console.log('users profile public status: ', user.pubilc)
+    const data = {
+      following_id: user.user_id,
+      follower_id: userProfile.user_id,
+      status: user.public ? 'active' : 'pending',
+      type: 'friend'
+    }
+    let url = `https://grubberapi.com/api/v1/friends`
+    axios.post(url, data)
+      .then(response => {
+        grabUserFollowers(userProfile.user_id)
+        grabUserFollowing(userProfile.user_id)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const removeFollowing = (friend_id: number) => {
+    console.log(friend_id)
+    let url = `https://grubberapi.com/api/v1/friends/${friend_id}`
+    axios.delete(url)
+      .then(response => {
+        grabUserFollowers(userProfile.user_id)
+        grabUserFollowing(userProfile.user_id)
+        getAllFolloingRequests(userProfile.user_id)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const acceptFollowingRequest = (friend_id: number) => {
+    console.log(friend_id)
+    let url = `https://grubberapi.com/api/v1/friends/accept/${friend_id}`
+    axios.put(url)
+      .then(response => {
+        grabUserFollowers(userProfile.user_id)
+        grabUserFollowing(userProfile.user_id)
+        getAllFolloingRequests(userProfile.user_id)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const grabUserFollowing = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/friends/following/${user_id}`
+    axios.get(url)
+      .then(response => {
+        setUserFollowing(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const grabUserFollowers = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/friends/follower/${user_id}`
+    axios.get(url)
+      .then(response => {
+        setUserFollowers(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
   
   return (
     <AuthContext.Provider
@@ -315,6 +547,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loginLoading,
         currentProfileView,
         allProfiles,
+        userGroupRequest,
+        selectedUserProfile,
+        selectedUserProfileView,
+        searchedUserResults,
+        searchedUsers,
+        userFollowing,
+        userFollowers,
+        followingPosts,
+        pendingFollowRequests,
+        toggleSelectedUserProfileView,
         grabCurrentUser,
         signInUser,
         signOutUser,
@@ -322,7 +564,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         confirmEmailSignup,
         resendConfirmationCode,
         ResetUsersPassword,
-        handleProfileViewChange
+        handleProfileViewChange,
+        getUserListRequests,
+        acceptListRequest,
+        rejectListRequest,
+        getSelectedUserProfile,
+        updateUserSearchTerm,
+        grabUserFollowing,
+        grabUserFollowers,
+        createFollowUser,
+        removeFollowing,
+        getFollowingPosts,
+        getAllFolloingRequests,
+        acceptFollowingRequest
       }}
     >
       {children}

@@ -6,6 +6,7 @@ import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader'
 import SelectGalleryImage from '../../Components/Select/SelectGalleryImage'
 import AddCaptionComponent from '../../Components/Info/AddCaptionComponent'
 import MenuSubButtonComponent from '../../Components/Buttons/MenuSubButtonComponent'
+import ColorGuide from '../../ColorGuide'
 
 const NewPostScreen = () => {
   const navigation = useNavigation()
@@ -17,7 +18,7 @@ const NewPostScreen = () => {
   }
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NoMenuPageHeader backing={true} leftLabel='New Post'/>
       <SelectGalleryImage picture={postPicture} selectingImage={updatePicture}/>
       <AddCaptionComponent value={postCaption} onChange={updateCaption} 

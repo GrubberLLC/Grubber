@@ -3,6 +3,7 @@ import { ScrollView, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { usePost } from '../../Context/PostContext'
 import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader'
+import ColorGuide from '../../ColorGuide'
 
 const AddPostScreen = () => {
   const navigation = useNavigation()
@@ -14,7 +15,7 @@ const AddPostScreen = () => {
   }
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NoMenuPageHeader backing={true} leftLabel='New Post'/>
     </View>
   )

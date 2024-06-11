@@ -6,6 +6,7 @@ import AuthInputComponent from '../../Components/Auth/AuthInputComponent';
 import { useAuth } from '../../Context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { signOut } from 'aws-amplify/auth';
+import ColorGuide from '../../ColorGuide';
 
 const LoginScreen = () => {
   const navigation = useNavigation()
@@ -54,7 +55,7 @@ const LoginScreen = () => {
   }
   
   return (
-    <ImageBackground source={Background} resizeMode="cover" className="w-screen h-screen absolute z-0 bg-neutral-900">
+    <ImageBackground source={Background} resizeMode="cover" className="w-screen h-screen absolute z-0" style={{backgroundColor: ColorGuide['bg-dark']}}>
       <View className="w-screen h-screen bg-black opacity-60 absolute z-1"></View>
       <KeyboardAvoidingView
         className="flex-1"

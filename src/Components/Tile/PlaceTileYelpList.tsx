@@ -3,6 +3,7 @@ import { Dimensions, Text, View, Image, TouchableOpacity} from 'react-native'
 import { Star } from 'react-native-feather';
 import { usePost } from '../../Context/PostContext';
 import { useList } from '../../Context/ListContext';
+import ColorGuide from '../../ColorGuide';
 
 interface Ambience {
   casual?: boolean;
@@ -132,14 +133,14 @@ const PlaceTileYelpList: React.FC<PlaceTileProps> = ({place}) => {
   }
 
   return (
-    <TouchableOpacity onPress={() => {selectingPlace()}} className='bg-sky-500 w-full my-3'>
+    <TouchableOpacity onPress={() => {selectingPlace()}} className='bg-sky-500 w-full my-3' style={{backgroundColor: ColorGuide.primary}}>
       <View style={{height: screenHeight, width: screenWidth}} className='bg-red-300'>
         <Image className='flex-1' source={{uri: place.image_url}}/>
         <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', height: screenHeight, width: screenWidth}} className='absolute z-5 flex flex-col justify-between  p-2'>
           <View>
             {
               selectedPlace?.yelp_id === place.id
-                ? <View  className='rounded-md overflow-hidden'><Text className='bg-red-500 text-white text-base font-bold p-2'>Selected</Text></View>
+                ? <View  className='rounded-md overflow-hidden'><Text className='bg-red-500 text-white text-base font-bold p-2' style={{backgroundColor: ColorGuide.primary}}>Selected</Text></View>
                 : <View></View>
             }
           </View>

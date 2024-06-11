@@ -10,6 +10,7 @@ import { useAuth } from '../../Context/UserContext'
 import { usePost } from '../../Context/PostContext'
 import NewPostImageComponent from '../Images/NewPostImageComponent';
 import NewPostPlaceSummary from '../Places/NewPostPlaceSummary';
+import ColorGuide from '../../ColorGuide';
 
 
 const ReviewPostTile = () => {
@@ -18,7 +19,7 @@ const ReviewPostTile = () => {
   const {postPicture, postPlace, postCaption} = usePost()
 
   return (
-    <ScrollView className='bg-skys-500 w-full'>
+    <ScrollView className='bg-skys-500 w-full'style={{backgroundColor: ColorGuide['bg-dark']}}>
       {/* <PostProfile profile={userProfile}/> */}
       <NewPostImageComponent image={postPicture ? postPicture.uri : null}/>
       <NewPostPlaceSummary 

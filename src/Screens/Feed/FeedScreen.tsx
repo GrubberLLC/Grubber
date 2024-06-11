@@ -5,6 +5,8 @@ import { useAuth } from '../../Context/UserContext'
 import { usePost } from '../../Context/PostContext'
 import { ScrollView } from 'react-native-gesture-handler'
 import PostTile from '../../Components/Tile/PostTile'
+import ColorGuide from '../../ColorGuide'
+import PostTileWithProfile from '../../Components/Tile/PostTileWithProfile'
 
 interface SinglePostProps {
   address_city: string,
@@ -37,24 +39,32 @@ const FeedScreen = () => {
   const {signOutUser, userProfile} = useAuth()
 
   const {getUsersPosts, loggedInUsersPosts} = usePost()
+  const {getUserListRequests, grabUserFollowers, 
+    grabUserFollowing, getFollowingPosts, 
+    getAllFolloingRequests, followingPosts, pendingFollowRequests} = useAuth()
 
   useEffect(() => {
     if(userProfile && userProfile.user_id){
-      getUsersPosts(userProfile && userProfile.user_id ? userProfile.user_id : '')
+      getFollowingPosts(userProfile.user_id)
+      getAllFolloingRequests(userProfile.user_id)
+      getUsersPosts(userProfile.user_id)
+      getUserListRequests(userProfile.user_id)
+      grabUserFollowers(userProfile.user_id)
+      grabUserFollowing(userProfile.user_id)
     }
-  }, [])
+  }, [userProfile])
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <FeedHeader />
       {
-        loggedInUsersPosts && loggedInUsersPosts.length > 0
+        followingPosts && followingPosts.length > 0
           ? <ScrollView className='flex-1'>
               {
-                loggedInUsersPosts.map((singlePost: SinglePostProps) => {
+                followingPosts.map((singlePost: SinglePostProps) => {
                   return(
                     <View key={singlePost.yelp_id}>
-                      <PostTile post={singlePost} profile={userProfile}/>
+                      <PostTileWithProfile post={singlePost} profile={userProfile}/>
                     </View>
                   )
                 })

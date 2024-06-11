@@ -9,6 +9,7 @@ import MenuSubButtonComponent from '../../Components/Buttons/MenuSubButtonCompon
 import LoadingButtonComponent from '../../Components/Buttons/IconLoadingButtonComponent'
 import IconLoadingButtonComponent from '../../Components/Buttons/IconLoadingButtonComponent'
 import PlaceTileYelp from '../../Components/Tile/PlaceTileYelp'
+import ColorGuide from '../../ColorGuide'
 
 const NewPostPlaceScreen = () => {
   const navigation = useNavigation()
@@ -21,7 +22,7 @@ const NewPostPlaceScreen = () => {
   }
 
   return (
-    <View className={'flex-1 bg-neutral-900'}>
+    <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NoMenuPageHeader backing={true} leftLabel='New Post'/>
       <View className='pt-2 px-2 flex flex-row w-full'>
         <SearchBarComponent term={place} updateTerm={updatePlace} placeholder='Search Place...' icon='Home' />

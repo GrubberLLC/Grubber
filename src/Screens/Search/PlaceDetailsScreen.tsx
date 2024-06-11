@@ -11,6 +11,7 @@ import PostTileWithProfile from '../../Components/Tile/PostTileWithProfile';
 import { useSearch } from '../../Context/SearchContext';
 import PlaceTileYelp from '../../Components/Tile/PlaceTileYelp';
 import PostTileWithProfileSearch from '../../Components/Tile/PostTileWithProfileSearch';
+import ColorGuide from '../../ColorGuide';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'AccessCodeScreen'>;
 
@@ -53,7 +54,7 @@ const PlaceDetailsScreen = () => {
   }, [])
 
   return (
-    <View className='flex-1 bg-neutral-900 w-full'>
+    <View className='flex-1 w-full' style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NoMenuPageHeader backing={true} leftLabel={yelpResultsFull.name}/>
       {
         loadingPlaces

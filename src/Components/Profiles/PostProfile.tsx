@@ -1,5 +1,6 @@
 import React from 'react'
 import { Image, Text, View } from 'react-native'
+import ColorGuide from '../../ColorGuide'
 
 interface ProfileProps {
   bio: string
@@ -29,7 +30,7 @@ interface PostProfileProps {
 const PostProfile: React.FC<PostProfileProps> = ({profile}) => {
   return (
     <View className='w-full flex flex-row items-center px-2 py-3.5'>
-      <View className='h-10 w-10 bg-neutral-600 rounded-full overflow-hidden'>
+      <View className='h-10 w-10 rounded-full overflow-hidden' style={{backgroundColor: ColorGuide['bg-dark-6']}}>
         <Image className='flex-1' source={{uri: profile?.profile_picture}}/>
       </View>
       <View className='ml-3'>
