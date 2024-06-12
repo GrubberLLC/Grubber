@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import PostProfile from '../Profiles/PostProfile'
 import FullImageComponent from '../Images/FullImageComponent'
 import CaptionComponent from '../Info/CaptionComponent'

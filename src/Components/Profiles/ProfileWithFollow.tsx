@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { useList } from '../../Context/ListContext'
 import ColorGuide from '../../ColorGuide'
+import { useNavigation } from '@react-navigation/native'
 
 interface ProfileProps {
   bio: string
@@ -33,11 +34,10 @@ interface PostProfileProps {
 }
 
 const ProfileWithFollow: React.FC<PostProfileProps> = ({profile, followStatus, followUser, onFollow, onUnfollow}) => {
-
-  console.log('followuser: ', followUser)
+  const navigation = useNavigation()
 
   return (
-    <View className='w-full flex flex-row items-center px-3 py-3 border-y-2 border-y-neutral-800'>
+    <TouchableOpacity onPress={() => {navigation.navigate('UserProfileScreen', {user_id: profile?.user_id})}} className='w-full flex flex-row items-center px-3 py-3 border-y-2 border-y-neutral-800'>
       <View className='h-10 w-10 rounded-full overflow-hidden' style={{backgroundColor: ColorGuide['bg-dark-6']}}>
         <Image className='flex-1' source={{uri: profile?.profile_picture}}/>
       </View>
@@ -66,7 +66,7 @@ const ProfileWithFollow: React.FC<PostProfileProps> = ({profile, followStatus, f
                   </TouchableOpacity>
         }
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

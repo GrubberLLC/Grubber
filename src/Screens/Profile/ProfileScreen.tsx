@@ -7,8 +7,10 @@ import { usePost } from '../../Context/PostContext'
 import { Edit, Grid, List } from 'react-native-feather'
 import ColorGuide from '../../ColorGuide'
 import { useList } from '../../Context/ListContext'
+import { useNavigation } from '@react-navigation/native'
 
 const ProfileScreen = () => {
+  const navigation = useNavigation()
 
   const {userProfile, currentProfileView, handleProfileViewChange, userFollowers, userFollowing} = useAuth()
   const {loggedInUsersPosts} = usePost()
@@ -18,6 +20,14 @@ const ProfileScreen = () => {
   useEffect(() => {
     getUserLists(userProfile ? userProfile.user_id : '')
   }, [])
+
+  const redirectToPostScreen = (post: any) => {
+    navigation.navigate('PostDetailsScreen', {post: post})
+  }
+
+  const redirectToListDetailScreen = (list: any) => {
+    navigation.navigate('ListDetailsScreenProfile', {list: list})
+  }
 
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
@@ -67,9 +77,9 @@ const ProfileScreen = () => {
                 {
                   loggedInUsersPosts?.map((post) => {
                     return(
-                      <View className='w-1/3 p-1'>
+                      <TouchableOpacity onPress={() => redirectToPostScreen(post)} className='w-1/3 p-1'>
                         <Image className='w-full h-32' source={{uri: post.media}}/>
-                      </View>
+                      </TouchableOpacity>
                     )
                   })
                 }
@@ -78,13 +88,13 @@ const ProfileScreen = () => {
                 {
                   userLists?.map((list) => {
                     return(
-                      <View className='w-full p-1 flex flex-row'>
+                      <TouchableOpacity onPress={() => {redirectToListDetailScreen(list)}} className='w-full p-1 flex flex-row'>
                         <Image className='h-24 w-24' source={{uri: list.picture}}/>
                         <View className='flex-1 ml-2 pt-3'>
                           <Text className='text-white text-xl font-semibold'>{list.name}</Text>
                           <Text className='text-white text-base'>{list.last_activity}</Text>
                         </View>
-                      </View>
+                      </TouchableOpacity>
                     )
                   })
                 }

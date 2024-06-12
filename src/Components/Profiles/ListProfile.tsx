@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { useList } from '../../Context/ListContext'
 import { useAuth } from '../../Context/UserContext'
 import ColorGuide from '../../ColorGuide'
+import { useNavigation } from '@react-navigation/native'
 
 interface MemberProps {
   bio: string,
@@ -37,11 +38,13 @@ const ListProfile: React.FC<PostProfileProps> = ({ profile }) => {
   const { handleUpdateSelectedUsers, removeMemberFromList } = useList();
   const { userProfile } = useAuth();
 
+  const navigation = useNavigation()
+
   // Determine if the logged-in user is the owner
   const isOwner = profile?.type === 'owner';
 
   return (
-    <View className='w-full flex flex-row items-center p-1 py-3 border-y-2 border-y-neutral-800'>
+    <TouchableOpacity onPress={() => {navigation.navigate('UserProfileScreen', {user_id: profile?.user_id})}} className='w-full flex flex-row items-center p-1 py-3 border-y-2 border-y-neutral-800'>
       <View className='h-10 w-10 rounded-full overflow-hidden' style={{backgroundColor: ColorGuide['bg-dark-6']}}>
         <Image className='flex-1' source={{ uri: profile?.profile_picture }} />
       </View>
@@ -61,7 +64,7 @@ const ListProfile: React.FC<PostProfileProps> = ({ profile }) => {
           </TouchableOpacity>
         )
       }
-    </View>
+    </TouchableOpacity>
   );
 };
 

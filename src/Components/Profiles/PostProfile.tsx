@@ -1,6 +1,7 @@
 import React from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import ColorGuide from '../../ColorGuide'
+import { useNavigation } from '@react-navigation/native'
 
 interface ProfileProps {
   bio: string
@@ -28,8 +29,16 @@ interface PostProfileProps {
 }
 
 const PostProfile: React.FC<PostProfileProps> = ({profile}) => {
+
+  const navigation = useNavigation()
+
+  const redirectToListDetailScreen = (user_id: any) => {
+    navigation.navigate('UserProfileScreen', {user_id: user_id})
+  }
+  
+
   return (
-    <View className='w-full flex flex-row items-center px-2 py-3.5'>
+    <TouchableOpacity onPress={() => {redirectToListDetailScreen(profile?.user_id)}} className='w-full flex flex-row items-center px-2 py-3.5'>
       <View className='h-10 w-10 rounded-full overflow-hidden' style={{backgroundColor: ColorGuide['bg-dark-6']}}>
         <Image className='flex-1' source={{uri: profile?.profile_picture}}/>
       </View>
@@ -37,7 +46,7 @@ const PostProfile: React.FC<PostProfileProps> = ({profile}) => {
         <Text className='text-white font-bold text-base'>{profile?.username}</Text>
         <Text className='text-white text-xsm'>{profile?.full_name}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

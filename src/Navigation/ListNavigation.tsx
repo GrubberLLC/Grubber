@@ -8,6 +8,7 @@ import SearchPlaceListScreen from '../Screens/Lists/SearchPlaceListScreen';
 import PlaceDetailsScreen from '../Screens/Search/PlaceDetailsScreen';
 import PlaceScreen from '../Screens/Feed/PlaceScreen';
 import ListSettingsScreen from '../Screens/Lists/ListSettingsScreen';
+import UserProfileScreen from '../Screens/Profile/UserProfileScreen';
 
 const StackNav = createStackNavigator();
 
@@ -22,6 +23,8 @@ const ListNavigation = () => {
       <StackNav.Screen name="SearchPlaceListScreen" component={SearchPlaceListScreen} />
       <StackNav.Screen name="PlaceDetailsScreenList" component={PlaceScreen} />
       <StackNav.Screen name="ListSettingsScreen" component={ListSettingsScreen} />
+      <StackNav.Screen name="UserProfileScreen" component={UserProfileScreen} />
+
     </StackNav.Navigator>
   );
 };

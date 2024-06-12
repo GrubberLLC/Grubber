@@ -48,13 +48,6 @@ const ExploreScreen = () => {
     grabTotalPosts()
   }, [])
 
-  useFocusEffect(
-    React.useCallback(() => {
-      // Reset the search term when the screen is focused
-      updateUserSearchTerm('');
-    }, [updateUserSearchTerm])
-  );
-
   const redirectToDetailScreen = (post: SinglePostProps) => {
     navigation.navigate('PostDetailsScreenExplore', {post: post})
   }

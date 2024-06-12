@@ -95,6 +95,8 @@ const AuthContext = createContext<AuthContextType>({
   userFollowers: [],
   followingPosts: [],
   pendingFollowRequests: [],
+  userSelectedFollowers: [],
+  userSelectedFollowing: [],
   grabCurrentUser: () => {},
   signInUser: () => {},
   signOutUser: () => {},
@@ -115,7 +117,9 @@ const AuthContext = createContext<AuthContextType>({
   removeFollowing: () => {},
   getFollowingPosts: () => {},
   getAllFolloingRequests: () => {},
-  acceptFollowingRequest: () => {}
+  acceptFollowingRequest: () => {},
+  grabSelectedUserFollowing: () => {},
+  grabSelectedUserFollowers: () => {}
 });
 
 interface AuthContextType {
@@ -134,6 +138,8 @@ interface AuthContextType {
   userFollowers: any[]
   followingPosts: any[]
   pendingFollowRequests: any[]
+  userSelectedFollowers: any[],
+  userSelectedFollowing: any[],
   grabCurrentUser: () => void;
   signInUser: (username: string, password: string) => void;
   signOutUser: () => void;
@@ -155,6 +161,8 @@ interface AuthContextType {
   getFollowingPosts: (user_id: string) => void
   getAllFolloingRequests: (user_id: string) => void
   acceptFollowingRequest: (friend_id: number) => void
+  grabSelectedUserFollowing: (user_id: string) => void
+  grabSelectedUserFollowers: (user_id: string) => void
 }
 
 // the main provider
@@ -194,7 +202,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [selectedUserProfileView, setSelectedUserProfileView] = useState<string>('posts')
 
   const [userFollowing, setUserFollowing] = useState<any[]>([])
-  const [userFollowers, setUserFollowers] = useState<any>([])
+  const [userFollowers, setUserFollowers] = useState<any[]>([])
+
+  const [userSelectedFollowing, setUserSelectedFollowing] = useState<any[]>([])
+  const [userSelectedFollowers, setUserSelectedFollowers] = useState<any[]>([])
 
   const [followingPosts, setFollowingPosts] = useState<any>([])
 
@@ -537,6 +548,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw error;
       });
   }
+
+  const grabSelectedUserFollowing = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/friends/following/${user_id}`
+    axios.get(url)
+      .then(response => {
+        setUserSelectedFollowing(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
+
+  const grabSelectedUserFollowers = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/friends/follower/${user_id}`
+    axios.get(url)
+      .then(response => {
+        setUserSelectedFollowers(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
   
   return (
     <AuthContext.Provider
@@ -556,6 +591,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         userFollowers,
         followingPosts,
         pendingFollowRequests,
+        userSelectedFollowers,
+        userSelectedFollowing,
         toggleSelectedUserProfileView,
         grabCurrentUser,
         signInUser,
@@ -576,7 +613,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         removeFollowing,
         getFollowingPosts,
         getAllFolloingRequests,
-        acceptFollowingRequest
+        acceptFollowingRequest,
+        grabSelectedUserFollowing,
+        grabSelectedUserFollowers
       }}
     >
       {children}
