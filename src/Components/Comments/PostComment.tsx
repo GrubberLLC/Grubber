@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 interface SingleComment {
   bio: string,
@@ -29,15 +31,18 @@ interface PostCommentProps {
 }
 
 const PostComment: React.FC<PostCommentProps> = ({comment}) => {
+
+  const navigation = useNavigation()
+
   return (
     <View className='p-2 py-3'>
-      <View className='flex flex-row items-center'>
+      <TouchableOpacity onPress={() => {navigation.navigate('UserProfileScreen', {user_id: comment.user_id})}}  className='flex flex-row items-center'>
         <Image className='h-10 w-10 rounded-full' source={{uri: comment.profile_picture}}/>
         <View className='ml-4'>
           <Text className='text-white text-xsm font-bold'>{comment.username}</Text>
           <Text className='text-white text-xsm font-semibold'>{comment.full_name.toLowerCase()}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
       <View className='mt-3 ml-14'>
         <Text className='text-white'>{comment.comment}</Text>
       </View>

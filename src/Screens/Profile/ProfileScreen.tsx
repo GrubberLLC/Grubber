@@ -51,14 +51,14 @@ const ProfileScreen = () => {
           <Text className='text-white text-xl font-semibold'>{userLists?.length}</Text>
           <Text className='text-white text-sm font-semibold mt-2'>Lists</Text>
         </View>
-        <View className='flex flex-col items-center'>
+        <TouchableOpacity onPress={() => {navigation.navigate('FollowersScreen')}} className='flex flex-col items-center'>
           <Text className='text-white text-xl font-semibold'>{userFollowers.length}</Text>
           <Text className='text-white text-sm font-semibold mt-2'>Followers</Text>
-        </View>
-        <View className='flex flex-col items-center'>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {navigation.navigate('FollowingScreen')}} className='flex flex-col items-center'>
           <Text className='text-white text-xl font-semibold'>{userFollowing.length}</Text>
           <Text className='text-white text-sm font-semibold mt-2'>Following</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <View className='w-full flex flex-row items-center mt-6'>
         <TouchableOpacity onPress={() => {handleProfileViewChange('posts')}} className={`flex flex-row items-center flex-1 justify-center pb-3 ${currentProfileView === 'posts' ? 'border-b-2 border-b-red-500' : 'border-b-2 border-b-neutral-900' }`}>

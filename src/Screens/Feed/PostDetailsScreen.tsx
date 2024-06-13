@@ -90,7 +90,7 @@ const PostDetailsScreen = () => {
   }
 
   const createComment = () => {
-    createPostComment(params.post.post_id, newComment, params.post.user_id)
+    createPostComment(params.post.post_id, newComment, userProfile?.user_id)
     setNewComment('')
   }
 
