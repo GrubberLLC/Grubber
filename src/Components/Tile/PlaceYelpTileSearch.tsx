@@ -103,7 +103,7 @@ interface PlaceTileProps {
 const screenWidth = Dimensions.get('screen').width
 const screenHeight = screenWidth * .55
 
-const PlaceTileYelp: React.FC<PlaceTileProps> = ({place}) => {
+const PlaceYelpTileSearch: React.FC<PlaceTileProps> = ({place}) => {
 
   const {updatePostPlace, postPlace} = usePost()
   
@@ -132,7 +132,7 @@ const PlaceTileYelp: React.FC<PlaceTileProps> = ({place}) => {
   }
 
   return (
-    <TouchableOpacity onPress={() => {selectingPlace()}} className='bg-red-500 w-full my-3'>
+    <TouchableOpacity onPress={() => {}} className='bg-red-500 w-full my-3'>
       <View style={{height: screenHeight, width: screenWidth}} className='bg-red-300'>
         <Image className='flex-1' source={{uri: place.image_url}}/>
         <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', height: screenHeight, width: screenWidth}} className='absolute z-5 flex flex-col justify-between  p-2'>
@@ -163,4 +163,4 @@ const PlaceTileYelp: React.FC<PlaceTileProps> = ({place}) => {
   )
 }
 
-export default PlaceTileYelp
+export default PlaceYelpTileSearch

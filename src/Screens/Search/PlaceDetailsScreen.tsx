@@ -12,6 +12,8 @@ import { useSearch } from '../../Context/SearchContext';
 import PlaceTileYelp from '../../Components/Tile/PlaceTileYelp';
 import PostTileWithProfileSearch from '../../Components/Tile/PostTileWithProfileSearch';
 import ColorGuide from '../../ColorGuide';
+import PlaceHeader from '../../Components/Headers/PlaceHeader';
+import PlaceYelpTileSearch from '../../Components/Tile/PlaceYelpTileSearch';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'AccessCodeScreen'>;
 
@@ -55,22 +57,29 @@ const PlaceDetailsScreen = () => {
 
   return (
     <View className='flex-1 w-full' style={{backgroundColor: ColorGuide['bg-dark']}}>
-      <NoMenuPageHeader backing={true} leftLabel={yelpResultsFull.name}/>
+      <PlaceHeader name={yelpResultsFull.name} place_id={yelpResultsFull.url}/>
       {
         loadingPlaces
           ? <View className='flex-1 flex justify-center items-center'>
               <ActivityIndicator size={'large'} color={'white'}/>
             </View>
           : <View className='flex-1 flex flex-start'>
-              <PlaceTileYelp place={yelpResultsFull}/>
+              <PlaceYelpTileSearch place={yelpResultsFull}/>
               <Text className='text-white text-2xl font-semibold p-3'>Posts: </Text>
               <ScrollView className='flex-1'>
                 {
-                  yelpResultsFullPosts?.map((singlePost) => (
-                    <View key={singlePost.post_id}>
-                      <PostTileWithProfileSearch post={singlePost} />
-                    </View>
-                  ))}
+                  yelpResultsFullPosts && yelpResultsFullPosts.length > 0
+                    ? (
+                        yelpResultsFullPosts?.map((singlePost) => (
+                          <View key={singlePost.post_id}>
+                            <PostTileWithProfileSearch post={singlePost} />
+                          </View>
+                        ))
+                      )
+                    : <View className='flex-1 flex flex-col justify-center mt-16 items-center'>
+                        <Text className='text-white font-semibold text-xl'>No Post Found...</Text>
+                      </View>
+                }
               </ScrollView>
             </View>
       }

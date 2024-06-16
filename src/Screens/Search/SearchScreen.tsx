@@ -29,7 +29,6 @@ const SearchScreen = () => {
           yelpResults.map((singlePlace: any) => {
             return(
               <View key={singlePlace.id}>
-                {/* <Text className='text-white'>{singlePlace.name}</Text> */}
                 <PlaceTileYelpNoSelect place={singlePlace}/>
               </View>
             )

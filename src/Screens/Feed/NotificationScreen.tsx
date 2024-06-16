@@ -6,6 +6,7 @@ import ResultsProfile from '../../Components/Profiles/ResultsProfile';
 import RequestProfile from '../../Components/Profiles/RequestProfile';
 import ColorGuide from '../../ColorGuide';
 import RequestFollowProfile from '../../Components/Profiles/RequestFollowProfile';
+import ListRequestProfile from '../../Components/Profiles/ListRequestProfile';
 // import tailwind from 'tailwind-rn'; // Ensure tailwind-rn is configured properly
 
 const NotificationScreen = () => {
@@ -26,7 +27,7 @@ const NotificationScreen = () => {
                 <ScrollView className='max-h-40'>
                   {userGroupRequest.map((request) => (
                     <View key={request.user_id}>
-                      <RequestProfile request={request} />
+                      <ListRequestProfile request={request} />
                     </View>
                   ))}
                 </ScrollView>

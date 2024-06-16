@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode, useState, ProfilerProps } from 'react';
-import { confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
+import { confirmResetPassword, confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
 import axios from 'axios';
 
 export function useAuth() {
@@ -119,7 +119,10 @@ const AuthContext = createContext<AuthContextType>({
   getAllFolloingRequests: () => {},
   acceptFollowingRequest: () => {},
   grabSelectedUserFollowing: () => {},
-  grabSelectedUserFollowers: () => {}
+  grabSelectedUserFollowers: () => {},
+  ResetUsersPasswordWithUsername: () => {},
+  passwordReset: () => {}
+
 });
 
 interface AuthContextType {
@@ -163,6 +166,8 @@ interface AuthContextType {
   acceptFollowingRequest: (friend_id: number) => void
   grabSelectedUserFollowing: (user_id: string) => void
   grabSelectedUserFollowers: (user_id: string) => void
+  ResetUsersPasswordWithUsername: (username: string) => void
+  passwordReset: (confirmation_code: string, password: string, navigation: any) => void
 }
 
 // the main provider
@@ -398,6 +403,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       })
   }
 
+  const ResetUsersPasswordWithUsername = (username: string) => {
+    resetPassword({username})
+      .then(response => {
+        console.log('Sent reset password email')
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   const getAllFolloingRequests = (user_id: string) => {
     let url = `https://grubberapi.com/api/v1/friends/requests/${user_id}`
     axios.get(url)
@@ -572,6 +587,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw error;
       });
   }
+
+  const passwordReset = (confirmation_code: string, password: string, navigation: any) => {
+    confirmResetPassword({
+      username: userProfile.username, 
+      confirmationCode: confirmation_code, 
+      newPassword: password
+    })
+    .then((response) => {
+      console.log(response)
+      navigation.goBack()
+    }).catch((error) => {
+      console.log(error)
+    })
+
+  }
   
   return (
     <AuthContext.Provider
@@ -615,7 +645,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         getAllFolloingRequests,
         acceptFollowingRequest,
         grabSelectedUserFollowing,
-        grabSelectedUserFollowers
+        grabSelectedUserFollowers,
+        ResetUsersPasswordWithUsername,
+        passwordReset
       }}
     >
       {children}

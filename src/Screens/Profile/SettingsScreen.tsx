@@ -1,11 +1,14 @@
 import React from 'react'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader'
-import { Activity, AlertCircle, Bell, Bookmark, ChevronsRight, Edit2, Grid, Heart, HelpCircle, Lock, LogOut, MessageSquare, User, X } from 'react-native-feather'
+import { Activity, AlertCircle, Bell, Bookmark, ChevronsRight, Edit2, Grid, Heart, HelpCircle, List, Lock, LogOut, MessageSquare, Shuffle, User, X } from 'react-native-feather'
 import { useAuth } from '../../Context/UserContext'
 import ColorGuide from '../../ColorGuide'
+import { useNavigation } from '@react-navigation/native'
 
 const SettingsScreen = () => {
+
+  const navigation = useNavigation()
 
   const {signOutUser} = useAuth()
 
@@ -17,20 +20,20 @@ const SettingsScreen = () => {
           <View className='pb-4 border-b-2 border-b-neutral-700'>
             <Text className='text-white text-xl font-bold'>Profile & Account</Text>
           </View>
-          <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
+          <TouchableOpacity onPress={() => {navigation.navigate('EditProfileScreen')}} className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <User height={18} width={18} color={'white'}/>
               <Text className='text-white text-lg ml-2'>Edit Profile</Text>
             </View>
             <ChevronsRight height={24} width={24} color={'white'}/>
-          </View>
-          <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {navigation.navigate('ResetPasswordScreen')}} className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <Lock height={18} width={18} color={'white'}/>
               <Text className='text-white text-lg ml-2'>Reset Password</Text>
             </View>
             <ChevronsRight height={24} width={24} color={'white'}/>
-          </View>
+          </TouchableOpacity>
           <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <Bell height={18} width={18} color={'white'}/>
@@ -74,27 +77,34 @@ const SettingsScreen = () => {
           <View className='pb-4 border-b-2 border-b-neutral-700 mt-8'>
             <Text className='text-white text-xl font-bold'>Help & Support</Text>
           </View>
-          <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
+          <TouchableOpacity onPress={() => {navigation.navigate('ContactUsScreen')}} className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <Edit2 height={18} width={18} color={'white'}/>
               <Text className='text-white text-lg ml-2'>Contact Us</Text>
             </View>
             <ChevronsRight height={24} width={24} color={'white'}/>
-          </View>
-          <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {navigation.navigate('FaqScreen')}} className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
-              <HelpCircle height={18} width={18} color={'white'}/>
+              <List height={18} width={18} color={'white'}/>
               <Text className='text-white text-lg ml-2'>FAQ</Text>
             </View>
             <ChevronsRight height={24} width={24} color={'white'}/>
-          </View>
-          <View className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {navigation.navigate('FeedbackScreen')}} className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
+            <View  className='flex flex-row items-center'>
+              <Shuffle height={18} width={18} color={'white'}/>
+              <Text className='text-white text-lg ml-2'>Feedback / Suggestions</Text>
+            </View>
+            <ChevronsRight height={24} width={24} color={'white'}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {navigation.navigate('AboutScreen')}} className='flex flex-row items-center justify-between py-3 border-b-2 border-b-neutral-700'>
             <View  className='flex flex-row items-center'>
               <AlertCircle height={18} width={18} color={'white'}/>
               <Text className='text-white text-lg ml-2'>About Us</Text>
             </View>
             <ChevronsRight height={24} width={24} color={'white'}/>
-          </View>
+          </TouchableOpacity>
 
           <View className='pb-4 border-b-2 border-b-neutral-700 mt-8'>
             <Text className='text-white text-xl font-bold'>Login</Text>
