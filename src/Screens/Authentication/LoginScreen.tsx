@@ -40,17 +40,15 @@ const LoginScreen = () => {
   }
 
   const SubmitLogin = () => {
-    console.log('login into account')
     signInUser(username, password)
   }
 
   const SignoutUser = () => {
     signOut()
       .then((response) => {
-        console.log('logged out')
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   }
   

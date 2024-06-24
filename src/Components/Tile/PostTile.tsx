@@ -88,7 +88,6 @@ const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
     let url = `https://grubberapi.com/api/v1/likes`
     axios.post(url, newData)
       .then(response => {
-        console.log('response: ', response.data)
         getAllPostLikes(post_id)
       })
       .catch(error => {
@@ -98,11 +97,9 @@ const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
   }
 
   const removePostLike = (post_id: string) => {
-    console.log('remopving the post like: ', post_id)
     let url = `https://grubberapi.com/api/v1/likes/${post_id}`
     axios.delete(url)
       .then(response => {
-        console.log('delete a like: ', response.data)
         // setPostComments(response.data)
         getAllPostLikes(post_id)
       })
@@ -113,11 +110,9 @@ const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
   }
 
   const getAllPostLikes = (post_id: string) => {
-    console.log(post_id)
     let url = `https://grubberapi.com/api/v1/likes/${post_id}`
     axios.get(url)
       .then(response => {
-        console.log('response: ', response.data)
         setPostLikes(response.data)
       })
       .catch(error => {
@@ -128,7 +123,6 @@ const PostTile: React.FC<PostTileProps> = ({post, profile}) => {
 
   const checkImageLike = () => {
     const userLikedPost = postLikes.filter((post) => post.user_id === userProfile?.user_id)
-    console.log('user liked the image', userLikedPost)
     userLikedPost.length > 0
       ? removePostLike(userLikedPost[0]['like_id'].toString())
       : addPostLike(post.post_id, post.user_id)

@@ -31,7 +31,6 @@ interface PostProfileProps {
 
 const RequestProfile: React.FC<PostProfileProps> = ({request}) => {
 
-  console.log()
 
   const {acceptListRequest, rejectListRequest} = useAuth()
 

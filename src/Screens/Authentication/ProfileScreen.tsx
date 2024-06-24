@@ -68,7 +68,6 @@ const ProfileScreen: React.FC = () => {
   }
 
   const completeSignupProcess = () => {
-    console.log('create account')
     // const signupData = {
     //   username,
     //   password,

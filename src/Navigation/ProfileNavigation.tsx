@@ -12,6 +12,10 @@ import ContactUsScreen from '../Screens/Profile/ContactUsScreen';
 import FaqScreen from '../Screens/Profile/FaqScreen';
 import FeedbackScreen from '../Screens/Profile/FeedbackScreen';
 import AboutScreen from '../Screens/Profile/AboutScreen';
+import FavoritesScreen from '../Screens/Profile/FavoritesScreen';
+import LikedPostsScreen from '../Screens/Profile/LikedPostsScreen';
+import CommentedScreen from '../Screens/Profile/CommentedScreen';
+import EditPostScreen from '../Screens/Feed/EditPostScreen';
 
 const StackNav = createStackNavigator();
 
@@ -32,6 +36,10 @@ const ProfileNavigation = () => {
       <StackNav.Screen name="FaqScreen" component={FaqScreen} />
       <StackNav.Screen name="FeedbackScreen" component={FeedbackScreen} />
       <StackNav.Screen name="AboutScreen" component={AboutScreen} />
+      <StackNav.Screen name="FavoritesScreen" component={FavoritesScreen} />
+      <StackNav.Screen name="LikedPostsScreen" component={LikedPostsScreen} />
+      <StackNav.Screen name="CommentedScreen" component={CommentedScreen} />
+      <StackNav.Screen name="EditPostScreen" component={EditPostScreen} />
     </StackNav.Navigator>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Dimensions, Text, View, Image, TouchableOpacity} from 'react-native'
-import { Star } from 'react-native-feather';
+import { Bookmark, Star } from 'react-native-feather';
 import { usePost } from '../../Context/PostContext';
 import ColorGuide from '../../ColorGuide';
 
@@ -131,18 +131,19 @@ const PlaceYelpTileSearch: React.FC<PlaceTileProps> = ({place}) => {
     updatePostPlace(postPlaceData)
   }
 
+  const addToFavorites = () => {
+    console.log( JSON.stringify(place))
+  }
+
+
   return (
     <TouchableOpacity onPress={() => {}} className='bg-red-500 w-full my-3'>
       <View style={{height: screenHeight, width: screenWidth}} className='bg-red-300'>
-        <Image className='flex-1' source={{uri: place.image_url}}/>
-        <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', height: screenHeight, width: screenWidth}} className='absolute z-5 flex flex-col justify-between  p-2'>
-          <View>
-            {
-              postPlace?.yelp_id === place.id
-                ? <View  className='rounded-md overflow-hidden'><Text className='text-white text-base font-bold p-2' style={{backgroundColor: ColorGuide.primary}}>Selected</Text></View>
-                : <View></View>
-            }
-          </View>
+        <Image className='flffex-1' source={{uri: place.image_url}}/>
+        <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', height: screenHeight, width: screenWidth}} className='absolute z-5 flex flex-col justify-between p-2'>
+          <TouchableOpacity  onPress={() => {addToFavorites()}} className='w-full flex flex-row justify-end'>
+            <Bookmark height={26} width={26} color={'white'}/>
+          </TouchableOpacity>
           <View>
             <View>
               <Text className='text-white text-base font-semibold'>{place.location?.address1} {place.location?.city}, {place.location?.state} {place.location?.zip_code}</Text>

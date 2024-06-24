@@ -59,15 +59,6 @@ const SignupScreen = () => {
       : setValidVerify(false)
     setVerify(text)
   }
-
-  
-  const validateUsername = (username: string) => {
-    console.log('validated')
-  }
-  
-  const validateEmail = (username: string) => {
-    console.log('validated')
-  }
   
   function isValidPassword(password: string) {
     const hasUpperCase = /[A-Z]/.test(password);

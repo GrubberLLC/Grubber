@@ -31,8 +31,6 @@ interface PostProfileProps {
 
 const RequestFollowProfile: React.FC<PostProfileProps> = ({request}) => {
 
-  console.log('request: ')
-
   const {acceptFollowingRequest, removeFollowing} = useAuth()
 
   return (

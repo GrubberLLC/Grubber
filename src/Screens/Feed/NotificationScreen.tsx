@@ -43,7 +43,6 @@ const NotificationScreen = () => {
                   <Text className='text-white text-lg font-bold p-2' >Friend Requests:</Text>
                   <ScrollView className='max-h-40'>
                     {pendingFollowRequests.map((request) => {
-                      console.log('request information: ', request)
                       return(
                         <View key={request.user_id}>
                           <RequestFollowProfile request={request}/>

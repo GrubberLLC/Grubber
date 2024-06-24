@@ -11,10 +11,6 @@ interface SelectedImageProps {
 
 const NewPostImageComponent: React.FC<SelectedImageProps> = ({image}) => {
 
-  useEffect(() => {
-    console.log('image uri: ', image)
-  }, [])
-
   return (
     <View style={{height: imageWidth, width: imageWidth, backgroundColor: ColorGuide['bg-dark-8']}}>
       {

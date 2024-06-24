@@ -31,16 +31,13 @@ const CreateProfileScreen: React.FC = () => {
   const selectImage = async () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.errorMessage);
       } else {
         const selectedFiles = response.assets.map(asset => ({
           uri: asset.uri,
           type: asset.type,
           fileName: asset.fileName
         }));
-        console.log('selected media: ', selectedFiles[0])
         setPicture(selectedFiles[0]);
       }
     });

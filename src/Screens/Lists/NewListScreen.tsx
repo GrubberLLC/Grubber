@@ -45,7 +45,6 @@ const NewListScreen = () => {
   const [users, setUsers] = useState<UserProfile[] | null>(null)
 
   const checkUsers = (text: string) => {
-    console.log('all profiles: ', typeof allProfiles)
     const filteredUsers = allProfiles?.filter((profile) =>
       profile.username.toLowerCase().includes(text.toLowerCase())
     );

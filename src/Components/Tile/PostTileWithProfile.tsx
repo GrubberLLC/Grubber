@@ -102,7 +102,6 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
     let url = `https://grubberapi.com/api/v1/likes`
     axios.post(url, newData)
       .then(response => {
-        console.log('response: ', response.data)
         getAllPostLikes(post_id)
       })
       .catch(error => {
@@ -112,11 +111,9 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
   }
 
   const removePostLike = (post_id: string) => {
-    console.log('remopving the post like: ', post_id)
     let url = `https://grubberapi.com/api/v1/likes/${post_id}`
     axios.delete(url)
       .then(response => {
-        console.log('delete a like: ', response.data)
         // setPostComments(response.data)
         getAllPostLikes(post_id)
       })
@@ -127,11 +124,10 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
   }
 
   const getAllPostLikes = (post_id: string) => {
-    console.log(post_id)
     let url = `https://grubberapi.com/api/v1/likes/${post_id}`
     axios.get(url)
       .then(response => {
-        console.log('response: ', response.data)
+        console.log('posts that are liked: ', response.data)
         setPostLikes(response.data)
       })
       .catch(error => {
@@ -142,10 +138,9 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
 
   const checkImageLike = () => {
     const userLikedPost = postLikes.filter((post) => post.user_id === userProfile?.user_id)
-    console.log('user liked the image', userLikedPost)
     userLikedPost.length > 0
       ? removePostLike(userLikedPost[0]['like_id'].toString())
-      : addPostLike(post.post_id, post.user_id)
+      : addPostLike(post.post_id, userProfile ? userProfile?.user_id : '')
 
   }
 
@@ -153,13 +148,14 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
     navigation.navigate('PostDetailsScreen', {post})
   }
 
+
   return (
     <View className='w-full'>
       <PostProfile profile={profileData != null ? profileData : null}/>
       <FullImageComponent image={post.media} addImageLike={checkImageLike}/>
       {
         profileData.user_id === userProfile?.user_id
-          ?  <PostSubMenu postLikes={postLikes} post_id={post.post_id} post={post}/>
+          ? <PostSubMenu postLikes={postLikes} post_id={post.post_id} post={post}/>
           : <PostSubMenuNoEdit postLikes={postLikes} post_id={post.post_id} post={post}/>
       }
       <PlacePostSummary image={post.image} name={post.name} rating={post.rating} reviews={post.review_count} place_id={post.place_id}/>

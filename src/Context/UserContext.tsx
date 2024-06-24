@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState, ProfilerProps } from 'react';
+import React, { createContext, useContext, ReactNode, useState, ProfilerProps, useEffect } from 'react';
 import { confirmResetPassword, confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
 import axios from 'axios';
 
@@ -97,6 +97,11 @@ const AuthContext = createContext<AuthContextType>({
   pendingFollowRequests: [],
   userSelectedFollowers: [],
   userSelectedFollowing: [],
+  userFavorites: [],
+  favoritesView: 'Posts',
+  userLikedPosts: [],
+  userCommentedPosts: [],
+  editPost: false,
   grabCurrentUser: () => {},
   signInUser: () => {},
   signOutUser: () => {},
@@ -121,8 +126,14 @@ const AuthContext = createContext<AuthContextType>({
   grabSelectedUserFollowing: () => {},
   grabSelectedUserFollowers: () => {},
   ResetUsersPasswordWithUsername: () => {},
-  passwordReset: () => {}
-
+  passwordReset: () => {},
+  addPostToFavorites: () => {},
+  getFavorites: () => {},
+  removeFavorites: () => {},
+  setFavoritesView: () => {},
+  addPlaceToFavorites: () => {},
+  getLikedPosts: () => {},
+  getCommentedPosts: () => {},
 });
 
 interface AuthContextType {
@@ -143,6 +154,12 @@ interface AuthContextType {
   pendingFollowRequests: any[]
   userSelectedFollowers: any[],
   userSelectedFollowing: any[],
+  userFavorites: any[]
+  favoritesView: string
+  userLikedPosts: any[]
+  userCommentedPosts: any[]
+  editPost: boolean
+  getCommentedPosts: () => void
   grabCurrentUser: () => void;
   signInUser: (username: string, password: string) => void;
   signOutUser: () => void;
@@ -168,6 +185,12 @@ interface AuthContextType {
   grabSelectedUserFollowers: (user_id: string) => void
   ResetUsersPasswordWithUsername: (username: string) => void
   passwordReset: (confirmation_code: string, password: string, navigation: any) => void
+  addPostToFavorites: (place_id: number) => void
+  getFavorites: (user_id: string) => void
+  removeFavorites: (favorites_id: string) => void
+  setFavoritesView: (text: string) => void
+  addPlaceToFavorites: (place_id: string) => void
+  getLikedPosts: () => void
 }
 
 // the main provider
@@ -216,8 +239,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const [pendingFollowRequests, setPendingFollowRequest] = useState<any>([])
 
+  const [userFavorites, setUserFavorites] = useState<any[]>([])
+
+  const [favoritesView, setFavoritesView] = useState<string>('Posts')
+
+  const [userLikedPosts, setUserLikedPosts] = useState<any[]>([])
+  const [userCommentedPosts, setUserCommentedPosts] = useState<any[]>([])
+   
+  const [editPost, setEditPOst] = useState<boolean>(false)
+
   const toggleValidAccessCode = () => {
     setValidAccessCode(!validAccessCode)
+  }
+
+  const toggleEditPost = () => {
+    setEditPOst(!editPost)
   }
 
   const toggleSelectedUserProfileView = (text: string) => {
@@ -257,12 +293,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         getUserProfile(user.userId)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
       })
   }
 
   const signInUser = (username: string, password: string) => {
-    console.log('logging in: ', username)
     setLoginLoading(true)
     signIn({username, password})
       .then((response) => {
@@ -271,18 +306,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       .catch((error) => {
         setLoginLoading(false)
         setInvalidLogin(true)
-        console.log(error)
       })
   }
 
   const signOutUser = () => {
-    console.log('log out of your accoubnt')
     signOut()
       .then(response => {
         setUserAccount(null)
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
       })
   }
 
@@ -327,14 +360,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       }
     }
-    console.log(signupData)
     // createUserProfile('afew-bras-ad-sd-gsadf', data)
     signUp(signupData)
       .then((currentUser: any) => {
         createUserProfile(currentUser.userId, data, navigation)
       })
       .catch((err: any) => {
-        console.log('Could not create user:', err);
+        console.error('Could not create user:', err);
       });
   }
 
@@ -376,7 +408,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       navigation.navigate('LoginScreen');
     })
     .catch(error => {
-        console.log('Error confirming sign up', error);
+        console.error('Error confirming sign up', error);
         toggleValidAccessCode()
     });
   }
@@ -386,10 +418,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       username: username
     })
     .then(response => {
-      console.log('new email with code sent')
     })
     .catch(error => {
-        console.log('Error confirming sign up', error);
+        console.error('Error confirming sign up', error);
     });
   }
 
@@ -399,17 +430,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         navigation.navigate('LoginScreen')
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
       })
   }
 
   const ResetUsersPasswordWithUsername = (username: string) => {
     resetPassword({username})
       .then(response => {
-        console.log('Sent reset password email')
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
       })
   }
 
@@ -417,7 +447,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/friends/requests/${user_id}`
     axios.get(url)
       .then(response => {
-        console.log('users pending requests: ', response.data)
         setPendingFollowRequest(response.data)
       })
       .catch(error => {
@@ -430,7 +459,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/posts/friend/${user_id}`
     axios.get(url)
       .then(response => {
-        console.log('users requests: ', response.data)
         setFollowingPosts(response.data)
       })
       .catch(error => {
@@ -443,7 +471,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/members/request/${user_id}`
     axios.get(url)
       .then(response => {
-        console.log('users requests: ', response.data)
         setUserGroupRequest(response.data)
       })
       .catch(error => {
@@ -456,7 +483,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/members/request/accept/${member_id}`
     axios.put(url)
       .then(response => {
-        console.log('users requests: ', response.data)
         getUserListRequests(user_id)
       })
       .catch(error => {
@@ -469,7 +495,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/members/request/reject/${member_id}`
     axios.delete(url)
       .then(response => {
-        console.log('users requests: ', response.data)
         getUserListRequests(user_id)
       })
       .catch(error => {
@@ -491,7 +516,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const createFollowUser = (user: any) => {
-    console.log('users profile public status: ', user.pubilc)
     const data = {
       following_id: user.user_id,
       follower_id: userProfile.user_id,
@@ -511,7 +535,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const removeFollowing = (friend_id: number) => {
-    console.log(friend_id)
     let url = `https://grubberapi.com/api/v1/friends/${friend_id}`
     axios.delete(url)
       .then(response => {
@@ -526,7 +549,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const acceptFollowingRequest = (friend_id: number) => {
-    console.log(friend_id)
     let url = `https://grubberapi.com/api/v1/friends/accept/${friend_id}`
     axios.put(url)
       .then(response => {
@@ -576,6 +598,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   }
 
+  
   const grabSelectedUserFollowers = (user_id: string) => {
     let url = `https://grubberapi.com/api/v1/friends/follower/${user_id}`
     axios.get(url)
@@ -588,6 +611,94 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   }
 
+  const addPostToFavorites = (post_id: number) => {
+    let url = `https://grubberapi.com/api/v1/favorites`
+    const data = {
+      user_id: userProfile.user_id,
+      post_id: post_id,
+      list_id: null,
+      place_id: null
+    }
+    axios.post(url, data)
+      .then(response => {
+        getFavorites(userProfile.user_id)
+      })
+      .catch(error => {
+        console.error('Error creating favorites:', error);
+        throw error;
+      });
+  }
+
+  const addPlaceToFavorites = (place_id: string) => {
+    let url = `https://grubberapi.com/api/v1/favorites`;
+    const data = {
+      user_id: userProfile.user_id,
+      post_id: null,
+      list_id: null,
+      place_id: place_id
+    };
+    axios.post(url, data)
+      .then(response => {
+        getFavorites(userProfile.user_id);
+      })
+      .catch(error => {
+        console.error('Error creating favorites:', error);
+        throw error;
+      });
+  };
+
+  const getFavorites = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/favorites/${user_id}`
+    axios.get(url)
+      .then(response => {
+        setUserFavorites(response.data)
+      })
+      .catch(error => {
+        console.error('Error creating favorites:', error);
+        throw error;
+      });
+  }
+
+  const removeFavorites = (favorites_id: string) => {
+    let url = `https://grubberapi.com/api/v1/favorites/${favorites_id}`
+    axios.delete(url)
+      .then(response => {
+        getFavorites(userProfile.user_id)
+      })
+      .catch(error => {
+        console.error('Error creating favorites:', error);
+        throw error;
+      });
+  }
+
+  const getLikedPosts = () => {
+    let url = `https://grubberapi.com/api/v1/likes/user/${userProfile.user_id}`
+    console.log('liked posts url: ', url)
+    axios.get(url)
+      .then(response => {
+        console.log('liked posts: ', response.data)
+        setUserLikedPosts(response.data)
+      })
+      .catch(error => {
+        console.error('Error getting all like posts:', error);
+        throw error;
+      });
+  }
+
+  const getCommentedPosts = () => {
+    let url = `https://grubberapi.com/api/v1/postComments/user/${userProfile.user_id}`
+    console.log('liked posts url: ', url)
+    axios.get(url)
+      .then(response => {
+        console.log('liked posts: ', response.data)
+        setUserCommentedPosts(response.data)
+      })
+      .catch(error => {
+        console.error('Error getting all commented posts:', error);
+        throw error;
+      });
+  }
+
   const passwordReset = (confirmation_code: string, password: string, navigation: any) => {
     confirmResetPassword({
       username: userProfile.username, 
@@ -595,10 +706,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       newPassword: password
     })
     .then((response) => {
-      console.log(response)
       navigation.goBack()
     }).catch((error) => {
-      console.log(error)
+      console.error(error)
     })
 
   }
@@ -623,6 +733,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         pendingFollowRequests,
         userSelectedFollowers,
         userSelectedFollowing,
+        userFavorites,
+        favoritesView,
+        userLikedPosts,
+        userCommentedPosts,
+        editPost,
+        getCommentedPosts,
         toggleSelectedUserProfileView,
         grabCurrentUser,
         signInUser,
@@ -647,7 +763,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         grabSelectedUserFollowing,
         grabSelectedUserFollowers,
         ResetUsersPasswordWithUsername,
-        passwordReset
+        passwordReset,
+        addPostToFavorites,
+        getFavorites,
+        removeFavorites,
+        setFavoritesView,
+        addPlaceToFavorites,
+        getLikedPosts,
       }}
     >
       {children}

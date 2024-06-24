@@ -41,7 +41,7 @@ const FeedScreen = () => {
   const {getUsersPosts, loggedInUsersPosts} = usePost()
   const {getUserListRequests, grabUserFollowers, 
     grabUserFollowing, getFollowingPosts, 
-    getAllFolloingRequests, followingPosts, pendingFollowRequests} = useAuth()
+    getAllFolloingRequests, followingPosts, getFavorites, getLikedPosts, getCommentedPosts} = useAuth()
 
   useEffect(() => {
     if(userProfile && userProfile.user_id){
@@ -51,6 +51,9 @@ const FeedScreen = () => {
       getUserListRequests(userProfile.user_id)
       grabUserFollowers(userProfile.user_id)
       grabUserFollowing(userProfile.user_id)
+      getFavorites(userProfile.user_id)
+      getLikedPosts()
+      getCommentedPosts()
     }
   }, [userProfile])
 

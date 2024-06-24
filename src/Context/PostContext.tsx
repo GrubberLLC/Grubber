@@ -114,6 +114,9 @@ const PostContext = createContext<PostContextType>({
   selectedPlace: null,
   addPlaceList: false,
   selectedUserPosts: [],
+  editPost: false,
+  updatedCaption: '',
+  loadingUpdatePost: false,
   updatePlace: () => {},
   updateLocation:  () => {},
   updateCaption: () => {},
@@ -128,7 +131,10 @@ const PostContext = createContext<PostContextType>({
   deletePost: () => {},
   getPlaceById: () => {},
   handleAddPlaceList: () => {},
-  getSelectedUserPosts: () => {}
+  getSelectedUserPosts: () => {},
+  toggleEditPOst: () => {},
+  updateCurrentCaption: () => {},
+  updatePostCaption: () => {}
 });
 
 interface PostContextType {
@@ -147,6 +153,9 @@ interface PostContextType {
   selectedPlace: any;
   addPlaceList: boolean
   selectedUserPosts: SinglePostProps[]
+  editPost: boolean,
+  updatedCaption: string,
+  loadingUpdatePost: boolean
   updatePlace: (text:string) => void,
   updateLocation:  (text:string) => void,
   updateCaption: (text: string) => void;
@@ -162,6 +171,9 @@ interface PostContextType {
   getPlaceById: (place_id: string) => void;
   handleAddPlaceList: () => void
   getSelectedUserPosts: (user_id: string) => void
+  toggleEditPOst: () => void
+  updateCurrentCaption: (text: string) => void
+  updatePostCaption: (post: any, navigation: any) => void
 }
 
 // the main provider
@@ -194,12 +206,24 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
 
   const [selectedUserPosts, setSelectedUserPosts] = useState<SinglePostProps[]>([])
 
+  const [editPost, setEditPost] = useState<boolean>(false)
+
+  const [loadingUpdatePost, setLoadingUpdatePost] = useState<boolean>(false)
+  const [updatedCaption, setUpdatedCaption] = useState<string>('')
 
   useEffect(() => {
     userProfile && userProfile.user_id != ''
       ? getUsersPosts(userProfile.user_id)
       : null
   }, [userProfile])
+
+  const toggleEditPOst = () => {
+    setEditPost(!editPost)
+  }
+
+  const updateCurrentCaption = (text:string) => {
+    setUpdatedCaption(text)
+  }
 
   const handleAddPlaceList = () => {
     setAddPlaceList(!addPlaceList)
@@ -247,7 +271,6 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/places/check/${place_id}`
     axios.get(url)
       .then(response => {
-        console.log('users requests: ', JSON.stringify(response.data))
         setSelectedPlaCe(response.data)
       })
       .catch(error => {
@@ -272,7 +295,6 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         },
         params: query,
       });
-      console.log('yelp response: ', response.data[0])
       setPostSearchResults(response.data.businesses)
       setPostSearchLoading(false)
       setSearchingPlaces(false)
@@ -304,7 +326,6 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
   };
 
   const deletePost = (post_id: string, user_id: string) => {
-    console.log('new post id: ', post_id)
     let url = `https://grubberapi.com/api/v1/posts/${post_id}`
     axios.delete(url)
       .then(response => {
@@ -392,12 +413,10 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
       post_id: post_id,
       comment: comment,
       user_id: user_id,
-
     }
     let url = `https://grubberapi.com/api/v1/postComments`
     axios.post(url, newData)
       .then(response => {
-        console.log('response: ', response.data)
         grabPostComments(post_id)
         setCreatePostLoading(false)
       })
@@ -411,7 +430,6 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/postComments/${post_id}`
     axios.get(url)
       .then(response => {
-        console.log('response: ', response.data)
         setPostComments(response.data)
       })
       .catch(error => {
@@ -428,6 +446,30 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
       })
       .catch(error => {
         console.error('Error fetching user posts:', error);
+        throw error;
+      });
+  }
+
+  const updatePostCaption = (post: any, navigation: any) => {
+    setLoadingUpdatePost(true)
+    const data = {
+      media: post.media, 
+      media_type: post.media_type, 
+      user_id: post.user_id, 
+      place_id: post.place_id,
+      caption: updatedCaption
+    }
+    console.log(data)
+    let url = `https://grubberapi.com/api/v1/posts/${post.post_id}`
+    axios.put(url, data)
+      .then(response => {
+        getUsersPosts(userProfile ? userProfile.user_id : '')
+        navigation.navigate('ProfileScreen')
+        setLoadingUpdatePost(false)
+      })
+      .catch(error => {
+        console.error('Error fetching user posts:', error);
+        setLoadingUpdatePost(false)
         throw error;
       });
   }
@@ -451,6 +493,9 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         selectedPlace,
         addPlaceList,
         selectedUserPosts,
+        editPost,
+        updatedCaption,
+        loadingUpdatePost,
         createPostComment,
         updatePlace,
         updateLocation,
@@ -465,7 +510,10 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
         deletePost,
         getPlaceById,
         handleAddPlaceList,
-        getSelectedUserPosts
+        getSelectedUserPosts,
+        toggleEditPOst,
+        updateCurrentCaption,
+        updatePostCaption
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { Bookmark, Edit2, Heart, MessageSquare, MoreHorizontal, Plus, PlusSquare, Trash } from 'react-native-feather';
+import { Bookmark, Edit, Edit2, Heart, MessageSquare, MoreHorizontal, Plus, PlusSquare, Trash } from 'react-native-feather';
 import { useAuth } from '../../Context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { usePost } from '../../Context/PostContext';
@@ -48,7 +48,7 @@ interface PostSumProps {
 const PostSubMenu: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
   const navigation = useNavigation()
   const { userProfile } = useAuth();
-  const { deletePost, addPlaceList, handleAddPlaceList } = usePost();
+  const { deletePost, toggleEditPOst} = usePost();
 
   const userLikedPost = postLikes.some((like) => like.user_id === userProfile?.user_id);
 
@@ -62,17 +62,15 @@ const PostSubMenu: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
         {
           text: 'Cancel',
           onPress: () => {
-            console.log('hello')
-            setEditPost(!editPost)
+            toggleEditPOst()
           },
           style: 'cancel'
         },
         {
           text: 'Delete',
           onPress: () => {
-            console.log('post id: ', post_id)
             deletePost(post_id ? post_id : '', userProfile?.user_id)
-            setEditPost(!editPost)
+            toggleEditPOst()
           },
           style: 'destructive'
         }
@@ -93,30 +91,18 @@ const PostSubMenu: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
         <Text className='mr-2 text-white text-base'>Likes</Text>
         {/* <Bookmark height={26} width={26} color='white' /> */}
       </View>
-      {
-        editPost 
-          ? <View className='absolute flex flex-col top-[-100px] right-1 z-10 rounded-lg' style={{backgroundColor: ColorGuide['bg-dark']}}>
-              <TouchableOpacity onPress={() => {}} className='flex flex-row items-row px-5 py-3'>
-                <Bookmark height={22} width={22} color={'white'}/>
-                <Text className='text-white text-base font-semibold ml-2'>Favorite</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={confirmDelete} className='flex flex-row items-row px-5 py-3'>
-                <Trash height={22} width={22} color={'white'}/>
-                <Text className='text-white text-base font-semibold ml-2'>Delete</Text>
-              </TouchableOpacity>
-            </View>
-          : <View></View>
-      }
-      {
-        post.user_id === userProfile?.user_id
-          ? <TouchableOpacity onPress={() => {setEditPost(!editPost)}} className='p-1'>
-              <MoreHorizontal height={26} width={26} color='white' />
-            </TouchableOpacity>
-          : <TouchableOpacity onPress={() => {}} className='flex flex-row items-row px-5 py-3'>
-              <Bookmark height={22} width={22} color={'white'}/>
-              <Text className='text-white text-base font-semibold ml-2'>Favorite</Text>
-            </TouchableOpacity>
-      }
+      <View className=' flex flex-row' style={{backgroundColor: ColorGuide['bg-dark']}}>
+        <TouchableOpacity onPress={() => {}} className='flex flex-row items-row mr-3 py-3'>
+          <Bookmark height={22} width={22} color={'white'}/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {navigation.navigate('EditPostScreen', {post})}} className='flex flex-row items-row mr-3 py-3'>
+          <Edit height={22} width={22} color={'white'}/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={confirmDelete} className='flex flex-row items-row py-3'>
+          <Trash height={22} width={22} color={'white'}/>
+        </TouchableOpacity>
+      </View>
+      
     </View>
   );
 };

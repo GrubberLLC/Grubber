@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../Types/NavigationTypes';
@@ -15,6 +15,7 @@ import PostComment from '../../Components/Comments/PostComment';
 import axios from 'axios';
 import { useAuth } from '../../Context/UserContext';
 import ColorGuide from '../../ColorGuide';
+import MenuSubButtonComponent from '../../Components/Buttons/MenuSubButtonComponent';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'PostDetailsScreen'>;
 
@@ -46,13 +47,14 @@ interface ProfileProp {
   profile_id: string
 }
 
-const PostDetailsScreen = () => {
+const EditPostScreen = () => {
+  const navigation = useNavigation()
   const route = useRoute<ProfileScreenRouteProp>();
   const params = route.params
   const {userProfile} = useAuth()
   const {addPlaceList, handleAddPlaceList} = usePost()
 
-  const {createPostComment, createPostLoading, grabPostComments, postComments, editPost, updatedCaption, updateCurrentCaption} = usePost()
+  const {createPostComment, createPostLoading, grabPostComments, loadingUpdatePost, updatePostCaption, updatedCaption, updateCurrentCaption} = usePost()
 
   const [profile, setProfile] = useState<ProfileProp>({
     user_id: params.post.user_id,
@@ -140,53 +142,27 @@ const PostDetailsScreen = () => {
       : addPostLike(params.post.post_id, params.post.user_id)
   }
 
+  useLayoutEffect(() => {
+    updateCurrentCaption(params.post.caption)
+  }, [])
+
+  const submitUpdatesToDatabase = () => {
+    updatePostCaption(params.post, navigation)
+  }
+
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NoMenuPageHeader backing={true} leftLabel='Post'/>
-      <ScrollView className=''>
-        <PostProfile profile={profile}/>
+      <ScrollView className='flex-1'>
         <FullImageComponent image={params.post.media} addImageLike={checkImageLike}/>
-        <PostSubMenu postLikes={postLikes} post_id={params.post.post_id} post={params.post}/>
         <PlacePostSummary image={params.post.image} name={params.post.name} rating={params.post.rating} reviews={params.post.review_count} place_id={params.post.place_id}/>
-        <CaptionComponent caption={params.post.caption}/>
-        <Text className='text-lg text-white font-bold mt-4 px-2'>Comments: </Text>
-        <View>
-          {
-            postComments
-              ? postComments.map((singleComment) => {
-                  return(
-                    <View key={singleComment.comment_id}>
-                      <PostComment comment={singleComment}/>
-                    </View>
-                  )
-                })
-              : null
-          }
+        <View className='p-2 flex-1'>
+          <LargeTextInputComponent multiline={true} placeholder='' capitalize='false' value={updatedCaption} onChange={updateCurrentCaption}/>
         </View>
       </ScrollView>
-      <View className='mt-2 flex flex-row items-end border-t-2 border-t-stone-700 py-3'>
-        <LargeTextInputComponent value={newComment} onChange={updateNewComment} placeholder='add comment...' multiline={false} capitalize='none'/>
-        <View className='mb-1'>
-          {
-            createPostLoading
-              ? <View className='This is  p-1.5 bg-red-500 rounded-md' style={{backgroundColor: ColorGuide.primary}}>
-                  <ActivityIndicator size={'small'} color={'white'}/>
-                </View>
-              : <TouchableOpacity onPress={() => {createComment()}} className='mr-2 p-1 bg-red-500 rounded-md' style={{backgroundColor: ColorGuide.primary}}>
-                  <ArrowRight height={24} width={24} color={'white'}/>
-                </TouchableOpacity>
-          }
-        </View>
-      </View>
-      {
-        addPlaceList
-          ? <View className='absolute z-15 w-full h-full' style={{backgroundColor: ColorGuide['bg-dark-8']}}>
-              <Text className='text-white'>Hello this i the first thing adskjfnalksdjnalsdkfjhasljkd</Text>
-            </View>
-          : null
-      }
+      <MenuSubButtonComponent justify='end' label='Update Post' loading={loadingUpdatePost} handleFunction={submitUpdatesToDatabase}/>
     </View>
   )
 }
 
-export default PostDetailsScreen
+export default EditPostScreen

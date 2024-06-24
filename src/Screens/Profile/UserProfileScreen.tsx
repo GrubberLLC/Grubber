@@ -46,7 +46,6 @@ const UserProfileScreen = () => {
     if (getFollowStatus(params.user_id)) {
       const followerObject = getFollowerObject(params.user_id);
       if (followerObject) {
-        console.log('remove friends: ', followerObject[0]['friends_id'])
         removeFollowing(followerObject[0]['friends_id']);
       }
     } else {

@@ -25,7 +25,6 @@ const FollowersScreen = () => {
   }
 
   const onUnfollowUser = (friend_id: any) => {
-    console.log(friend_id)
     removeFollowing(friend_id)
   }
 

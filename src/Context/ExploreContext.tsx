@@ -117,7 +117,6 @@ export const ExploreProvider: React.FC<ExploreProviderProps> = ({ children }) =>
   }
 
   const grabAllPosts = (place_id: string) => {
-    console.log('search all posts')
     let url = `https://grubberapi.com/api/v1/posts/place/${place_id}`
     axios.get(url)
       .then(response => {
@@ -131,7 +130,6 @@ export const ExploreProvider: React.FC<ExploreProviderProps> = ({ children }) =>
   };
 
   const grabTotalPosts = () => {
-    console.log('search all posts')
     setLoadingPosts(true)
     let url = `https://grubberapi.com/api/v1/posts`
     axios.get(url)

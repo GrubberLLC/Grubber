@@ -111,7 +111,6 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/posts/yelp/${yelp_id}`
     axios.get(url)
       .then(function (response) {
-        console.log('full yelp search: ', JSON.stringify(response.data))
         setYelpResultsFullPosts(response.data)
         setLoadingPlaces(false)
       })

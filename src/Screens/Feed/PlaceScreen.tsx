@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
+import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../Types/NavigationTypes';
 import { usePost } from '../../Context/PostContext';
@@ -9,6 +9,7 @@ import NoMenuPageHeader from '../../Components/Headers/NoMenuPageHeader';
 import PostTile from '../../Components/Tile/PostTile';
 import PostTileWithProfile from '../../Components/Tile/PostTileWithProfile';
 import ColorGuide from '../../ColorGuide';
+import PlaceHeader from '../../Components/Headers/PlaceHeader';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'AccessCodeScreen'>;
 
@@ -42,8 +43,6 @@ const PlaceScreen = () => {
   const route = useRoute<ProfileScreenRouteProp>();
   const params = route.params
 
-  console.log('place id: ', params.place_id)
-
   const {grabPlaceById, loadingPlace, placePosts, selectedPlace} = useExplore()
 
   useEffect(() => {
@@ -52,7 +51,7 @@ const PlaceScreen = () => {
 
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
-      <NoMenuPageHeader backing={true} leftLabel={selectedPlace?.name}/>
+      <PlaceHeader name={selectedPlace ? selectedPlace.name : ''} place_id={selectedPlace ? selectedPlace.place_id : ''}/>
       {
         loadingPlace
           ? <View className='flex-1 flex justify-center items-center'>
@@ -60,12 +59,12 @@ const PlaceScreen = () => {
             </View>
           : <View className='flex-1 flex flex-start'>
               <PlaceTileDatabase place={selectedPlace}/>
-              <Text className='text-white text-2xl font-semibold p-3'>Posts: </Text>
-              <ScrollView className='flex-1'>
+              {/* <Text className='text-white text-2xl font-semibold p-3'>Posts: </Text> */}
+              <ScrollView className='flex-1 mt-8'>
                 {
                   placePosts?.map((singlePost) => (
-                    <View key={singlePost.post_id}>
-                      <PostTileWithProfile post={singlePost} />
+                    <View className='w-1/3 p-1' key={singlePost.post_id}>
+                      <Image className='w-full h-32' source={{ uri: singlePost.media }} />
                     </View>
                   ))}
               </ScrollView>

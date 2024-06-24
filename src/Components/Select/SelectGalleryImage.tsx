@@ -22,16 +22,13 @@ const SelectGalleryImage: React.FC<ImageProps> = ({picture, selectingImage}) => 
   const selectAnImage = () => {
     launchImageLibrary({ mediaType: 'mixed' }, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.errorMessage);
       } else {
         const selectedFiles = response.assets.map(asset => ({
           uri: asset.uri,
           type: asset.type,
           fileName: asset.fileName
         }));
-        console.log('selected media: ', selectedFiles[0])
         selectingImage(selectedFiles[0]);
       }
     });

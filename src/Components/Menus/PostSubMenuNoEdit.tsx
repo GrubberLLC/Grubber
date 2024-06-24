@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { Bookmark, Edit2, Heart, MessageSquare, MoreHorizontal, Plus, PlusSquare, Trash } from 'react-native-feather';
+import { Bookmark, Heart, MoreHorizontal, PlusSquare, Trash } from 'react-native-feather';
 import { useAuth } from '../../Context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { usePost } from '../../Context/PostContext';
@@ -16,7 +16,7 @@ interface LikesProps {
 interface SinglePostProps {
   address_city: string,
   address_formatted: string,
-  address_state: string, 
+  address_state: string,
   address_street: string,
   address_zip_code: string,
   caption: string | null,
@@ -27,7 +27,7 @@ interface SinglePostProps {
   longitude: string,
   media: string,
   media_type: string,
-  name: string, 
+  name: string,
   phone: string,
   place_id: string,
   post_id: string,
@@ -47,10 +47,11 @@ interface PostSumProps {
 
 const PostSubMenuNoEdit: React.FC<PostSumProps> = ({ postLikes, post_id, post }) => {
   const navigation = useNavigation()
-  const { userProfile } = useAuth();
+  const { userProfile, addPostToFavorites, userFavorites, removeFavorites } = useAuth();
   const { deletePost, addPlaceList, handleAddPlaceList } = usePost();
 
   const userLikedPost = postLikes.some((like) => like.user_id === userProfile?.user_id);
+  const userFavoritedPost = userFavorites.filter((favorite) => parseInt(favorite.post_id) === parseInt(post_id));
 
   const [editPost, setEditPost] = useState<boolean>(false)
 
@@ -62,7 +63,6 @@ const PostSubMenuNoEdit: React.FC<PostSumProps> = ({ postLikes, post_id, post })
         {
           text: 'Cancel',
           onPress: () => {
-            console.log('hello')
             setEditPost(!editPost)
           },
           style: 'cancel'
@@ -70,7 +70,6 @@ const PostSubMenuNoEdit: React.FC<PostSumProps> = ({ postLikes, post_id, post })
         {
           text: 'Delete',
           onPress: () => {
-            console.log('post id: ', post_id)
             deletePost(post_id ? post_id : '', userProfile?.user_id)
             setEditPost(!editPost)
           },
@@ -81,17 +80,32 @@ const PostSubMenuNoEdit: React.FC<PostSumProps> = ({ postLikes, post_id, post })
     );
   };
 
+  const toggleFavorite = () => {
+    if (userFavoritedPost.length > 0) {
+      const favorite = userFavoritedPost[0];
+      removeFavorites(favorite.favorites_id);
+    } else {
+      addPostToFavorites(parseInt(post_id));
+    }
+  }
+
+
+
   return (
     <View className='flex flex-row w-full px-2 py-2 justify-between items-center'>
-      <View className='flex flex-row items-center mt-2'>
-        {userLikedPost ? (
-          <Heart className='mr-2' height={26} width={26} color='#e94f4e' fill='#e94f4e' />
-        ) : (
-          <Heart className='mr-2' height={26} width={26} color='white' />
-        )}
-        <Text className='mr-1 text-white text-base font-semibold'>{postLikes.length}</Text>
-        <Text className='mr-2 text-white text-base'>Likes</Text>
-        {/* <Bookmark height={26} width={26} color='white' /> */}
+      <View className='w-full flex flex-row items-center mt-2 justify-between'>
+        <View className='flex flex-row items-center'>
+          {userLikedPost ? (
+            <Heart className='mr-2' height={26} width={26} color='#e94f4e' fill='#e94f4e' />
+          ) : (
+            <Heart className='mr-2' height={26} width={26} color='white' />
+          )}
+          <Text className='mr-1 text-white text-base font-semibold'>{postLikes.length}</Text>
+          <Text className='mr-2 text-white text-base'>Likes</Text>
+        </View>
+        <TouchableOpacity onPress={toggleFavorite}>
+          <Bookmark height={26} width={26} color='white' fill={userFavoritedPost.length > 0 ? 'white' : 'none'} />
+        </TouchableOpacity>
       </View>
       {
         editPost 

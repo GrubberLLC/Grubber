@@ -193,7 +193,6 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
   }
 
   useEffect(() => {
-    console.log('selected users: ', selectgedUsers)
   }, [selectgedUsers])
 
   const updatePicture = (picutre: PictureProps) => {
@@ -345,7 +344,6 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/placeinlist/${list_id}`
     axios.get(url)
       .then(response => {
-        console.log('list place: ', response.data)
         setPlacesInSelectList(response.data)
       })
       .catch(error => {
@@ -476,7 +474,6 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/members/list/${list_id}`
     axios.get(url)
       .then(response => {
-        console.log('list members: ', response.data)
         setListMembers(response.data)
         setLoadingListMembers(false)
       })
@@ -491,7 +488,6 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/members/${member_id}`
     axios.delete(url)
       .then(response => {
-        console.log('list members: ', response.data)
         getAllListMembers(list_id)
       })
       .catch(error => {
