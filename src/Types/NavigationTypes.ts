@@ -1,3 +1,4 @@
+import EditListScreen from '../Screens/Lists/EditListScreen';
 interface ListProps {
   created_at: string,
   created_by: string,
@@ -73,6 +74,9 @@ export type RootStackParamList = {
   },
   SearchPlaceListScreen: {
     list_id: string,
+    list: any
+  },
+  EditListScreen: {
     list: any
   }
 };

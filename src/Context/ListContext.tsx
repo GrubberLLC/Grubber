@@ -115,7 +115,9 @@ const ListContext = createContext<ListContextType>({
   addSelectedMembers: () => {},
   addSelectedMembersList: () => {},
   updateListPublic: () => {},
-  getSelectedUserLists: () => {}
+  getSelectedUserLists: () => {},
+  removePlaceFromList: () => {},
+  updateListDetails: () => {}
 });
 
 interface ListContextType {
@@ -155,6 +157,9 @@ interface ListContextType {
   addSelectedMembersList: (list_id: number, navigation: any, list: any) => void
   updateListPublic: () => void
   getSelectedUserLists: (user_id: string) => void
+  removePlaceFromList: (pl_id: string, list_id: number) => void
+  updateListDetails: (list_id: number, list_name: string, list_description: 
+    string, list_picture: string, list_public: boolean, navigation: any, list: any) => void
 }
 
 // the main provider
@@ -508,6 +513,42 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
       });
   }
 
+  const removePlaceFromList = (pl_id: string, list_id: number) => {
+    let url = `https://grubberapi.com/api/v1/placeinlist/${pl_id}`
+    axios.get(url)
+      .then(response => {
+        setPlacesInSelectList([])
+        getListPlaces(list_id)
+      })
+      .catch(error => {
+        console.error('Error add first member:', error);
+        throw error;
+      });
+  }
+
+  const updateListDetails = (list_id: number, list_name: string, list_description: string, list_picture: string, list_public: boolean, navigation: any, list: any) => {
+    setCurrentlyUploading(true)
+    const data = {
+      name: list_name,
+      description: list_description,
+      picture: list_picture,
+      public: list_public
+    }
+    let url = `https://grubberapi.com/api/v1/lists/${list_id}`
+    axios.put(url, data)
+      .then(response => {
+        console.log('record updated: ', response.data)
+
+        setCurrentlyUploading(false)
+        navigation.navigate('ListSettingsScreen', {list: response.data})
+      })
+      .catch(error => {
+        console.error('Error add first member:', error);
+        setCurrentlyUploading(false)
+        throw error;
+      });
+  }
+
   return (
     <ListContext.Provider
       value={{
@@ -546,7 +587,9 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
         addSelectedMembers,
         addSelectedMembersList,
         updateListPublic,
-        getSelectedUserLists
+        getSelectedUserLists,
+        removePlaceFromList,
+        updateListDetails
       }}
     >
       {children}
