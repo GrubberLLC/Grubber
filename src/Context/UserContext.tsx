@@ -16,6 +16,12 @@ interface UserAccount {
   userId: string | null;
 }
 
+interface PictureProps {
+  uri: string,
+  fileType: string,
+  fileName: string
+}
+
 interface SignupAttributesObject {
   email: string, 
   given_name: string,
@@ -56,9 +62,9 @@ interface UserProfile {
   first_name: string;
   last_name: string;
   full_name: string;
-  profile_picture: string | null;
-  bio: string | null;
-  public: number;
+  profile_picture: string;
+  bio: string;
+  public: boolean;
   followers: number;
   following: number;
   notifications: boolean;
@@ -77,7 +83,7 @@ const AuthContext = createContext<AuthContextType>({
     full_name: '',
     profile_picture: '',
     bio: '',
-    public: 1,
+    public: true,
     following: 0,
     followers: 0,
     notifications: true
@@ -102,6 +108,22 @@ const AuthContext = createContext<AuthContextType>({
   userLikedPosts: [],
   userCommentedPosts: [],
   editPost: false,
+  profileImage: '',
+  updateProfilePic: () => {},
+  username: '', 
+  updateUsername: () => {},
+  firstName: '',  
+  updateFirstName: () => {},
+  lastName: '',  
+  updateLastName: () => {},
+  phone: '',  
+  updatePhone: () => {},
+  bio: '', 
+  updateBio: () => {},
+  location: '',  
+  updateLocation: () => {},
+  usPublic: true, 
+  updatePublic: () => {},
   grabCurrentUser: () => {},
   signInUser: () => {},
   signOutUser: () => {},
@@ -134,6 +156,7 @@ const AuthContext = createContext<AuthContextType>({
   addPlaceToFavorites: () => {},
   getLikedPosts: () => {},
   getCommentedPosts: () => {},
+  updateUserProfile: () => {}
 });
 
 interface AuthContextType {
@@ -159,6 +182,22 @@ interface AuthContextType {
   userLikedPosts: any[]
   userCommentedPosts: any[]
   editPost: boolean
+  profileImage: string,
+  updateProfilePic: (picture: string) => void
+  username: string, 
+  updateUsername: (text: string) => void,
+  firstName: string,  
+  updateFirstName: (text: string) => void,
+  lastName: string,  
+  updateLastName: (text: string) => void,
+  phone: string,  
+  updatePhone: (text: string) => void,
+  bio: string, 
+  updateBio: (text: string) => void,
+  location: string,  
+  updateLocation: (text: string) => void,
+  usPublic: boolean, 
+  updatePublic: (text: boolean) => void,
   getCommentedPosts: () => void
   grabCurrentUser: () => void;
   signInUser: (username: string, password: string) => void;
@@ -191,6 +230,7 @@ interface AuthContextType {
   setFavoritesView: (text: string) => void
   addPlaceToFavorites: (place_id: string) => void
   getLikedPosts: () => void
+  updateUserProfile: (navigation: any) => void
 }
 
 // the main provider
@@ -217,7 +257,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                                                                 full_name: '',
                                                                 profile_picture: '',
                                                                 bio: '',
-                                                                public: 1,
+                                                                public: true,
                                                                 followers: 0,
                                                                 following: 0,
                                                                 notifications: true
@@ -247,6 +287,48 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userCommentedPosts, setUserCommentedPosts] = useState<any[]>([])
    
   const [editPost, setEditPOst] = useState<boolean>(false)
+
+  const [profileImage, setProfileImage] = useState<string>(userProfile && userProfile.profile_picture ? userProfile.profile_picture : '')
+  const [username, setUsername] = useState<string>(userProfile?.username)
+  const [firstName, setFirstName] = useState<string>(userProfile?.first_name)
+  const [lastName, setLastName] = useState<string>(userProfile?.last_name)
+  const [phone, setPhone] = useState<string>(userProfile?.phone)
+  const [bio, setBio] = useState<string>(userProfile?.bio)
+  const [location, setLocation] = useState<string>(userProfile?.location)
+  const [usPublic, setIsPublic] = useState<boolean>(userProfile?.public)
+
+  const updateUsername = (text: string) => {
+    setUsername(text)
+  }
+
+  const updateFirstName = (text: string) => {
+    setFirstName(text)
+  }
+
+  const updateLastName = (text: string) => {
+    setLastName(text)
+  }
+
+  const updatePhone = (text: string) => {
+    setPhone(text)
+  }
+
+  const updateBio = (text: string) => {
+    setBio(text)
+  }
+
+  const updateLocation = (text: string) => {
+    setLocation(text)
+  }
+
+  const updatePublic = (text: boolean) => {
+    setIsPublic(text)
+  }
+
+  const updateProfilePic = (picture: string) => {
+    setProfileImage(picture)
+  }
+
 
   const toggleValidAccessCode = () => {
     setValidAccessCode(!validAccessCode)
@@ -699,6 +781,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   }
 
+  const updateUserProfile = (navigation: any) => {
+    const data = {
+      username, 
+      email: userProfile.email, 
+      phone, 
+      location, 
+      first_name: firstName, 
+      last_name: lastName,
+      full_name: `${firstName} ${lastName}`, 
+      bio, 
+      nickname: `${firstName} ${lastName}`, 
+      profile_picture: profileImage, 
+      public: usPublic, 
+      notifications: userProfile.notifications
+    }
+    let url = `https://grubberapi.com/api/v1/profiles/${userProfile.user_id}`
+    console.log(url)
+    console.log(JSON.stringify(data))
+    axios.put(url, data)
+      .then(response => {
+        getUserProfile(userProfile.user_id)
+        navigation.navigate('ProfileScreen')
+      })
+      .catch(error => {
+        console.error('Error getting all commented posts:', error);
+        throw error;
+      });
+  }
+
   const passwordReset = (confirmation_code: string, password: string, navigation: any) => {
     confirmResetPassword({
       username: userProfile.username, 
@@ -738,6 +849,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         userLikedPosts,
         userCommentedPosts,
         editPost,
+        profileImage,
+        updateProfilePic,
+        username, 
+        updateUsername,
+        firstName, 
+        updateFirstName,
+        lastName, 
+        updateLastName,
+        phone, 
+        updatePhone,
+        bio, 
+        updateBio,
+        location, 
+        updateLocation,
+        usPublic, 
+        updatePublic,
         getCommentedPosts,
         toggleSelectedUserProfileView,
         grabCurrentUser,
@@ -770,6 +897,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setFavoritesView,
         addPlaceToFavorites,
         getLikedPosts,
+        updateUserProfile
       }}
     >
       {children}
