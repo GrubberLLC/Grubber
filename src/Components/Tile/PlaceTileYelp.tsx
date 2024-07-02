@@ -145,6 +145,9 @@ const PlaceTileYelp: React.FC<PlaceTileProps> = ({place}) => {
           </View>
           <View>
             <View>
+              <Text className='text-white text-2xl font-bold'>{place.name}</Text>
+            </View>
+            <View>
               <Text className='text-white text-base font-semibold'>{place.location?.address1} {place.location?.city}, {place.location?.state} {place.location?.zip_code}</Text>
             </View>
             <View className='flex flex-row items-center justify-between'>

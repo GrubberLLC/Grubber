@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import SearchBarComponent from '../../Components/Search/SearchBarComponent'
 import IconLoadingButtonComponent from '../../Components/Buttons/IconLoadingButtonComponent'
@@ -20,7 +20,11 @@ const SearchPlaceListScreen = () => {
   const route = useRoute<ProfileScreenRouteProp>()
   const params = route.params
 
-  const {search, location, updateSearch, updateLocation, loadingResults, searchYelp, yelpResults, checkPlace, selectedPlace} = useList()
+  const {getAllListMembers, listMembers, search, location, updateSearch, updateLocation, loadingResults, searchYelp, yelpResults, checkPlace, selectedPlace} = useList()
+
+  useLayoutEffect(() => {
+    getAllListMembers(parseInt(route.params.list_id))
+  }, [])
 
   return (
     <View className='flex-1 ' style={{backgroundColor: ColorGuide['bg-dark']}}>
@@ -43,7 +47,7 @@ const SearchPlaceListScreen = () => {
           })
         }
       </ScrollView>
-      <MenuSubButtonComponent justify='end' label='Add Place To List' handleFunction={() => {checkPlace(selectedPlace.yelp_id , params.list_id, navigation, params.list)}}/>
+      <MenuSubButtonComponent justify='end' label='Add Place To List' handleFunction={() => {checkPlace(selectedPlace.yelp_id , selectedPlace.name, params.list_id, navigation, params.list, listMembers)}}/>
     </View>
   )
 }

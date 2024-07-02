@@ -65,7 +65,7 @@ interface PostTileProps {
 
 const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
   const navigation = useNavigation()
-  const {userProfile} = useAuth()
+  const {userProfile, createImageActivity} = useAuth()
 
   const [postLikes, setPostLikes] = useState<LikesProps[]>([])
 
@@ -102,6 +102,15 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
     let url = `https://grubberapi.com/api/v1/likes`
     axios.post(url, newData)
       .then(response => {
+        createImageActivity(
+          post.user_id, 
+          `${userProfile?.username} liked your post.`,
+          post_id,
+          null,
+          null,
+          null,
+          null
+        )
         getAllPostLikes(post_id)
       })
       .catch(error => {
@@ -127,7 +136,6 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
     let url = `https://grubberapi.com/api/v1/likes/${post_id}`
     axios.get(url)
       .then(response => {
-        console.log('posts that are liked: ', response.data)
         setPostLikes(response.data)
       })
       .catch(error => {

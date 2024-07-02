@@ -1,6 +1,7 @@
 import React from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
+import ColorGuide from '../../ColorGuide'
 
 interface InputProps {
   value: string,
@@ -8,25 +9,28 @@ interface InputProps {
   capitalize: string,
   placeholder: string,
   multiline: boolean,
-  icon?: string
+  icon?: string,
+  returnKeyType?: string 
 }
 
 const AddCaptionComponent: React.FC<InputProps> = (props) => {
 
-  const {value, onChange, placeholder, multiline, icon} = props
+  const { value, onChange, capitalize, placeholder, multiline, returnKeyType } = props
 
   return (
-    <ScrollView  className='w-full p-2 flex-1'>
-      <TextInput 
+    <View style={{ padding: 10 }} className='flex-1'>
+      <TextInput
         className='text-white text-lg pb-2 pl-2 text-base text-left'
-        placeholderTextColor={'white'}
         value={value}
-        onChangeText={(text) => {onChange(text)}}
-        autoCapitalize={'none'}
+        onChangeText={onChange}
+        autoCapitalize={capitalize}
         placeholder={placeholder}
+        placeholderTextColor={'gray'}
         multiline={multiline}
+        returnKeyType={returnKeyType}
+        blurOnSubmit={true}
       />
-    </ScrollView>
+    </View>
   )
 }
 

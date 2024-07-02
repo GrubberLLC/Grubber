@@ -3,7 +3,6 @@ import { ActivityIndicator, Dimensions, Image, TouchableOpacity, View } from 're
 import { Plus } from 'react-native-feather';
 import { launchImageLibrary } from 'react-native-image-picker';
 import ColorGuide from '../../ColorGuide';
-import { Storage } from 'aws-amplify';
 import { uploadData } from 'aws-amplify/storage';
 
 const imageWidth = Dimensions.get('window').width;

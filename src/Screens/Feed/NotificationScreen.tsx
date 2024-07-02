@@ -15,9 +15,6 @@ const NotificationScreen = () => {
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NotificationHeader />
-      <View className='p-4'>
-        <Text className='text-white text-xl font-bold'>Notifications</Text>
-      </View>
       <View className='flex-1 px-2'>
         {(userGroupRequest?.length > 0) && (
           <View className='max-h-1/2'>
@@ -56,7 +53,6 @@ const NotificationScreen = () => {
           </View>
         )}
         <View className='flex-1'>
-          <Text className='text-white text-lg font-bold p-2'>Activity:</Text>
           <ScrollView className='flex-1'>
             {/* {activityList?.length > 0 &&
               activityList.map((activity) => (

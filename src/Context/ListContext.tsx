@@ -3,6 +3,7 @@ import axios from 'axios';
 import { YELP_API_KEY } from '../API/Authorizatgion';
 import { useAuth } from './UserContext';
 import { list, uploadData } from 'aws-amplify/storage';
+import CommentedScreen from '../Screens/Profile/CommentedScreen';
 
 export function useList() {
   return useContext(ListContext);
@@ -145,7 +146,7 @@ interface ListContextType {
   handleUpdateSelectedUsers: (user: UserProfile) => void
   createList: (navigation: any) => void
   getUserLists: (user_id: string) => void
-  checkPlace: (place_id: string, list_id: string, navigation: any, list: any) => void
+  checkPlace: (place_id: string,place_name: string, list_id: string, navigation: any, list: any, listMembers: MemberProps[]) => void
   updateSearch: (text: string) => void
   updateLocation: (text: string) => void
   searchYelp: () => void
@@ -153,7 +154,7 @@ interface ListContextType {
   getListPlaces: (place_list_id: number) => void
   getAllListMembers: (list_id: number) => void
   removeMemberFromList: (member_id: number, list_id: number) => void
-  addSelectedMembers: (list_id: string, navigation: any) => void
+  addSelectedMembers: (list_id: string, list_name: string, navigation: any) => void
   addSelectedMembersList: (list_id: number, navigation: any, list: any) => void
   updateListPublic: () => void
   getSelectedUserLists: (user_id: string) => void
@@ -164,7 +165,7 @@ interface ListContextType {
 
 // the main provider
 export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
-  const {userProfile} = useAuth()
+  const {userProfile, createImageActivity} = useAuth()
 
   const [listPicture, setListPicture] = useState<PictureProps | null>(null)
   const [listName, setListName] = useState<string>('')
@@ -277,13 +278,13 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
       });
   }
 
-  const checkPlace = (place_id: string, list_id: string, navigation: any, list: any) => {
+  const checkPlace = (place_id: string, place_name: string, list_id: string, navigation: any, list: any, listMembers: MemberProps[]) => {
     let url = `https://grubberapi.com/api/v1/places/check/${place_id}`
     axios.get(url)
       .then(response => {
         response.data.length > 0
-          ? addPlaceToList(response.data[0]['place_id'], list_id, navigation, list)
-          : addPlace(place_id, list_id, navigation, list)
+          ? addPlaceToList(response.data[0]['place_id'], list_id, navigation, list, listMembers, place_name)
+          : addPlace(place_id, list_id, navigation, list, listMembers, place_name)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
@@ -291,7 +292,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
       });
   }
 
-  const addPlaceToList = (place_id: string, list_id: string, navigation: any, list: any) => {
+  const addPlaceToList = (place_id: string, list_id: string, navigation: any, list: any, listMembers: MemberProps[], place_name: string) => {
     const placeBody = {
       place_id: place_id,
       list_id: list_id
@@ -300,6 +301,18 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
     axios.post(url, placeBody)
       .then(response => {
         // setUserLists(refsponse.data)
+        listMembers.map((member) => {
+          createImageActivity(
+            member.user_id,
+            `${userProfile?.username} added ${place_name} to ${list.name}`,
+            null,
+            list_id,
+            place_id,
+            null,
+            null
+          )
+        })
+        getListPlaces(parseInt(list_id))
         navigation.navigate('ListDetailsScreen', {list: list})
       })
       .catch(error => {
@@ -308,11 +321,11 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
       });
   }
 
-  const addPlace = (place_id: string, list_id: string, navigation: any, list: any) => {
+  const addPlace = (place_id: string, list_id: string, navigation: any, list: any, listmembers: MemberProps[], place_name: string) => {
     let url = `https://grubberapi.com/api/v1/places`
     axios.post(url, selectedPlace)
       .then(response => {
-        addPlaceToList(response.data[0]['place_id'], list_id, navigation, list)
+        addPlaceToList(response.data[0]['place_id'], list_id, navigation, list, listMembers, place_name)
       })
       .catch(error => {
         console.error('Error add first member:', error);
@@ -392,7 +405,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/lists`
     axios.post(url, listData)
       .then(response => {
-        addCreatedMember(response.data[0]['list_id'], navigation)
+        addCreatedMember(response.data[0]['list_id'], listName, navigation)
       })
       .catch(error => {
         console.error('Error creating list:', error);
@@ -400,7 +413,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
       });
   }
 
-  const addCreatedMember = (list_id: string, navigation: any) => {
+  const addCreatedMember = (list_id: string, list_name: string, navigation: any) => {
     const memberData = {
       user_id: userProfile?.user_id, 
       list_id: list_id, 
@@ -411,7 +424,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/members`
     axios.post(url, memberData)
       .then(response => {
-        addSelectedMembers(list_id, navigation)
+        addSelectedMembers(list_id, list_name , navigation)
         // setCurrentlyUploading(false)
         // navigation.navigate('ListsScreen')
       })
@@ -421,7 +434,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
       });
   }
 
-  const addSelectedMembers = (list_id: string, navigation: any) => {
+  const addSelectedMembers = (list_id: string, list_name: string, navigation: any) => {
     if(selectgedUsers.length > 0){
       selectgedUsers.map((user) => {
         const memberData = {
@@ -434,6 +447,15 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
         let url = `https://grubberapi.com/api/v1/members`
         axios.post(url, memberData)
           .then(response => {
+            createImageActivity(
+              user.user_id, 
+              `${userProfile?.username} added you to ${list_name}.`,
+              null,
+              list_id,
+              null,
+              null,
+              null
+            )
           })
           .catch(error => {
             console.error('Error add first member:', error);
@@ -460,7 +482,15 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
         let url = `https://grubberapi.com/api/v1/members`
         axios.post(url, memberData)
           .then(response => {
-            
+            createImageActivity(
+              user.user_id, 
+              `${userProfile?.username} added you to ${list.name}.`,
+              null,
+              list.list_id,
+              null,
+              null,
+              null
+            )
           })
           .catch(error => {
             console.error('Error add first member:', error);

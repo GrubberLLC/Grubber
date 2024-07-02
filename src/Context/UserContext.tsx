@@ -156,7 +156,8 @@ const AuthContext = createContext<AuthContextType>({
   addPlaceToFavorites: () => {},
   getLikedPosts: () => {},
   getCommentedPosts: () => {},
-  updateUserProfile: () => {}
+  updateUserProfile: () => {},
+  createImageActivity: () => {}
 });
 
 interface AuthContextType {
@@ -231,6 +232,15 @@ interface AuthContextType {
   addPlaceToFavorites: (place_id: string) => void
   getLikedPosts: () => void
   updateUserProfile: (navigation: any) => void
+  createImageActivity: (
+    user_id: string | null, 
+    message: string | null,
+    post_id: string | null,
+    list_id: string | null,
+    place_id: string | null,
+    friend_id: string | null,
+    comment_id: string | null
+  ) => void
 }
 
 // the main provider
@@ -755,10 +765,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getLikedPosts = () => {
     let url = `https://grubberapi.com/api/v1/likes/user/${userProfile.user_id}`
-    console.log('liked posts url: ', url)
     axios.get(url)
       .then(response => {
-        console.log('liked posts: ', response.data)
         setUserLikedPosts(response.data)
       })
       .catch(error => {
@@ -769,10 +777,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getCommentedPosts = () => {
     let url = `https://grubberapi.com/api/v1/postComments/user/${userProfile.user_id}`
-    console.log('liked posts url: ', url)
     axios.get(url)
       .then(response => {
-        console.log('liked posts: ', response.data)
         setUserCommentedPosts(response.data)
       })
       .catch(error => {
@@ -822,6 +828,36 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.error(error)
     })
 
+  }
+
+  const createImageActivity = (
+    user_id: string | null, 
+    message: string | null,
+    post_id: string | null,
+    list_id: string | null,
+    place_id: string | null,
+    friend_id: string | null,
+    comment_id: string | null
+  ) => {
+    console.log('create a new activity')
+    const data = {
+      user_id,
+      message,
+      post_id,
+      list_id, 
+      place_id, 
+      friend_id, 
+      comment_id
+    }
+    let url = `https://grubberapi.com/api/v1/activity`
+    axios.post(url, data)
+      .then(response => {
+        console.log('New Activity created')
+      })
+      .catch(error => {
+        console.error('Error getting all commented posts:', error);
+        throw error;
+      });
   }
   
   return (
@@ -897,7 +933,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setFavoritesView,
         addPlaceToFavorites,
         getLikedPosts,
-        updateUserProfile
+        updateUserProfile,
+        createImageActivity
       }}
     >
       {children}
