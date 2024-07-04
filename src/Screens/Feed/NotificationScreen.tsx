@@ -7,10 +7,11 @@ import RequestProfile from '../../Components/Profiles/RequestProfile';
 import ColorGuide from '../../ColorGuide';
 import RequestFollowProfile from '../../Components/Profiles/RequestFollowProfile';
 import ListRequestProfile from '../../Components/Profiles/ListRequestProfile';
+import NotificationProfile from '../../Components/Profiles/NotificationProfile';
 // import tailwind from 'tailwind-rn'; // Ensure tailwind-rn is configured properly
 
 const NotificationScreen = () => {
-  const { userGroupRequest, pendingFollowRequests} = useAuth();
+  const { userGroupRequest, pendingFollowRequests, userActivity} = useAuth();
 
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
@@ -52,16 +53,21 @@ const NotificationScreen = () => {
             }
           </View>
         )}
-        <View className='flex-1'>
-          <ScrollView className='flex-1'>
-            {/* {activityList?.length > 0 &&
-              activityList.map((activity) => (
-                <View key={activity.user_id}>
-                  <ResultsProfile profile={activity} />
+        <ScrollView className='flex-1'>
+          {
+            userActivity && userActivity.length > 0
+              ? userActivity.map((activity: any) => {
+                  return(
+                    <View key={activity.activity_id} className='w-full px-2 py-4 border-b-2' style={{borderBottomColor: ColorGuide['bg-dark-8']}}>
+                      <NotificationProfile request={activity}/>
+                    </View>
+                  )
+                })
+              : <View className='w-full h-full flex justify-center items-center mt-36'>
+                  <Text className='text-white text-2xl font-semibold'>No Activity Found</Text>
                 </View>
-              ))} */}
-          </ScrollView>
-        </View>
+          }
+        </ScrollView>
       </View>
     </View>
   );

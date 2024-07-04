@@ -19,7 +19,7 @@ const FeedHeader = () => {
           <PlusSquare height={24} width={24} color={'white'}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {navigation.navigate('NotificationScreen')}}>
-          <Bell className='ml-3' height={24} width={24} color={'white'}/>
+          <Bell className='ml-4' height={24} width={24} color={'white'}/>
           {
             pendingFollowRequests.length > 0 || userGroupRequest.length > 0
               ? <View className='z-20 h-2.5 w-2.5 rounded-full absolute right-0 top-0' style={{backgroundColor: ColorGuide.primary}}></View>

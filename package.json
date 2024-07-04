@@ -20,7 +20,6 @@
     "aws-amplify": "^6.0.28",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
-    "firebase": "^10.12.2",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.73.6",

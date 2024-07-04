@@ -8,6 +8,7 @@ import PostDetailsScreen from '../Screens/Feed/PostDetailsScreen';
 import PlaceScreen from '../Screens/Feed/PlaceScreen';
 import NotificationScreen from '../Screens/Feed/NotificationScreen';
 import UserProfileScreen from '../Screens/Profile/UserProfileScreen';
+import ListDetailsScreen from '../Screens/Lists/ListDetailsScreen';
 
 const StackNav = createStackNavigator();
 
@@ -20,10 +21,11 @@ const FeedNavigation = () => {
       <StackNav.Screen name="NewPostScreen" component={NewPostScreen} />
       <StackNav.Screen name="NewPostPlaceScreen" component={NewPostPlaceScreen} />
       <StackNav.Screen name="ReviewPostScreen" component={ReviewPostScreen} />
-      <StackNav.Screen name="PostDetailsScreen" component={PostDetailsScreen} />
       <StackNav.Screen name="PlaceScreen" component={PlaceScreen} />
       <StackNav.Screen name="NotificationScreen" component={NotificationScreen} />
+      <StackNav.Screen name="PostDetailsScreen" component={PostDetailsScreen} />
       <StackNav.Screen name="UserProfileScreen" component={UserProfileScreen} />
+      <StackNav.Screen name="ListDetailsScreen" component={ListDetailsScreen} />
     </StackNav.Navigator>
   );
 };

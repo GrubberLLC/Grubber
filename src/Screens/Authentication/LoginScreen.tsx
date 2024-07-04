@@ -17,7 +17,6 @@ const LoginScreen = () => {
   const [keyboardMargin, setKeyboardMargin] = useState('mb-12');
 
   useEffect(() => {
-    grabCurrentUser()
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardMargin('mb-4');
     });

@@ -2,6 +2,7 @@ import React, { createContext, useContext, ReactNode, useState, ProfilerProps, u
 import { confirmResetPassword, confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
 import axios from 'axios';
 
+
 export function useAuth() {
   return useContext(AuthContext);
 }
@@ -107,7 +108,9 @@ const AuthContext = createContext<AuthContextType>({
   favoritesView: 'Posts',
   userLikedPosts: [],
   userCommentedPosts: [],
+  loading: false,
   editPost: false,
+  userActivity: [],
   profileImage: '',
   updateProfilePic: () => {},
   username: '', 
@@ -157,7 +160,8 @@ const AuthContext = createContext<AuthContextType>({
   getLikedPosts: () => {},
   getCommentedPosts: () => {},
   updateUserProfile: () => {},
-  createImageActivity: () => {}
+  createImageActivity: () => {},
+  getUserActivity: () => {}
 });
 
 interface AuthContextType {
@@ -182,7 +186,9 @@ interface AuthContextType {
   favoritesView: string
   userLikedPosts: any[]
   userCommentedPosts: any[]
+  userActivity: any[]
   editPost: boolean
+  loading: boolean
   profileImage: string,
   updateProfilePic: (picture: string) => void
   username: string, 
@@ -241,6 +247,7 @@ interface AuthContextType {
     friend_id: string | null,
     comment_id: string | null
   ) => void
+  getUserActivity: () => void
 }
 
 // the main provider
@@ -306,6 +313,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [bio, setBio] = useState<string>(userProfile?.bio)
   const [location, setLocation] = useState<string>(userProfile?.location)
   const [usPublic, setIsPublic] = useState<boolean>(userProfile?.public)
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [userActivity, setUserActivity] = useState<any>([])
 
   const updateUsername = (text: string) => {
     setUsername(text)
@@ -380,49 +391,65 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           username: user.username,
           email: user.username,
           userId: user.userId
-        })
-        setLoginLoading(false)
-        getUserProfile(user.userId)
+        });
+        getUserProfile(user.userId); // Moved inside then block
       })
       .catch((err) => {
-        console.error(err)
-      })
-  }
+        console.error(err);
+        setLoading(false); // Set loading to false on error
+      });
+  };
 
   const signInUser = (username: string, password: string) => {
-    setLoginLoading(true)
+    setLoading(true);
     signIn({username, password})
       .then((response) => {
-        grabCurrentUser()
+        grabCurrentUser();
       })
       .catch((error) => {
-        setLoginLoading(false)
-        setInvalidLogin(true)
-      })
-  }
+        console.error(error);
+        setLoading(false);
+      });
+  };
 
   const signOutUser = () => {
+    setLoading(true);
     signOut()
       .then(response => {
-        setUserAccount(null)
+        setUserAccount(null);
+        setLoading(false);
       })
       .catch(error => {
-        console.error(error)
-      })
-  }
+        console.error(error);
+        setLoading(false);
+      });
+  };
 
   const getUserProfile = (user_id: string) => {
-    let url = `https://grubberapi.com/api/v1/profiles/${user_id}`
+    let url = `https://grubberapi.com/api/v1/profiles/${user_id}`;
     axios.get(url)
       .then(response => {
-        setUserProfile(response.data[0])
-        getAllUserProfile()
+        setUserProfile(response.data[0]);
+        setLoading(false); // Set loading to false after fetching profile
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
-        throw error;
+        setLoading(false); // Set loading to false on error
       });
-  }
+  };
+
+  const getUserActivity = () => {
+    let url = `https://grubberapi.com/api/v1/activity/${userProfile.user_id}`;
+    axios.get(url)
+      .then(response => {
+        console.log('all user activity: ', JSON.stringify(response.data))
+        setUserActivity(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        setLoading(false); // Set loading to false on error
+      });
+  };
 
   const getAllUserProfile = () => {
     let url = `https://grubberapi.com/api/v1/profiles`
@@ -884,7 +911,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         favoritesView,
         userLikedPosts,
         userCommentedPosts,
+        userActivity,
         editPost,
+        loading,
         profileImage,
         updateProfilePic,
         username, 
@@ -934,7 +963,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         addPlaceToFavorites,
         getLikedPosts,
         updateUserProfile,
-        createImageActivity
+        createImageActivity,
+        getUserActivity
       }}
     >
       {children}

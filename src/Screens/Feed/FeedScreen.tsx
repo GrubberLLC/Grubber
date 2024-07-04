@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import FeedHeader from '../../Components/Headers/FeedHeader'
 import { useAuth } from '../../Context/UserContext'
@@ -41,9 +41,9 @@ const FeedScreen = () => {
   const {getUsersPosts, loggedInUsersPosts} = usePost()
   const {getUserListRequests, grabUserFollowers, 
     grabUserFollowing, getFollowingPosts, 
-    getAllFolloingRequests, followingPosts, getFavorites, getLikedPosts, getCommentedPosts} = useAuth()
+    getAllFolloingRequests, followingPosts, getFavorites, getLikedPosts, getCommentedPosts, getUserActivity} = useAuth()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if(userProfile && userProfile.user_id){
       getFollowingPosts(userProfile.user_id)
       getAllFolloingRequests(userProfile.user_id)
@@ -54,6 +54,7 @@ const FeedScreen = () => {
       getFavorites(userProfile.user_id)
       getLikedPosts()
       getCommentedPosts()
+      getUserActivity()
     }
   }, [userProfile])
 
