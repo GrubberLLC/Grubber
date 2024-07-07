@@ -51,7 +51,9 @@ const PlaceScreen = () => {
 
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
-      <PlaceHeader name={selectedPlace ? selectedPlace.name : ''} place_id={selectedPlace ? selectedPlace.place_id : ''}/>
+      <PlaceHeader name={selectedPlace ? selectedPlace.name : ''} 
+        place_id={selectedPlace ? selectedPlace.place_id : ''} 
+        yelp_url={selectedPlace ? selectedPlace.yelp_url : ''} />
       {
         loadingPlace
           ? <View className='flex-1 flex justify-center items-center'>

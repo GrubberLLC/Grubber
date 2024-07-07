@@ -8,6 +8,7 @@ import ExploreNavigation from './ExploreNavigation';
 import SearchNavigation from './SearchNavigation';
 import ListNavigation from './ListNavigation';
 import ProfileNavigation from './ProfileNavigation';
+import ColorGuide from '../ColorGuide';
 
 const Tab = createBottomTabNavigator()
 
@@ -18,7 +19,7 @@ const BottomTabNavigation = () => {
       <Tab.Navigator screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#171717', // Set your desired background color here
+          backgroundColor: ColorGuide['bg-dark'], // Set your desired background color here
           borderTopColor: 'transparent', // You can also remove the border top line
         },
         tabBarActiveTintColor: 'white', // Set active icon color

@@ -26,6 +26,7 @@ const NotificationScreen = () => {
                   {userGroupRequest.map((request) => (
                     <View key={request.user_id}>
                       <ListRequestProfile request={request} />
+                      
                     </View>
                   ))}
                 </ScrollView>
