@@ -103,7 +103,7 @@ interface PlaceTileProps {
 const screenWidth = Dimensions.get('screen').width
 const screenHeight = screenWidth * .55
 
-const PlaceYelpTileSearch: React.FC<PlaceTileProps> = ({place}) => {
+const PlaceYelpTileSearchNoBookmar: React.FC<PlaceTileProps> = ({place}) => {
 
   const {updatePostPlace, postPlace} = usePost()
   
@@ -141,10 +141,12 @@ const PlaceYelpTileSearch: React.FC<PlaceTileProps> = ({place}) => {
       <View style={{height: screenHeight, width: screenWidth}} className='bg-red-300'>
         <Image className='flex-1' source={{uri: place.image_url}}/>
         <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', height: screenHeight, width: screenWidth}} className='absolute z-5 flex flex-col justify-between p-2'>
-          <TouchableOpacity  onPress={() => {addToFavorites()}} className='w-full flex flex-row justify-end'>
-            <Bookmark height={26} width={26} color={'white'}/>
-          </TouchableOpacity>
           <View>
+          </View>
+          <View>
+            <View>
+              <Text className='text-white text-2xl font-bold mb-2'>{place.name}</Text>
+            </View>
             <View>
               <Text className='text-white text-base font-semibold'>{place.location?.address1} {place.location?.city}, {place.location?.state} {place.location?.zip_code}</Text>
             </View>
@@ -164,4 +166,4 @@ const PlaceYelpTileSearch: React.FC<PlaceTileProps> = ({place}) => {
   )
 }
 
-export default PlaceYelpTileSearch
+export default PlaceYelpTileSearchNoBookmar

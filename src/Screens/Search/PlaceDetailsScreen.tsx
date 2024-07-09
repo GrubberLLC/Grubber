@@ -14,6 +14,7 @@ import PostTileWithProfileSearch from '../../Components/Tile/PostTileWithProfile
 import ColorGuide from '../../ColorGuide';
 import PlaceHeader from '../../Components/Headers/PlaceHeader';
 import PlaceYelpTileSearch from '../../Components/Tile/PlaceYelpTileSearch';
+import PlaceYelpTileSearchNoBookmar from '../../Components/Tile/PlaceYelpTileSearchNoBookmar';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'AccessCodeScreen'>;
 
@@ -62,8 +63,7 @@ const PlaceDetailsScreen = () => {
               <ActivityIndicator size={'large'} color={'white'}/>
             </View>
           : <View className='flex-1 flex flex-start'>
-              <PlaceYelpTileSearch place={yelpResultsFull}/>
-              <Text className='text-white text-2xl font-semibold p-3'>Posts: </Text>
+              <PlaceYelpTileSearchNoBookmar place={yelpResultsFull}/>
               <ScrollView className='flex-1'>
                 {
                   yelpResultsFullPosts && yelpResultsFullPosts.length > 0

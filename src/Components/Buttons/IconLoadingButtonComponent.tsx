@@ -19,7 +19,7 @@ const IconLoadingButtonComponent: React.FC<LoadingButtonProps> = ({
 
   return (
     <View 
-      className='h-14 w-14 flex flex-row justify-center items-center ml-2 rounded-md' 
+      className='h-10 w-10 flex flex-row justify-center items-center ml-2 rounded-md' 
       style={{backgroundColor: ColorGuide.primary}}
     >
       {
@@ -28,7 +28,7 @@ const IconLoadingButtonComponent: React.FC<LoadingButtonProps> = ({
               <ActivityIndicator size={'small'} color={'white'}/>
             </View>)
           : (<TouchableOpacity onPress={onChange}>
-              {IconComponent ? <IconComponent height={30} width={30} color="white" /> : message}
+              {IconComponent ? <IconComponent height={22} width={22} color="white" /> : message}
             </TouchableOpacity>)
       }
     </View>
