@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -12,14 +12,22 @@ import { Amplify } from 'aws-amplify';
 import amplifyconfig from './src/amplifyconfiguration.json';
 import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
 import ColorGuide from './src/ColorGuide';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 Amplify.configure(amplifyconfig);
 
 function App(): React.JSX.Element {
   const { userAccount, loading, grabCurrentUser } = useAuth();
+  const [permissions, setPermissions] = useState({});
+
 
   useLayoutEffect(() => {
     grabCurrentUser()
+    const type = 'notification';
+    PushNotificationIOS.addEventListener(type, onRemoteNotification);
+    return () => {
+      PushNotificationIOS.removeEventListener(type);
+    };
   }, [])
 
   const navigateAuth = () => {
@@ -30,6 +38,42 @@ function App(): React.JSX.Element {
       </View>
     );
   };
+
+  const onRemoteNotification = (notification) => {
+    const actionIdentifier = notification.getActionIdentifier();
+
+    if (actionIdentifier === 'open') {
+      // Perform action based on open action
+    }
+
+    if (actionIdentifier === 'text') {
+      const userText = notification.getUserText();
+    }
+    const result = PushNotificationIOS.FetchResult.NoData;
+    notification.finish(result);
+  };
+
+  const setNotificationCategories = () => {
+    PushNotificationIOS.setNotificationCategories([
+      {
+        id: 'userAction',
+        actions: [
+          {id: 'open', title: 'Open', options: {foreground: true}},
+          {
+            id: 'ignore',
+            title: 'Desruptive',
+            options: {foreground: true, destructive: true},
+          },
+          {
+            id: 'text',
+            title: 'Text Input',
+            options: {foreground: true},
+            textInput: {buttonTitle: 'Send'},
+          },
+        ],
+      },
+    ]);
+  }
 
   const navigateContent = () => {
     return (
