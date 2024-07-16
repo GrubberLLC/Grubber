@@ -1,6 +1,7 @@
 import React, { createContext, useContext, ReactNode, useState, ProfilerProps, useEffect } from 'react';
 import { confirmResetPassword, confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
 import axios from 'axios';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 
 export function useAuth() {
@@ -740,6 +741,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     axios.post(url, data)
       .then(response => {
+        PushNotificationIOS.presentLocalNotification({
+          alertTitle: 'Favorites',
+          alertBody: 'A new post was added to your Favorites',
+        });
         getFavorites(userProfile.user_id)
       })
       .catch(error => {

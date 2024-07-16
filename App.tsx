@@ -20,23 +20,37 @@ function App(): React.JSX.Element {
   const { userAccount, loading, grabCurrentUser } = useAuth();
   const [permissions, setPermissions] = useState({});
 
-
   useLayoutEffect(() => {
-    grabCurrentUser()
+    grabCurrentUser();
     const type = 'notification';
     PushNotificationIOS.addEventListener(type, onRemoteNotification);
+    requestNotificationPermission();
     return () => {
       PushNotificationIOS.removeEventListener(type);
     };
-  }, [])
+  }, []);
 
-  const navigateAuth = () => {
-    return (
-      <View className={`flex-1 w-full h-full`}>
-        <StatusBar barStyle="light-content"/>
-        <AuthenticationNavigation />
-      </View>
-    );
+  useEffect(() => {
+    if (!loading) {
+      scheduleLocalNotification();
+    }
+  }, [loading]);
+
+  const requestNotificationPermission = () => {
+    PushNotificationIOS.requestPermissions().then((response) => {
+      setPermissions(response);
+    });
+  };
+
+  const scheduleLocalNotification = () => {
+    // const notificationDate = new Date();
+    // notificationDate.setSeconds(notificationDate.getSeconds() + 1); // 5 seconds delay for the notification
+
+    // PushNotificationIOS.scheduleLocalNotification({
+    //   alertTitle: 'Welcome',
+    //   alertBody: 'This is a test notification!',
+    //   fireDate: notificationDate.toISOString(),
+    // });
   };
 
   const onRemoteNotification = (notification) => {
@@ -58,22 +72,31 @@ function App(): React.JSX.Element {
       {
         id: 'userAction',
         actions: [
-          {id: 'open', title: 'Open', options: {foreground: true}},
+          { id: 'open', title: 'Open', options: { foreground: true } },
           {
             id: 'ignore',
-            title: 'Desruptive',
-            options: {foreground: true, destructive: true},
+            title: 'Disruptive',
+            options: { foreground: true, destructive: true },
           },
           {
             id: 'text',
             title: 'Text Input',
-            options: {foreground: true},
-            textInput: {buttonTitle: 'Send'},
+            options: { foreground: true },
+            textInput: { buttonTitle: 'Send' },
           },
         ],
       },
     ]);
-  }
+  };
+
+  const navigateAuth = () => {
+    return (
+      <View className={`flex-1 w-full h-full`}>
+        <StatusBar barStyle="light-content" />
+        <AuthenticationNavigation />
+      </View>
+    );
+  };
 
   const navigateContent = () => {
     return (
@@ -87,14 +110,14 @@ function App(): React.JSX.Element {
 
   if (loading) {
     return (
-      <View className='h-screen w-screen flex justify-center items-center' style={{backgroundColor: ColorGuide['bg-dark']}}>
+      <View className='h-screen w-screen flex justify-center items-center' style={{ backgroundColor: ColorGuide['bg-dark'] }}>
         <ActivityIndicator size="large" color="#e94f4e" />
       </View>
     );
   }
 
   return (
-    <View className='h-screen w-screen' style={{backgroundColor: ColorGuide['bg-dark']}}>
+    <View className='h-screen w-screen' style={{ backgroundColor: ColorGuide['bg-dark'] }}>
       {userAccount?.userId ? navigateContent() : navigateAuth()}
     </View>
   );
