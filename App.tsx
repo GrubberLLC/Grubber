@@ -13,44 +13,37 @@ import amplifyconfig from './src/amplifyconfiguration.json';
 import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
 import ColorGuide from './src/ColorGuide';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
 
 Amplify.configure(amplifyconfig);
 
 function App(): React.JSX.Element {
-  const { userAccount, loading, grabCurrentUser } = useAuth();
+  const { userAccount, loading, grabCurrentUser, userProfile } = useAuth();
   const [permissions, setPermissions] = useState({});
 
   useLayoutEffect(() => {
     grabCurrentUser();
     const type = 'notification';
     PushNotificationIOS.addEventListener(type, onRemoteNotification);
-    requestNotificationPermission();
     return () => {
       PushNotificationIOS.removeEventListener(type);
     };
   }, []);
 
   useEffect(() => {
-    if (!loading) {
-      scheduleLocalNotification();
+    if (userAccount?.userId) {
+      requestFCMToken();
     }
-  }, [loading]);
+  }, [userAccount]);
 
-  const requestNotificationPermission = () => {
-    PushNotificationIOS.requestPermissions().then((response) => {
-      setPermissions(response);
-    });
-  };
-
-  const scheduleLocalNotification = () => {
-    // const notificationDate = new Date();
-    // notificationDate.setSeconds(notificationDate.getSeconds() + 1); // 5 seconds delay for the notification
-
-    // PushNotificationIOS.scheduleLocalNotification({
-    //   alertTitle: 'Welcome',
-    //   alertBody: 'This is a test notification!',
-    //   fireDate: notificationDate.toISOString(),
-    // });
+  const navigateAuth = () => {
+    return (
+      <View className={`flex-1 w-full h-full`}>
+        <StatusBar barStyle="light-content"/>
+        <AuthenticationNavigation />
+      </View>
+    );
   };
 
   const onRemoteNotification = (notification: any) => {
@@ -72,30 +65,58 @@ function App(): React.JSX.Element {
       {
         id: 'userAction',
         actions: [
-          { id: 'open', title: 'Open', options: { foreground: true } },
+          {id: 'open', title: 'Open', options: {foreground: true}},
           {
             id: 'ignore',
             title: 'Disruptive',
-            options: { foreground: true, destructive: true },
+            options: {foreground: true, destructive: true},
           },
           {
             id: 'text',
             title: 'Text Input',
-            options: { foreground: true },
-            textInput: { buttonTitle: 'Send' },
+            options: {foreground: true},
+            textInput: {buttonTitle: 'Send'},
           },
         ],
       },
     ]);
   };
 
-  const navigateAuth = () => {
-    return (
-      <View className={`flex-1 w-full h-full`}>
-        <StatusBar barStyle="light-content" />
-        <AuthenticationNavigation />
-      </View>
-    );
+  const requestFCMToken = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        console.log('FCM Token:', fcmToken);
+        // Here, you should send the token to your server to associate it with the user
+        await storeFCMToken(fcmToken);
+      } else {
+        console.log('Failed to get FCM token');
+      }
+    }
+  };
+
+  const storeFCMToken = async (token: string) => {
+    let url = `https://grubberapi.com/api/v1/profiles/fcm-token/${userProfile.user_id}`
+    const data = {
+      token: token
+    }
+    console.log('new token saved')
+    axios.put(url, data)
+      .then(response => {
+        PushNotificationIOS.presentLocalNotification({
+          alertTitle: 'FCM Token',
+          alertBody: 'fcm token was stored',
+        });
+      })
+      .catch(error => {
+        console.error('Error storing fcm token in database:', error);
+        throw error;
+      });
   };
 
   const navigateContent = () => {
@@ -110,14 +131,14 @@ function App(): React.JSX.Element {
 
   if (loading) {
     return (
-      <View className='h-screen w-screen flex justify-center items-center' style={{ backgroundColor: ColorGuide['bg-dark'] }}>
+      <View className='h-screen w-screen flex justify-center items-center' style={{backgroundColor: ColorGuide['bg-dark']}}>
         <ActivityIndicator size="large" color="#e94f4e" />
       </View>
     );
   }
 
   return (
-    <View className='h-screen w-screen' style={{ backgroundColor: ColorGuide['bg-dark'] }}>
+    <View className='h-screen w-screen' style={{backgroundColor: ColorGuide['bg-dark']}}>
       {userAccount?.userId ? navigateContent() : navigateAuth()}
     </View>
   );

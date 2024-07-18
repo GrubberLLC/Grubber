@@ -443,7 +443,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/activity/${userProfile.user_id}`;
     axios.get(url)
       .then(response => {
-        console.log('all user activity: ', JSON.stringify(response.data))
         setUserActivity(response.data);
       })
       .catch(error => {
