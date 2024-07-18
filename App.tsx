@@ -53,7 +53,7 @@ function App(): React.JSX.Element {
     // });
   };
 
-  const onRemoteNotification = (notification) => {
+  const onRemoteNotification = (notification: any) => {
     const actionIdentifier = notification.getActionIdentifier();
 
     if (actionIdentifier === 'open') {

@@ -14,6 +14,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-Grubber-GrubberTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Grubber-GrubberTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8D52BBCC2C48D15700723772 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D52BBCB2C48D15700723772 /* GoogleService-Info.plist */; };
+		8D52BBCD2C48D15700723772 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D52BBCB2C48D15700723772 /* GoogleService-Info.plist */; };
+		8D52BBCF2C48D15F00723772 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D52BBCE2C48D15F00723772 /* GoogleService-Info.plist */; };
+		8D52BBD02C48D15F00723772 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D52BBCE2C48D15F00723772 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +47,8 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-Grubber.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Grubber.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Grubber/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Grubber-GrubberTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber-GrubberTests.release.xcconfig"; path = "Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests.release.xcconfig"; sourceTree = "<group>"; };
+		8D52BBCB2C48D15700723772 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8D52BBCE2C48D15F00723772 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8DE65D372C3355E4005E456B /* Grubber.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Grubber.entitlements; path = Grubber/Grubber.entitlements; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -87,6 +93,7 @@
 		13B07FAE1A68108700A75B9A /* Grubber */ = {
 			isa = PBXGroup;
 			children = (
+				8D52BBCB2C48D15700723772 /* GoogleService-Info.plist */,
 				8DE65D372C3355E4005E456B /* Grubber.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -118,6 +125,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				8D52BBCE2C48D15F00723772 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Grubber */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GrubberTests */,
@@ -236,6 +244,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D52BBCD2C48D15700723772 /* GoogleService-Info.plist in Resources */,
+				8D52BBD02C48D15F00723772 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,7 +254,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				8D52BBCF2C48D15F00723772 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				8D52BBCC2C48D15700723772 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,10 +604,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -663,10 +672,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

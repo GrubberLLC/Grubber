@@ -76,9 +76,9 @@ PODS:
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
   - Permission-LocationAlways (4.1.5):
-    - RNPermissions (= 4.1.5)
+    - RNPermissions (>= 3.0)
   - Permission-LocationWhenInUse (4.1.5):
-    - RNPermissions (= 4.1.5)
+    - RNPermissions (>= 3.0)
   - RCT-Folly (2022.05.16.00):
     - boost
     - DoubleConversion
@@ -1420,8 +1420,8 @@ SPEC CHECKSUMS:
   hermes-engine: 9cecf9953a681df7556b8cc9c74905de8f3293c0
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Permission-LocationAlways: 897be31a20d372c12fbd56a4e2bfe43927344d38
-  Permission-LocationWhenInUse: 9835ed0fa79b8cad0a5bf61a6e611e2b48617c70
+  Permission-LocationAlways: 92847f0f58b233d3a8b7a908441d17d2f58c26a4
+  Permission-LocationWhenInUse: 52455e7449c2ce5f2a187d4c77948d96bd43350e
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: ca1d7414aba0b27efcfa2ccd37637edb1ab77d96
   RCTTypeSafety: 678e344fb976ff98343ca61dc62e151f3a042292
