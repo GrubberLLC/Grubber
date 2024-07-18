@@ -2,7 +2,7 @@ import React, { createContext, useContext, ReactNode, useState, ProfilerProps, u
 import { confirmResetPassword, confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signOut, signUp } from 'aws-amplify/auth';
 import axios from 'axios';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-
+import messaging from '@react-native-firebase/messaging';
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -373,6 +373,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     searchForUsers(text)
   }
 
+  const requestFCMToken = async (user_id: string) => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        console.log('FCM Token:', fcmToken);
+        // Here, you should send the token to your server to associate it with the user
+        await storeFCMToken(fcmToken, user_id);
+      } else {
+        console.log('Failed to get FCM token');
+      }
+    }
+  };
+
+  const storeFCMToken = async (token: string, user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/profiles/fcm-token/${user_id}`
+    const data = {
+      token: token
+    }
+    console.log('new token saved')
+    axios.put(url, data)
+      .then(response => {
+        // PushNotificationIOS.presentLocalNotification({
+        //   alertTitle: 'FCM Token',
+        //   alertBody: 'fcm token was stored',
+        // });
+      })
+      .catch(error => {
+        console.error('Error storing fcm token in database:', error);
+        throw error;
+      });
+  };
+
   const searchForUsers = (text: string) => {
     let url = `https://grubberapi.com/api/v1/profiles/search/${text}`
     axios.get(url)
@@ -431,6 +468,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     axios.get(url)
       .then(response => {
         setUserProfile(response.data[0]);
+        requestFCMToken(user_id)
         setLoading(false); // Set loading to false after fetching profile
       })
       .catch(error => {

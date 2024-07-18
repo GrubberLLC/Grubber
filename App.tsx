@@ -31,12 +31,6 @@ function App(): React.JSX.Element {
     };
   }, []);
 
-  useEffect(() => {
-    if (userAccount?.userId) {
-      requestFCMToken();
-    }
-  }, [userAccount]);
-
   const navigateAuth = () => {
     return (
       <View className={`flex-1 w-full h-full`}>
@@ -80,43 +74,6 @@ function App(): React.JSX.Element {
         ],
       },
     ]);
-  };
-
-  const requestFCMToken = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      const fcmToken = await messaging().getToken();
-      if (fcmToken) {
-        console.log('FCM Token:', fcmToken);
-        // Here, you should send the token to your server to associate it with the user
-        await storeFCMToken(fcmToken);
-      } else {
-        console.log('Failed to get FCM token');
-      }
-    }
-  };
-
-  const storeFCMToken = async (token: string) => {
-    let url = `https://grubberapi.com/api/v1/profiles/fcm-token/${userProfile.user_id}`
-    const data = {
-      token: token
-    }
-    console.log('new token saved')
-    axios.put(url, data)
-      .then(response => {
-        PushNotificationIOS.presentLocalNotification({
-          alertTitle: 'FCM Token',
-          alertBody: 'fcm token was stored',
-        });
-      })
-      .catch(error => {
-        console.error('Error storing fcm token in database:', error);
-        throw error;
-      });
   };
 
   const navigateContent = () => {
