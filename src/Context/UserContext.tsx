@@ -3,6 +3,7 @@ import { confirmResetPassword, confirmSignUp, getCurrentUser, resendSignUpCode, 
 import axios from 'axios';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import messaging from '@react-native-firebase/messaging';
+import { Alert } from 'react-native';
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -53,6 +54,7 @@ interface SignupObject {
   profile_picture: string,
   public: boolean,
   notifications: boolean,
+  fcmtoken?: string
 }
 
 interface UserProfile {
@@ -70,6 +72,7 @@ interface UserProfile {
   followers: number;
   following: number;
   notifications: boolean;
+  fcmtoken?: string
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -110,8 +113,10 @@ const AuthContext = createContext<AuthContextType>({
   userLikedPosts: [],
   userCommentedPosts: [],
   loading: false,
+  appLoading: true, 
   editPost: false,
   userActivity: [],
+  validLogin: true,
   profileImage: '',
   updateProfilePic: () => {},
   username: '', 
@@ -129,6 +134,7 @@ const AuthContext = createContext<AuthContextType>({
   usPublic: true, 
   updatePublic: () => {},
   grabCurrentUser: () => {},
+  grabInitialCurrentUser: () => {},
   signInUser: () => {},
   signOutUser: () => {},
   handleSignupObject: () => {},
@@ -153,6 +159,7 @@ const AuthContext = createContext<AuthContextType>({
   grabSelectedUserFollowers: () => {},
   ResetUsersPasswordWithUsername: () => {},
   passwordReset: () => {},
+  passwordResetWithUsername: () => {},
   addPostToFavorites: () => {},
   getFavorites: () => {},
   removeFavorites: () => {},
@@ -190,6 +197,8 @@ interface AuthContextType {
   userActivity: any[]
   editPost: boolean
   loading: boolean
+  appLoading: boolean
+  validLogin: boolean
   profileImage: string,
   updateProfilePic: (picture: string) => void
   username: string, 
@@ -208,6 +217,7 @@ interface AuthContextType {
   updatePublic: (text: boolean) => void,
   getCommentedPosts: () => void
   grabCurrentUser: () => void;
+  grabInitialCurrentUser: () => void,
   signInUser: (username: string, password: string) => void;
   signOutUser: () => void;
   handleSignupObject: (data: SignupObject, navigation: any) => void;
@@ -232,6 +242,7 @@ interface AuthContextType {
   grabSelectedUserFollowers: (user_id: string) => void
   ResetUsersPasswordWithUsername: (username: string) => void
   passwordReset: (confirmation_code: string, password: string, navigation: any) => void
+  passwordResetWithUsername: (username: string, confirmation_code: string, password: string, navigation: any) => void
   addPostToFavorites: (place_id: number) => void
   getFavorites: (user_id: string) => void
   removeFavorites: (favorites_id: string) => void
@@ -316,8 +327,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [usPublic, setIsPublic] = useState<boolean>(userProfile?.public)
 
   const [loading, setLoading] = useState<boolean>(true);
+  const [appLoading, setAppLoading] = useState<boolean>(true)
 
   const [userActivity, setUserActivity] = useState<any>([])
+
+  const [validLogin, setValidLogin] = useState<boolean>(true)
 
   const updateUsername = (text: string) => {
     setUsername(text)
@@ -396,18 +410,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const data = {
       token: token
     }
-    console.log('new token saved')
     axios.put(url, data)
       .then(response => {
-        // PushNotificationIOS.presentLocalNotification({
-        //   alertTitle: 'FCM Token',
-        //   alertBody: 'fcm token was stored',
-        // });
+        
       })
       .catch(error => {
         console.error('Error storing fcm token in database:', error);
         throw error;
       });
+  };
+
+  const generateNotification = async (fcmToken: string, title: string, body: string, imageUrl?: string) => {
+    setTimeout(async () => {
+      const response = await axios.post(
+        `https://grubberapi.com/api/v1/notifications`,
+        {
+          fcmtoken: fcmToken,
+          title,
+          body,
+          imageUrl,
+        }
+      );
+      console.log('Notification response:', response.data);
+    }, 1000); // 5-second delay
   };
 
   const searchForUsers = (text: string) => {
@@ -430,23 +455,67 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           email: user.username,
           userId: user.userId
         });
-        getUserProfile(user.userId); // Moved inside then block
+        getUserProfile(user.userId); 
       })
       .catch((err) => {
-        console.error(err);
-        setLoading(false); // Set loading to false on error
+        console.log('error getting user: ', err)
+      });
+  };
+
+  const getUserProfile = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/profiles/${user_id}`;
+    axios.get(url)
+      .then(response => {
+        setUserProfile(response.data[0]);
+        requestFCMToken(user_id)
+        setLoginLoading(false); // Set loading to false after fetching profile
+      })
+      .catch(error => {
+        console.log('error getting profile: ', error)
+      });
+  };
+
+  const grabInitialCurrentUser = () => {
+    setAppLoading(true)
+    getCurrentUser()
+      .then((user) => {
+        setUserAccount({
+          username: user.username,
+          email: user.username,
+          userId: user.userId
+        });
+        getInitialUserProfile(user.userId); // Moved inside then block
+      })
+      .catch((err) => {
+        console.log('error getting user: ', err)
+        setAppLoading(false); // Set loading to false on error
+      });
+  };
+
+  const getInitialUserProfile = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/profiles/${user_id}`;
+    axios.get(url)
+      .then(response => {
+        setUserProfile(response.data[0]);
+        requestFCMToken(user_id)
+        setAppLoading(false); // Set loading to false after fetching profile
+      })
+      .catch(error => {
+        console.log('error getting profile: ', error)
+        setAppLoading(false); // Set loading to false on error
       });
   };
 
   const signInUser = (username: string, password: string) => {
-    setLoading(true);
+    setLoginLoading(true)
     signIn({username, password})
       .then((response) => {
         grabCurrentUser();
       })
       .catch((error) => {
-        console.error(error);
-        setLoading(false);
+        console.log('Error signing in user: ', error)
+        setLoginLoading(false)
+        setValidLogin(false)
       });
   };
 
@@ -460,20 +529,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       .catch(error => {
         console.error(error);
         setLoading(false);
-      });
-  };
-
-  const getUserProfile = (user_id: string) => {
-    let url = `https://grubberapi.com/api/v1/profiles/${user_id}`;
-    axios.get(url)
-      .then(response => {
-        setUserProfile(response.data[0]);
-        requestFCMToken(user_id)
-        setLoading(false); // Set loading to false after fetching profile
-      })
-      .catch(error => {
-        console.error('Error fetching profile:', error);
-        setLoading(false); // Set loading to false on error
       });
   };
 
@@ -517,13 +572,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       }
     }
-    // createUserProfile('afew-bras-ad-sd-gsadf', data)
     signUp(signupData)
       .then((currentUser: any) => {
         createUserProfile(currentUser.userId, data, navigation)
       })
       .catch((err: any) => {
-        console.error('Could not create user:', err);
+        console.log('Could not create user:', err);
       });
   }
 
@@ -551,8 +605,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setLoginLoading(false)
       })
       .catch(error => {
-        console.error('Error fetching profile:', error);
-        throw error;
+        console.log('Error fetching profile:', error);
       });
   }
 
@@ -565,7 +618,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       navigation.navigate('LoginScreen');
     })
     .catch(error => {
-        console.error('Error confirming sign up', error);
+        console.log('Error confirming sign up', error);
         toggleValidAccessCode()
     });
   }
@@ -577,14 +630,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     .then(response => {
     })
     .catch(error => {
-        console.error('Error confirming sign up', error);
+        console.log('Error confirming sign up', error);
     });
   }
 
   const ResetUsersPassword = (username: string, navigation: any) => {
     resetPassword({username})
       .then(response => {
-        navigation.navigate('LoginScreen')
+        navigation.navigate('ResetPasswordScreenAuth', {username: username})
       })
       .catch(error => {
         console.error(error)
@@ -778,10 +831,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     axios.post(url, data)
       .then(response => {
-        PushNotificationIOS.presentLocalNotification({
-          alertTitle: 'Favorites',
-          alertBody: 'A new post was added to your Favorites',
-        });
+        generateNotification(
+          userProfile.user_id,
+          userProfile ? userProfile.fcmtoken : '1',
+          'Favorites',
+          'A new post was added to your Favorites',
+
+        );
         getFavorites(userProfile.user_id)
       })
       .catch(error => {
@@ -899,6 +955,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   }
 
+  const passwordResetWithUsername = (username: string, confirmation_code: string, password: string, navigation: any) => {
+    confirmResetPassword({
+      username: username, 
+      confirmationCode: confirmation_code, 
+      newPassword: password
+    })
+    .then((response) => {
+      navigation.navigate('LoginScreen')
+    }).catch((error) => {
+      console.error(error)
+    })
+
+  }
+
   const createImageActivity = (
     user_id: string | null, 
     message: string | null,
@@ -956,6 +1026,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         userActivity,
         editPost,
         loading,
+        appLoading,
+        validLogin, 
         profileImage,
         updateProfilePic,
         username, 
@@ -975,6 +1047,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         getCommentedPosts,
         toggleSelectedUserProfileView,
         grabCurrentUser,
+        grabInitialCurrentUser,
         signInUser,
         signOutUser,
         handleSignupObject,
@@ -998,6 +1071,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         grabSelectedUserFollowers,
         ResetUsersPasswordWithUsername,
         passwordReset,
+        passwordResetWithUsername,
         addPostToFavorites,
         getFavorites,
         removeFavorites,

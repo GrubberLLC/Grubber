@@ -7,6 +7,7 @@ import { PostProvider } from './src/Context/PostContext';
 import { ExploreProvider } from './src/Context/ExploreContext';
 import { SearchProvider } from './src/Context/SearchContext';
 import { ListProvider } from './src/Context/ListContext';
+import messaging from '@react-native-firebase/messaging';
 
 const RootApp = () => (
   <AuthProvider>
@@ -21,5 +22,9 @@ const RootApp = () => (
     </PostProvider>
   </AuthProvider>
 );
+
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
 
 AppRegistry.registerComponent(appName, () => RootApp);

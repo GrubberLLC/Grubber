@@ -12,68 +12,79 @@ import { Amplify } from 'aws-amplify';
 import amplifyconfig from './src/amplifyconfiguration.json';
 import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
 import ColorGuide from './src/ColorGuide';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import messaging from '@react-native-firebase/messaging';
-import axios from 'axios';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotification from 'react-native-push-notification';
 
 Amplify.configure(amplifyconfig);
 
 function App(): React.JSX.Element {
-  const { userAccount, loading, grabCurrentUser, userProfile } = useAuth();
+  const { userAccount, loading, grabInitialCurrentUser, appLoading } = useAuth();
   const [permissions, setPermissions] = useState({});
 
   useLayoutEffect(() => {
-    grabCurrentUser();
-    const type = 'notification';
-    PushNotificationIOS.addEventListener(type, onRemoteNotification);
+    grabInitialCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    // Request permission for iOS
+    PushNotificationIOS.requestPermissions().then((data) => {
+      setPermissions(data);
+    });
+
+    // Create notification channel for Android
+    PushNotification.createChannel(
+      {
+        channelId: "default-channel-id",
+        channelName: "Default Channel",
+        channelDescription: "A default channel",
+        playSound: false,
+        soundName: "default",
+        importance: 4,
+        vibrate: true,
+      },
+      (created: any) => console.log(`createChannel returned '${created}'`)
+    );
+
+    // Handle foreground notifications
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      PushNotification.localNotification({
+        channelId: "default-channel-id",
+        title: remoteMessage.notification?.title,
+        message: remoteMessage.notification?.body,
+        userInfo: remoteMessage.data,
+      });
+    });
+
+    // Handle background and quit notifications
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
+
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log('Notification caused app to open from background state:', remoteMessage.notification);
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log('Notification caused app to open from quit state:', remoteMessage.notification);
+        }
+      });
+
     return () => {
-      PushNotificationIOS.removeEventListener(type);
+      unsubscribe();
     };
   }, []);
 
   const navigateAuth = () => {
     return (
       <View className={`flex-1 w-full h-full`}>
-        <StatusBar barStyle="light-content"/>
+        <StatusBar barStyle="light-content" />
         <AuthenticationNavigation />
       </View>
     );
-  };
-
-  const onRemoteNotification = (notification: any) => {
-    const actionIdentifier = notification.getActionIdentifier();
-
-    if (actionIdentifier === 'open') {
-      // Perform action based on open action
-    }
-
-    if (actionIdentifier === 'text') {
-      const userText = notification.getUserText();
-    }
-    const result = PushNotificationIOS.FetchResult.NoData;
-    notification.finish(result);
-  };
-
-  const setNotificationCategories = () => {
-    PushNotificationIOS.setNotificationCategories([
-      {
-        id: 'userAction',
-        actions: [
-          {id: 'open', title: 'Open', options: {foreground: true}},
-          {
-            id: 'ignore',
-            title: 'Disruptive',
-            options: {foreground: true, destructive: true},
-          },
-          {
-            id: 'text',
-            title: 'Text Input',
-            options: {foreground: true},
-            textInput: {buttonTitle: 'Send'},
-          },
-        ],
-      },
-    ]);
   };
 
   const navigateContent = () => {
@@ -86,16 +97,16 @@ function App(): React.JSX.Element {
     );
   };
 
-  if (loading) {
+  if (appLoading) {
     return (
-      <View className='h-screen w-screen flex justify-center items-center' style={{backgroundColor: ColorGuide['bg-dark']}}>
+      <View className='h-screen w-screen flex justify-center items-center' style={{ backgroundColor: ColorGuide['bg-dark'] }}>
         <ActivityIndicator size="large" color="#e94f4e" />
       </View>
     );
   }
 
   return (
-    <View className='h-screen w-screen' style={{backgroundColor: ColorGuide['bg-dark']}}>
+    <View className='h-screen w-screen' style={{ backgroundColor: ColorGuide['bg-dark'] }}>
       {userAccount?.userId ? navigateContent() : navigateAuth()}
     </View>
   );

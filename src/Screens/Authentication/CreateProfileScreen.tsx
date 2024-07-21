@@ -8,6 +8,7 @@ import { Plus, RefreshCcw, X } from 'react-native-feather';
 import { launchImageLibrary } from 'react-native-image-picker'; 
 import { useAuth } from '../../Context/UserContext';
 import { uploadData } from 'aws-amplify/storage';
+import ColorGuide from '../../ColorGuide';
 
 const imageWidth = Dimensions.get('window').width - 32
 
@@ -97,7 +98,7 @@ const CreateProfileScreen: React.FC = () => {
   }
 
   return (
-    <ImageBackground source={Background} resizeMode="cover" className="w-screen h-screen absolute z-0">
+    <View className="w-screen h-screen absolute z-0" style={{backgroundColor: ColorGuide['bg-dark']}}>
       <View className="w-screen h-screen bg-black opacity-60 absolute z-1"></View>
       <KeyboardAvoidingView
         className="flex-1"
@@ -110,10 +111,10 @@ const CreateProfileScreen: React.FC = () => {
               <View className="w-full flex flex-col items-start">
                 <Text className="text-white text-4xl font-semibold mb-b">Profile Picture</Text>
               </View>
-              <View className="bg-slate-300 rounded-xl mt-4" style={{height: imageWidth, width: imageWidth}}>
+              <View className="bg-slate-300 rounded-xl mt-4" style={{height: imageWidth, width: imageWidth, backgroundColor: 'grey'}}>
                 {
                   picture === null 
-                    ? <TouchableOpacity onPress={() => {selectImage()}} className={`w-full h-full bg-slate-500 rounded-xl flex justify-center items-center`}><Plus  height={32} width={32} color={'black'}/></TouchableOpacity>
+                    ? <TouchableOpacity onPress={() => {selectImage()}} className={`w-full h-full bg-slate-500 rounded-xl flex justify-center items-center`}><Plus  height={32} width={32} color={'white'}/></TouchableOpacity>
                     : <View className="flex w-full h-full rounded-xl overflow-hidden">
                         <Image source={{uri: picture.uri}} className="w-full h-full flex flex-row justify-between" />
                       </View>
@@ -141,7 +142,7 @@ const CreateProfileScreen: React.FC = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </ImageBackground>
+    </View>
   )
 }
 

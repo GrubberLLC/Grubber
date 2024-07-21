@@ -13,10 +13,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		88BB807E6E99F833A9E4CA56 /* Pods_Grubber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05C8105CAC8C4EE1F502896D /* Pods_Grubber.framework */; };
-		8D52BBCC2C48D15700723772 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D52BBCB2C48D15700723772 /* GoogleService-Info.plist */; };
-		8D52BBCD2C48D15700723772 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D52BBCB2C48D15700723772 /* GoogleService-Info.plist */; };
-		8D52BBCF2C48D15F00723772 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D52BBCE2C48D15F00723772 /* GoogleService-Info.plist */; };
-		8D52BBD02C48D15F00723772 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D52BBCE2C48D15F00723772 /* GoogleService-Info.plist */; };
+		8D42874F2C4AB219002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D42874E2C4AB219002C6347 /* GoogleService-Info.plist */; };
+		8D4287502C4AB219002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D42874E2C4AB219002C6347 /* GoogleService-Info.plist */; };
+		8D4287522C4AB21E002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */; };
+		8D4287532C4AB21E002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */; };
 		92E59B88A944CE86D12694AA /* Pods_Grubber_GrubberTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0251AA27023718DEC3A2BEC7 /* Pods_Grubber_GrubberTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,8 +47,8 @@
 		5B7EB9410499542E8C5724F5 /* Pods-Grubber-GrubberTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber-GrubberTests.debug.xcconfig"; path = "Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Grubber/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Grubber-GrubberTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber-GrubberTests.release.xcconfig"; path = "Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests.release.xcconfig"; sourceTree = "<group>"; };
-		8D52BBCB2C48D15700723772 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		8D52BBCE2C48D15F00723772 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8D42874E2C4AB219002C6347 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8DE65D372C3355E4005E456B /* Grubber.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Grubber.entitlements; path = Grubber/Grubber.entitlements; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -93,7 +93,7 @@
 		13B07FAE1A68108700A75B9A /* Grubber */ = {
 			isa = PBXGroup;
 			children = (
-				8D52BBCB2C48D15700723772 /* GoogleService-Info.plist */,
+				8D42874E2C4AB219002C6347 /* GoogleService-Info.plist */,
 				8DE65D372C3355E4005E456B /* Grubber.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -125,7 +125,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				8D52BBCE2C48D15F00723772 /* GoogleService-Info.plist */,
+				8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Grubber */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GrubberTests */,
@@ -245,8 +245,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D52BBCD2C48D15700723772 /* GoogleService-Info.plist in Resources */,
-				8D52BBD02C48D15F00723772 /* GoogleService-Info.plist in Resources */,
+				8D4287502C4AB219002C6347 /* GoogleService-Info.plist in Resources */,
+				8D4287532C4AB21E002C6347 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,9 +255,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				8D52BBCF2C48D15F00723772 /* GoogleService-Info.plist in Resources */,
+				8D4287522C4AB21E002C6347 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				8D52BBCC2C48D15700723772 /* GoogleService-Info.plist in Resources */,
+				8D42874F2C4AB219002C6347 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,7 +513,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.grubberllc.grubber;
+				PRODUCT_BUNDLE_IDENTIFIER = app.grubber.grubber;
 				PRODUCT_NAME = Grubber;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -542,7 +542,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.grubberllc.grubber;
+				PRODUCT_BUNDLE_IDENTIFIER = app.grubber.grubber;
 				PRODUCT_NAME = Grubber;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

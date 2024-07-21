@@ -8,6 +8,7 @@ import AccessCodeScreen from '../Screens/Authentication/AccessCodeScreen';
 import ForgotScreen from '../Screens/Authentication/ForgotScreen';
 import ProfileScreen from '../Screens/Authentication/ProfileScreen';
 import { RootStackParamList } from '../Types/NavigationTypes';
+import ResetPasswordScreen from '../Screens/Authentication/ResetPasswordScreen';
 
 const StackNav = createStackNavigator<RootStackParamList>();
 
@@ -25,6 +26,7 @@ const AuthenticationNavigation = () => {
         <StackNav.Screen name="CreateProfileScreen" component={CreateProfileScreen} />
         <StackNav.Screen name="AccessCodeScreen" component={AccessCodeScreen} />
         <StackNav.Screen name="ForgotScreen" component={ForgotScreen} />
+        <StackNav.Screen name="ResetPasswordScreenAuth" component={ResetPasswordScreen} />
       </StackNav.Navigator>
     </NavigationContainer>
   );

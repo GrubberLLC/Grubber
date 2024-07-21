@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Background from '../../Assets/background2.jpg'
+import Background from '../../Assets/background.jpg'
+import Logo from '../../Assets/full-logo-red.png'
 import LoginButtonComponent from '../../Components/Auth/LoginButtonComponent';
 import AuthInputComponent from '../../Components/Auth/AuthInputComponent';
 import { useAuth } from '../../Context/UserContext';
@@ -10,7 +11,7 @@ import ColorGuide from '../../ColorGuide';
 
 const LoginScreen = () => {
   const navigation = useNavigation()
-  const { grabCurrentUser, signInUser , loginLoading} = useAuth()
+  const { signInUser , loginLoading, validLogin } = useAuth()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -52,7 +53,7 @@ const LoginScreen = () => {
   }
   
   return (
-    <ImageBackground source={Background} resizeMode="cover" className="w-screen h-screen absolute z-0" style={{backgroundColor: ColorGuide['bg-dark']}}>
+    <View className="w-screen h-screen absolute z-0" style={{backgroundColor: ColorGuide['bg-dark']}}>
       <View className="w-screen h-screen bg-black opacity-60 absolute z-1"></View>
       <KeyboardAvoidingView
         className="flex-1"
@@ -60,15 +61,22 @@ const LoginScreen = () => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       >
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View className="flex-1 justify-between items-center pt-24">
+          <View className="flex-1 justify-between items-center pt-28">
             <View className="items-center">
-              <Text className="text-4xl text-white font-bold">Grubber</Text>
-              <Text className="text-2xl text-white font-semibold">Discover | Savor | Enjoy</Text>
+              <View className='h-12 w-56 mb-3 flex flex-row justify-center'>
+                <Image className='w-full h-full' source={Logo}/>
+              </View>
+              <Text className="text-2xl text-white font-semibold">Discover | Share | Enjoy</Text>
             </View>
             <View className={`w-11/12 items-center ${keyboardMargin}`}>
               <View className="w-full flex flex-col items-start">
-                <Text className="text-white text-4xl font-semibold mb-6">Login</Text>
+                <Text className="text-white text-4xl font-semibold mb-4">Login</Text>
               </View>
+              {
+                validLogin 
+                  ? null
+                  : <View className='mb-2'><Text className='text-white font-bold text-base'>Username / Password don't match any record!</Text></View>
+              }
               <AuthInputComponent 
                 label='User'
                 value={username}
@@ -85,7 +93,7 @@ const LoginScreen = () => {
                 placeholder={'*******'}
                 multiline={false}
               />
-              <View className='flex flex-row w-full justify-end mt-4'>
+              <View className='flex flex-row w-full justify-end mt-2'>
                 <TouchableOpacity onPress={() => {navigation.navigate('ForgotScreen')}}>
                   <Text className="text-white text-lg font-bold ml-1">
                     Forgot Password?
@@ -107,7 +115,7 @@ const LoginScreen = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </ImageBackground>
+    </View>
   );
 };
 

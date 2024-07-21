@@ -5,6 +5,7 @@ import LoginButtonComponent from '../../Components/Auth/LoginButtonComponent';
 import AuthInputComponent from '../../Components/Auth/AuthInputComponent';
 import { useAuth } from '../../Context/UserContext';
 import { useNavigation } from '@react-navigation/native';
+import ColorGuide from '../../ColorGuide';
 
 const SignupScreen = () => {
   const navigation = useNavigation()
@@ -60,6 +61,28 @@ const SignupScreen = () => {
     setVerify(text)
   }
   
+
+  function validateUsername(username: string) {
+    const usernameRegex = /^[a-zA-Z0-9_-]{1,24}$/;
+    const validUsername = usernameRegex.test(username)
+    if(validUsername){
+      setValidusername(true)
+    } else {
+      setValidusername(false)
+    } 
+  }
+
+  function validateEmail(email: string) {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    const validEmail = emailRegex.test(email)
+
+    if (validEmail) {
+      setValidEmail(true)
+    } else {
+      setValidEmail(false)
+    }
+  }
+
   function isValidPassword(password: string) {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
@@ -82,7 +105,7 @@ const SignupScreen = () => {
   }
   
   return (
-    <ImageBackground source={Background} resizeMode="cover" className="w-screen h-screen absolute z-0">
+    <View className="w-screen h-screen absolute z-0" style={{backgroundColor: ColorGuide['bg-dark']}}>
       <View className="w-screen h-screen bg-black opacity-60 absolute z-1"></View>
       <KeyboardAvoidingView
         className="flex-1"
@@ -162,7 +185,7 @@ const SignupScreen = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </ImageBackground>
+    </View>
   );
 };
 

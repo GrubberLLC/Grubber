@@ -33,7 +33,7 @@ const AuthInputComponent: React.FC<LoginInputProps> = (props) => {
         value={value}
         onChangeText={(text) => {handleFunction(text)}}
         multiline={multiline ? true : false}
-        className="flex-1 mr-2 border-b-2 border-b-white text-white text-lg mb-2 pb-1 font-semibold"
+        className="flex-1 mr-2 border-b-2 border-b-white text-white text-lg mb-2 font-semibold"
         style={{ backgroundColor: 'rgba(108, 122, 137, 0)' }}
       />
     </View>

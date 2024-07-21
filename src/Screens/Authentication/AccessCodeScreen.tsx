@@ -6,6 +6,7 @@ import AuthInputComponent from '../../Components/Auth/AuthInputComponent';
 import { useAuth } from '../../Context/UserContext';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../Types/NavigationTypes';
+import ColorGuide from '../../ColorGuide';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'AccessCodeScreen'>;
 
@@ -29,7 +30,7 @@ const AccessCodeScreen = () => {
   }
 
   return (
-    <ImageBackground source={Background} resizeMode="cover" className="w-screen h-screen absolute z-0">
+    <View className="w-screen h-screen absolute z-0" style={{backgroundColor: ColorGuide['bg-dark']}}>
       <View className="w-screen h-screen bg-black opacity-60 absolute z-1"></View>
       <KeyboardAvoidingView
         className="flex-1"
@@ -71,7 +72,7 @@ const AccessCodeScreen = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </ImageBackground>
+    </View>
   )
 }
 
