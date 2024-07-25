@@ -90,7 +90,7 @@ const EditPostScreen = () => {
   }
 
   const createComment = () => {
-    createPostComment(params.post.post_id, newComment, userProfile?.user_id)
+    createPostComment(params.post, newComment, userProfile?.user_id, userProfile?.fcmtoken)
     setNewComment('')
   }
 

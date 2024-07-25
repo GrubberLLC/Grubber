@@ -169,7 +169,8 @@ const AuthContext = createContext<AuthContextType>({
   getCommentedPosts: () => {},
   updateUserProfile: () => {},
   createImageActivity: () => {},
-  getUserActivity: () => {}
+  getUserActivity: () => {},
+  generateNotification: () => {}
 });
 
 interface AuthContextType {
@@ -226,7 +227,7 @@ interface AuthContextType {
   ResetUsersPassword: (username: string, navigation: any) => void;
   handleProfileViewChange: (text: string) => void;
   getUserListRequests: (user_id: string) => void
-  acceptListRequest: (member_id: number, user_id: string) => void
+  acceptListRequest: (member_id: number, user_id: string, request: any) => void
   rejectListRequest: (member_id: number, user_id: string) => void
   getSelectedUserProfile: (user_id: string) => void
   toggleSelectedUserProfileView: (text: string) => void
@@ -237,7 +238,7 @@ interface AuthContextType {
   removeFollowing: (friend_id: number) => void
   getFollowingPosts: (user_id: string) => void
   getAllFolloingRequests: (user_id: string) => void
-  acceptFollowingRequest: (friend_id: number) => void
+  acceptFollowingRequest: (friend_id: number, request: any) => void
   grabSelectedUserFollowing: (user_id: string) => void
   grabSelectedUserFollowers: (user_id: string) => void
   ResetUsersPasswordWithUsername: (username: string) => void
@@ -260,6 +261,7 @@ interface AuthContextType {
     comment_id: string | null
   ) => void
   getUserActivity: () => void
+  generateNotification: (fcmToken: string, title: string, body: string, imageUrl?: string) => void
 }
 
 // the main provider
@@ -387,6 +389,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     searchForUsers(text)
   }
 
+  useEffect(() => {
+    getAllUserProfile()
+  }, [])
+
   const requestFCMToken = async (user_id: string) => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -421,6 +427,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const generateNotification = async (fcmToken: string, title: string, body: string, imageUrl?: string) => {
+    console.log('fcm token: ', fcmToken)
+    console.log('title: ', title)
+    console.log('body: ', body)
+    console.log('imageUrl: ', imageUrl)
     setTimeout(async () => {
       const response = await axios.post(
         `https://grubberapi.com/api/v1/notifications`,
@@ -677,29 +687,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   }
 
-  const getUserListRequests = (user_id: string) => {
-    let url = `https://grubberapi.com/api/v1/members/request/${user_id}`
-    axios.get(url)
-      .then(response => {
-        setUserGroupRequest(response.data)
-      })
-      .catch(error => {
-        console.error('Error fetching profile:', error);
-        throw error;
-      });
-  }
-
-  const acceptListRequest = (member_id: number, user_id: string) => {
-    let url = `https://grubberapi.com/api/v1/members/request/accept/${member_id}`
+  const acceptListRequest = (member_id: number, user_id: string, request: any) => {
+    console.log('acceptListRequest started');
+    let url = `https://grubberapi.com/api/v1/members/request/accept/${member_id}`;
+    
     axios.put(url)
       .then(response => {
-        getUserListRequests(user_id)
+        generateNotification(request.fcmtoken, 'List Request',  `${userProfile.username} accepted your request to join ${request.name}`, request.picture);
+        setUserGroupRequest([])
+        setTimeout(() => {
+          getUserListRequests(userProfile.user_id);
+        }, 100);
       })
       .catch(error => {
-        console.error('Error fetching profile:', error);
-        throw error;
+        console.error('Error in acceptListRequest:', error);
       });
-  }
+  };
+  
+  const getUserListRequests = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/members/request/${user_id}`;
+    
+    axios.get(url)
+      .then(response => {
+        setUserGroupRequest(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching list requests:', error);
+      });
+  };
+  
 
   const rejectListRequest = (member_id: number, user_id: string) => {
     let url = `https://grubberapi.com/api/v1/members/request/reject/${member_id}`
@@ -735,8 +751,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/friends`
     axios.post(url, data)
       .then(response => {
+        generateNotification(user.fcmtoken, 'New Follower', user.public ? `${userProfile.username} started following you.` : `${userProfile.username} sent you a friend request`, userProfile.profile_picture)
         grabUserFollowers(userProfile.user_id)
-        grabUserFollowing(userProfile.user_id)
+        grabUserFollowing(userProfile.user_id) 
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
@@ -758,10 +775,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   }
 
-  const acceptFollowingRequest = (friend_id: number) => {
+  const acceptFollowingRequest = (friend_id: number, request: any) => {
+    console.log(request)
     let url = `https://grubberapi.com/api/v1/friends/accept/${friend_id}`
     axios.put(url)
       .then(response => {
+        generateNotification(request.fcmtoken, 'Follow Request', `${userProfile.username} accepted your friend request`, userProfile.profile_picture)
         grabUserFollowers(userProfile.user_id)
         grabUserFollowing(userProfile.user_id)
         getAllFolloingRequests(userProfile.user_id)
@@ -821,7 +840,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   }
 
-  const addPostToFavorites = (post_id: number) => {
+  const addPostToFavorites = (fcmtoken: string, post_id: number) => {
     let url = `https://grubberapi.com/api/v1/favorites`
     const data = {
       user_id: userProfile.user_id,
@@ -831,13 +850,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     axios.post(url, data)
       .then(response => {
-        generateNotification(
-          userProfile.user_id,
-          userProfile ? userProfile.fcmtoken : '1',
-          'Favorites',
-          'A new post was added to your Favorites',
-
-        );
         getFavorites(userProfile.user_id)
       })
       .catch(error => {
@@ -1080,7 +1092,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         getLikedPosts,
         updateUserProfile,
         createImageActivity,
-        getUserActivity
+        getUserActivity,
+        generateNotification
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import NotificationHeader from '../../Components/Headers/NotificationHeader';
 import { useAuth } from '../../Context/UserContext';
@@ -8,15 +8,41 @@ import ColorGuide from '../../ColorGuide';
 import RequestFollowProfile from '../../Components/Profiles/RequestFollowProfile';
 import ListRequestProfile from '../../Components/Profiles/ListRequestProfile';
 import NotificationProfile from '../../Components/Profiles/NotificationProfile';
+import { RefreshControl } from 'react-native';
+
 // import tailwind from 'tailwind-rn'; // Ensure tailwind-rn is configured properly
 
 const NotificationScreen = () => {
-  const { userGroupRequest, pendingFollowRequests, userActivity} = useAuth();
+  const { userGroupRequest, pendingFollowRequests, userActivity, getAllFolloingRequests, userProfile, getUserListRequests} = useAuth();
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    console.log('refreshing');
+    Promise.all([
+      getAllFolloingRequests(userProfile?.user_id),
+      getUserListRequests(userProfile.user_id)
+    ])
+    .then(() => {
+      setRefreshing(false);
+    })
+    .catch((error) => {
+      console.error('Error refreshing:', error);
+      setRefreshing(false);
+    });
+  }, [userProfile?.user_id]);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    console.log('number of group requests: ', userGroupRequest.length)
+  }, [userGroupRequest])
 
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <NotificationHeader />
-      <View className='flex-1 px-2'>
+      <View 
+        className='flex-1 px-2'
+      >
         {(userGroupRequest?.length > 0) && (
           <View className='max-h-1/2'>
             {userGroupRequest?.length > 0 && (
@@ -26,7 +52,6 @@ const NotificationScreen = () => {
                   {userGroupRequest.map((request) => (
                     <View key={request.user_id}>
                       <ListRequestProfile request={request} />
-                      
                     </View>
                   ))}
                 </ScrollView>
@@ -54,7 +79,17 @@ const NotificationScreen = () => {
             }
           </View>
         )}
-        <ScrollView className='flex-1'>
+        <ScrollView 
+          className='flex-1'
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[ColorGuide['primary']]}
+              tintColor={ColorGuide['primary']}
+            />
+          }
+        >
           {
             userActivity && userActivity.length > 0
               ? userActivity.map((activity: any) => {

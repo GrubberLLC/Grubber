@@ -108,7 +108,7 @@ const PostDetailsScreen = () => {
       null,
       null
     );
-    createPostComment(params.post.post_id, newComment, userProfile?.user_id);
+    createPostComment(params.post, newComment, userProfile?.user_id, params.post.fcmtoken);
     setNewComment('');
   };
 

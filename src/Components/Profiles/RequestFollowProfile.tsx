@@ -31,6 +31,8 @@ interface PostProfileProps {
 
 const RequestFollowProfile: React.FC<PostProfileProps> = ({request}) => {
 
+  // console.log('this is the full request: ', request)
+
   const {acceptFollowingRequest, removeFollowing} = useAuth()
 
   return (
@@ -45,7 +47,7 @@ const RequestFollowProfile: React.FC<PostProfileProps> = ({request}) => {
       <TouchableOpacity
         className="p-1 rounded-full mr-2"
         style={{backgroundColor: ColorGuide['bg-dark-7']}}
-        onPress={() => acceptFollowingRequest(request.friends_id)}
+        onPress={() => acceptFollowingRequest(request.friends_id, request)}
       >
         <Check height={24} width={24} color={'white'} className=''/>
       </TouchableOpacity>

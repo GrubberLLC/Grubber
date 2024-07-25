@@ -49,7 +49,8 @@ interface SinglePostProps {
   profile_id: string,
   profile_picture: string,
   public: boolean,
-  username: string
+  username: string,
+  fcmtoken: string
 }
 
 interface LikesProps {
@@ -65,10 +66,9 @@ interface PostTileProps {
 
 const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
   const navigation = useNavigation()
-  const {userProfile, createImageActivity} = useAuth()
+  const {userProfile, createImageActivity, generateNotification} = useAuth()
 
   const [postLikes, setPostLikes] = useState<LikesProps[]>([])
-
 
   let profileData = {
     bio: post.bio,
@@ -111,6 +111,8 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
           null,
           null
         )
+        console.log('requesting new notification fcmtoken: ', userProfile?.fcmtoken)
+        generateNotification(post.fcmtoken, 'Liked Post', `${userProfile?.username} liked your post.`, post.media)
         getAllPostLikes(post_id)
       })
       .catch(error => {

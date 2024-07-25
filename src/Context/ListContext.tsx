@@ -165,7 +165,7 @@ interface ListContextType {
 
 // the main provider
 export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
-  const {userProfile, createImageActivity} = useAuth()
+  const {userProfile, createImageActivity, generateNotification} = useAuth()
 
   const [listPicture, setListPicture] = useState<PictureProps | null>(null)
   const [listName, setListName] = useState<string>('')
@@ -312,6 +312,11 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
             null
           )
         })
+        listMembers.map((member) => {
+          if(member.user_id != userProfile?.user_id){
+            generateNotification(member.fcmtoken, 'List Update', `${place_name} was added to ${list.name}`, list.image)
+          }
+        })
         getListPlaces(parseInt(list_id))
         navigation.navigate('ListDetailsScreen', {list: list})
       })
@@ -447,6 +452,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
         let url = `https://grubberapi.com/api/v1/members`
         axios.post(url, memberData)
           .then(response => {
+            generateNotification(user?.fcmtoken, 'New List', `${userProfile?.username} invites you to join ${list.name}`, list.image)
             createImageActivity(
               user.user_id, 
               `${userProfile?.username} added you to ${list_name}.`,
@@ -470,6 +476,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
   }
 
   const addSelectedMembersList = (list_id: number, navigation: any, list: any) => {
+    console.log('list to add member: ', list)
     if(selectgedUsers.length > 0){
       selectgedUsers.map((user) => {
         const memberData = {
@@ -482,6 +489,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
         let url = `https://grubberapi.com/api/v1/members`
         axios.post(url, memberData)
           .then(response => {
+            generateNotification(user?.fcmtoken, 'New List', `${userProfile?.username} invites you to join ${list.name}`, list.image)
             createImageActivity(
               user.user_id, 
               `${userProfile?.username} added you to ${list.name}.`,
@@ -493,7 +501,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
             )
           })
           .catch(error => {
-            console.error('Error add first member:', error);
+            console.error('Error add list member:', error);
             throw error;
           });
       })

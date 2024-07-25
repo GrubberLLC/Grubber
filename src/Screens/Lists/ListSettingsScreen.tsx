@@ -68,10 +68,11 @@ interface UserProfile {
   followers: number;
   following: number;
   notifications: boolean;
+  fcmtoken: string
 }
 
 const ListSettingsScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const route = useRoute<ProfileScreenRouteProp>();
   const params = route.params;
 
@@ -85,23 +86,24 @@ const ListSettingsScreen = () => {
     getAllListMembers(params.list.list_id);
   }, [params.list.list_id]);
 
-  useEffect(() => {
-    const filteredProfiles = allProfiles.filter(
-      (profile) => !listMembers.some((member) => member.user_id === profile.user_id)
-    );
-    setUserList(filteredProfiles);
-  }, [allProfiles, listMembers]);
+  // useEffect(() => {
+  //   const filteredProfiles = allProfiles.filter(
+  //     (profile) => !listMembers.some((member) => member.user_id === profile.user_id)
+  //   );
+  //   setUserList(filteredProfiles);
+  // }, [allProfiles, listMembers]);
 
   const updateSearch = (text: string) => {
     setSearch(text);
+    setUserList([])
     filterUserByUsername(text);
   };
 
   const filterUserByUsername = (text: string) => {
-    const filteredUsers = allProfiles
-      .filter((profile) => profile.username.toLowerCase().includes(text.toLowerCase()))
-      .filter((profile) => !listMembers.some((member) => member.user_id === profile.user_id));
-    setUserList(filteredUsers);
+    if (text.length > 0) {
+      const filteredUsers = allProfiles.filter((profile) => profile.username.toLowerCase().includes(text.toLowerCase()));
+      setUserList(filteredUsers);
+    }
   };
 
   return (

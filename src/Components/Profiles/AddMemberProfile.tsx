@@ -46,8 +46,8 @@ const AddMemberProfile: React.FC<PostProfileProps> = ({profile, handleFunction})
         className="rounded-md overflow-hidden"
         onPress={() => handleUpdateSelectedUsers(profile)}
       >
-        <Text className={`text-white p-2 font-bold ${isSelected ? ColorGuide['bg-dark-7'] : ColorGuide.primary}`}>
-          {isSelected ? 'Remove' : 'Select'}
+        <Text className={`text-white p-2 font-bold`} style={{backgroundColor: isSelected ? ColorGuide['bg-dark-7'] : ColorGuide.primary }}>
+          {isSelected ? 'Remove' : 'Add'}
         </Text>
       </TouchableOpacity>
     </View>

@@ -49,9 +49,9 @@ const BottomTabNavigation = () => {
             ),
           }}/>
         <Tab.Screen
-          name="Explore"
-          key="Explore"
-          component={ExploreNavigation}
+          name="Lists"
+          key="Lists"
+          component={ListNavigation}
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
@@ -61,11 +61,11 @@ const BottomTabNavigation = () => {
                   focused 
                     ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
-                        <Globe style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <List style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                     : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
-                        <Globe style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <List style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                 }
               </View>
@@ -95,9 +95,9 @@ const BottomTabNavigation = () => {
             ),
           }}/>
         <Tab.Screen
-          name="Lists"
-          key="Lists"
-          component={ListNavigation}
+          name="Explore"
+          key="Explore"
+          component={ExploreNavigation}
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
@@ -107,11 +107,11 @@ const BottomTabNavigation = () => {
                   focused 
                     ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
-                        <List style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Globe style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                     : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
-                        <List style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Globe style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                 }
               </View>

@@ -165,7 +165,7 @@ interface PostContextType {
   createPost: (navigation: any, user_id: string) => void;
   getUsersPosts: (user_id: string) => void;
   handleSetSearchingPlaces: () => void;
-  createPostComment: (post_id: string, comment: string, user_id: string) => void;
+  createPostComment: (post: any, comment: string, user_id: string, fcmtoken: string) => void;
   grabPostComments: (post_id: string) => void;
   deletePost: (post_id: string, navigation: any) => void;
   getPlaceById: (place_id: string) => void;
@@ -178,7 +178,7 @@ interface PostContextType {
 
 // the main provider
 export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
-  const {userProfile} = useAuth()
+  const {userProfile, generateNotification} = useAuth()
   
   const [postPicture, setPostPicture] = useState<PictureProps | null>(null)
   const [postPictureUrl, setPostPictureUrl] = useState()
@@ -407,18 +407,20 @@ export const PostProvider: React.FC<PostProviderProps> = ({ children }) => {
     }
   }
 
-  const createPostComment = (post_id: string, comment: string, user_id: string) => {
+  const createPostComment = (post: any, comment: string, user_id: string, fcmtoken: string) => {
+    console.log('post to create: ', post)
     setCreatePostLoading(true)
     const newData = {
-      post_id: post_id,
+      post_id: post.post_id,
       comment: comment,
       user_id: user_id,
     }
     let url = `https://grubberapi.com/api/v1/postComments`
     axios.post(url, newData)
       .then(response => {
-        grabPostComments(post_id)
+        grabPostComments(post.post_id)
         setCreatePostLoading(false)
+        generateNotification(fcmtoken, 'New Comment', `${userProfile?.username} commented on your post`, post.image)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);

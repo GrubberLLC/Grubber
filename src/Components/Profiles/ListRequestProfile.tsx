@@ -31,7 +31,8 @@ interface PostProfileProps {
 
 const ListRequestProfile: React.FC<PostProfileProps> = ({request}) => {
 
-  const {acceptListRequest, rejectListRequest} = useAuth()
+  const {acceptListRequest, rejectListRequest, generateNotification, userProfile} = useAuth()
+
 
   return (
     <View className='w-full flex flex-row items-center p-1 py-3 border-y-2 border-y-neutral-800'>
@@ -45,7 +46,7 @@ const ListRequestProfile: React.FC<PostProfileProps> = ({request}) => {
       <TouchableOpacity
         className="p-1 rounded-full mr-2"
         style={{backgroundColor: ColorGuide['bg-dark-7']}}
-        onPress={() => acceptListRequest(request.member_id, request.user_id)}
+        onPress={() => acceptListRequest(request.member_id, userProfile.user_id, request)}
       >
         <Check height={24} width={24} color={'white'} className=''/>
       </TouchableOpacity>

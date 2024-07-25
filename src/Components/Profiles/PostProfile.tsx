@@ -23,20 +23,17 @@ interface ProfileProps {
   username: string
 }
 
-
 interface PostProfileProps {
   profile: ProfileProps | null
 }
 
 const PostProfile: React.FC<PostProfileProps> = ({profile}) => {
-
   const navigation = useNavigation()
 
   const redirectToListDetailScreen = (user_id: any) => {
     navigation.navigate('UserProfileScreen', {user_id: user_id})
   }
   
-
   return (
     <TouchableOpacity onPress={() => {redirectToListDetailScreen(profile?.user_id)}} className='w-full flex flex-row items-center px-2 py-3.5'>
       <View className='h-10 w-10 rounded-full overflow-hidden' style={{backgroundColor: ColorGuide['bg-dark-6']}}>
