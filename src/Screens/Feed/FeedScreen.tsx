@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { RefreshControl, Text, TouchableOpacity, View } from 'react-native'
 import FeedHeader from '../../Components/Headers/FeedHeader'
 import { useAuth } from '../../Context/UserContext'
 import { usePost } from '../../Context/PostContext'
@@ -58,12 +58,41 @@ const FeedScreen = () => {
     }
   }, [userProfile])
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    console.log('refreshing');
+    Promise.all([
+      getFollowingPosts(userProfile.user_id),
+      getFavorites(userProfile.user_id),
+      getLikedPosts()
+    ])
+    .then(() => {
+      setRefreshing(false);
+    })
+    .catch((error) => {
+      console.error('Error refreshing:', error);
+      setRefreshing(false);
+    });
+  }, [userProfile?.user_id]);
+
+  const [refreshing, setRefreshing] = useState(false);
+
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <FeedHeader />
       {
         followingPosts && followingPosts.length > 0
-          ? <ScrollView className='flex-1'>
+          ? <ScrollView 
+              className='flex-1'
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={[ColorGuide['primary']]}
+                  tintColor={ColorGuide['primary']}
+                />
+              }
+              >
               {
                 followingPosts.map((singlePost: SinglePostProps) => {
                   return(
