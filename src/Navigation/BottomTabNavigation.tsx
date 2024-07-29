@@ -1,7 +1,7 @@
 import React from 'react'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import {Activity, AlignCenter, Globe, Grid, Heart, Layers, List, Search, User} from 'react-native-feather';
+import {Activity, AlignCenter, Bookmark, Globe, Grid, Heart, Home, Layers, List, Search, User} from 'react-native-feather';
 import { View } from 'react-native';
 import FeedNavigation from './FeedNavigation';
 import ExploreNavigation from './ExploreNavigation';
@@ -9,6 +9,7 @@ import SearchNavigation from './SearchNavigation';
 import ListNavigation from './ListNavigation';
 import ProfileNavigation from './ProfileNavigation';
 import ColorGuide from '../ColorGuide';
+import FavoritesNavigation from './FavoritesNavgation';
 
 const Tab = createBottomTabNavigator()
 
@@ -84,11 +85,11 @@ const BottomTabNavigation = () => {
                   focused 
                     ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
-                        <Search style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Home style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                     : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
-                        <Search style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Home style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                 }
               </View>
@@ -107,16 +108,39 @@ const BottomTabNavigation = () => {
                   focused 
                     ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
-                        <Globe style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Search style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                     : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
-                        <Globe style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                        <Search style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
                       </View>
                 }
               </View>
             ),
           }}/>
+        {/* <Tab.Screen
+          name="Favorites"
+          key="Favorites"
+          component={FavoritesNavigation}
+          options={{
+            tabBarShowLabel: false,
+            // eslint-disable-next-line react/no-unstable-nested-components
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={{ width: 22, height: 22, alignItems: 'center' }}>
+                {
+                  focused 
+                    ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
+                        <Bookmark style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                    : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
+                        <Bookmark style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                }
+              </View>
+            ),
+          }}/> */}
         <Tab.Screen
           name="Profile"
           key="Profile"

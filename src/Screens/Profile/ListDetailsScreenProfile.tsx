@@ -16,7 +16,7 @@ const screenHeight = screenWidth * .55
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'ListDetailScreen'>;
 
-const ListDetailsScreen = () => {
+const ListDetailsScreenProfile = () => {
   const route = useRoute<ProfileScreenRouteProp>()
   const params = route.params
 
@@ -30,15 +30,6 @@ const ListDetailsScreen = () => {
   return (
     <View className={'flex-1'} style={{backgroundColor: ColorGuide['bg-dark']}}>
       <ListDetailsHeader list_name={params.list.name} list_id={params.list.list_id} list={params.list} listMembers={listMembers}/>
-      {/* <View className='w-full flex flex-row border-b-2 border-b-neutral-700'>
-        <View className='h-28 w-28'>
-          <Image className='flex-1' source={{uri: params.list.picture}}/>
-        </View>
-        <View className='flex-1 ml-3'>
-          <Text className='text-white text-2xl font-bold'>{limitStringLength(params.list.name, 15)}</Text>
-          <Text className='text-white text-base font-semibold'>{limitStringLength(params.list.description, 100)}</Text>
-        </View>
-      </View> */}
       <ScrollView className='flex-1'>
         {
           placesInSelectList.length > 0
@@ -60,4 +51,4 @@ const ListDetailsScreen = () => {
   )
 }
 
-export default ListDetailsScreen
+export default ListDetailsScreenProfile

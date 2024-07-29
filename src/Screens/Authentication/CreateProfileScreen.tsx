@@ -1,78 +1,78 @@
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Alert, Dimensions, Image, ImageBackground, KeyboardAvoidingView, PermissionsAndroid, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import Background from '../../Assets/background2.jpg'
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Dimensions, Image, KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../Types/NavigationTypes'; 
 import LoginButtonComponent from '../../Components/Auth/LoginButtonComponent';
-import { Plus, RefreshCcw, X } from 'react-native-feather';
-import { launchImageLibrary } from 'react-native-image-picker'; 
+import { Plus } from 'react-native-feather';
+import ImagePicker from 'react-native-image-crop-picker'; 
 import { useAuth } from '../../Context/UserContext';
 import { uploadData } from 'aws-amplify/storage';
 import ColorGuide from '../../ColorGuide';
 
-const imageWidth = Dimensions.get('window').width - 32
+const imageWidth = Dimensions.get('window').width - 32;
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'CreateProfileScreen'>;
 
 const CreateProfileScreen: React.FC = () => {
   const route = useRoute<ProfileScreenRouteProp>();
-  const params = route.params
+  const params = route.params;
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
-  const {handleSignupObject} = useAuth()
+  const { handleSignupObject } = useAuth();
 
-  const [picture, setPicture] = useState<any>(null)
-  const [loading, setLoading] = useState<any>(false)
+  const [picture, setPicture] = useState<any>(null);
+  const [loading, setLoading] = useState<any>(false);
 
   useEffect(() => {
-    JSON.stringify(picture)
-  }, [picture])
+    JSON.stringify(picture);
+  }, [picture]);
 
   const selectImage = async () => {
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
-      if (response.didCancel) {
-      } else if (response.errorCode) {
-      } else {
-        const selectedFiles = response.assets.map(asset => ({
-          uri: asset.uri,
-          type: asset.type,
-          fileName: asset.fileName
-        }));
-        setPicture(selectedFiles[0]);
-      }
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then(image => {
+      const selectedImage = {
+        uri: image.path,
+        type: image.mime,
+        fileName: image.filename || 'profile_picture.jpg',
+      };
+      setPicture(selectedImage);
+    }).catch(error => {
+      console.log('Error selecting image: ', error);
     });
   };
 
   const getBlob = () => {
     return fetch(picture.uri)
-      .then(response => response.blob()) // Convert the response to a blob
+      .then(response => response.blob())
       .catch(error => {
-          console.error("Error fetching blob:", error);
-          throw error; // Propagate error to be handled later
+        console.error("Error fetching blob:", error);
+        throw error;
       });
   };
 
   const uploadImage = async () => {
-    setLoading(true)
-    const blob = await getBlob(); // Wait for the blob to be fetched
-    // Assuming listImage.fileName and listImage.type are available
+    setLoading(true);
+    const blob = await getBlob();
     const fileName = picture.fileName;
     const fileType = picture.type;
     const folderName = "profileImages";
 
     const fileKey = `${folderName}/${fileName}`;
 
-    // Wait for the uploadData function to complete
     const result = await uploadData({
-        key: fileKey,
-        data: blob,
-        options: {
-            accessLevel: 'guest',
-        }
+      key: fileKey,
+      data: blob,
+      options: {
+        accessLevel: 'guest',
+      }
     }).result;
-    let uploadedImage = `https://grubber-mobile-storage-8be2b031175523-staging.s3.us-west-1.amazonaws.com/public/${result.key}`
-    createAccountAndProfile(uploadedImage)
+    
+    let uploadedImage = `https://grubber-mobile-storage-8be2b031175523-staging.s3.us-west-1.amazonaws.com/public/${result.key}`;
+    createAccountAndProfile(uploadedImage);
   };
 
   const createAccountAndProfile = (picture: string) => {
@@ -91,14 +91,14 @@ const CreateProfileScreen: React.FC = () => {
       profile_picture: picture,
       public: params.isPublic,
       notifications: true,
-    }
+    };
 
-    handleSignupObject(signupDate, navigation)
-    setLoading(false)
-  }
+    handleSignupObject(signupDate, navigation);
+    setLoading(false);
+  };
 
   return (
-    <View className="w-screen h-screen absolute z-0" style={{backgroundColor: ColorGuide['bg-dark']}}>
+    <View className="w-screen h-screen absolute z-0" style={{ backgroundColor: ColorGuide['bg-dark'] }}>
       <View className="w-screen h-screen bg-black opacity-60 absolute z-1"></View>
       <KeyboardAvoidingView
         className="flex-1"
@@ -111,12 +111,12 @@ const CreateProfileScreen: React.FC = () => {
               <View className="w-full flex flex-col items-start">
                 <Text className="text-white text-4xl font-semibold mb-b">Profile Picture</Text>
               </View>
-              <View className="bg-slate-300 rounded-xl mt-4" style={{height: imageWidth, width: imageWidth, backgroundColor: 'grey'}}>
+              <View className="bg-slate-300 rounded-xl mt-4" style={{ height: imageWidth, width: imageWidth, backgroundColor: 'grey' }}>
                 {
                   picture === null 
-                    ? <TouchableOpacity onPress={() => {selectImage()}} className={`w-full h-full bg-slate-500 rounded-xl flex justify-center items-center`}><Plus  height={32} width={32} color={'white'}/></TouchableOpacity>
+                    ? <TouchableOpacity onPress={() => { selectImage() }} className={`w-full h-full bg-slate-500 rounded-xl flex justify-center items-center`}><Plus height={32} width={32} color={'white'} /></TouchableOpacity>
                     : <View className="flex w-full h-full rounded-xl overflow-hidden">
-                        <Image source={{uri: picture.uri}} className="w-full h-full flex flex-row justify-between" />
+                        <Image source={{ uri: picture.uri }} className="w-full h-full flex flex-row justify-between" />
                       </View>
                 }
               </View>
@@ -127,13 +127,13 @@ const CreateProfileScreen: React.FC = () => {
                       <TouchableOpacity onPress={selectImage}>
                         <Text className="text-white text-xl font-bold">Replace</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity onPress={() => {setPicture(null)}}>
+                      <TouchableOpacity onPress={() => { setPicture(null) }}>
                         <Text className="text-white text-xl font-bold">Remove</Text>
                       </TouchableOpacity>
                     </View>
               }
-              <LoginButtonComponent label={loading ? 'Loading...' : 'Signup'} handleFunction={() => {uploadImage()}}/>
-              <TouchableOpacity onPress={() => {navigation.goBack()}}>
+              <LoginButtonComponent label={loading ? 'Loading...' : 'Signup'} handleFunction={() => { uploadImage() }} />
+              <TouchableOpacity onPress={() => { navigation.goBack() }}>
                 <Text className="text-white font-bold ml-1 mt-4">
                   Go Back
                 </Text>
@@ -143,7 +143,7 @@ const CreateProfileScreen: React.FC = () => {
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
-  )
-}
+  );
+};
 
-export default CreateProfileScreen
+export default CreateProfileScreen;

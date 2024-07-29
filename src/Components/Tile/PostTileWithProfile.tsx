@@ -11,6 +11,7 @@ import { usePost } from '../../Context/PostContext'
 import axios from 'axios'
 import { useAuth } from '../../Context/UserContext'
 import PostSubMenuNoEdit from '../Menus/PostSubMenuNoEdit'
+import PostProfileFeed from '../Profiles/PostProfileFeed'
 
 interface SinglePostProps {
   address_city: string,
@@ -161,7 +162,7 @@ const PostTileWithProfile: React.FC<PostTileProps> = ({post}) => {
 
   return (
     <View className='w-full'>
-      <PostProfile profile={profileData != null ? profileData : null}/>
+      <PostProfileFeed profile={profileData != null ? profileData : null}/>
       <FullImageComponent image={post.media} addImageLike={checkImageLike}/>
       {
         profileData.user_id === userProfile?.user_id

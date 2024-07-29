@@ -3,7 +3,13 @@ import { confirmResetPassword, confirmSignUp, getCurrentUser, resendSignUpCode, 
 import axios from 'axios';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import messaging from '@react-native-firebase/messaging';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import Geocoder from 'react-native-geocoding';
+import { GOOGLE_API } from '../API/Authorizatgion';
+import { Text, View, PermissionsAndroid, TouchableOpacity } from 'react-native';
+
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -117,6 +123,7 @@ const AuthContext = createContext<AuthContextType>({
   editPost: false,
   userActivity: [],
   validLogin: true,
+  locationGranted: false,
   profileImage: '',
   updateProfilePic: () => {},
   username: '', 
@@ -165,12 +172,14 @@ const AuthContext = createContext<AuthContextType>({
   removeFavorites: () => {},
   setFavoritesView: () => {},
   addPlaceToFavorites: () => {},
+  addListToFavorites: () => {},
   getLikedPosts: () => {},
   getCommentedPosts: () => {},
   updateUserProfile: () => {},
   createImageActivity: () => {},
   getUserActivity: () => {},
-  generateNotification: () => {}
+  generateNotification: () => {},
+  deleteAccount: () => {}
 });
 
 interface AuthContextType {
@@ -200,6 +209,7 @@ interface AuthContextType {
   loading: boolean
   appLoading: boolean
   validLogin: boolean
+  locationGranted: boolean
   profileImage: string,
   updateProfilePic: (picture: string) => void
   username: string, 
@@ -245,6 +255,7 @@ interface AuthContextType {
   passwordReset: (confirmation_code: string, password: string, navigation: any) => void
   passwordResetWithUsername: (username: string, confirmation_code: string, password: string, navigation: any) => void
   addPostToFavorites: (place_id: number) => void
+  addListToFavorites: (list_id: number) => void
   getFavorites: (user_id: string) => void
   removeFavorites: (favorites_id: string) => void
   setFavoritesView: (text: string) => void
@@ -262,6 +273,7 @@ interface AuthContextType {
   ) => void
   getUserActivity: () => void
   generateNotification: (fcmToken: string, title: string, body: string, imageUrl?: string) => void
+  deleteAccount: () => void
 }
 
 // the main provider
@@ -335,6 +347,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const [validLogin, setValidLogin] = useState<boolean>(true)
 
+  const [locationGranted, setLocationGranted] = useState(false)
+
   const updateUsername = (text: string) => {
     setUsername(text)
   }
@@ -391,7 +405,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     getAllUserProfile()
+    requestLocationPermission()
   }, [])
+
+  Geocoder.init(GOOGLE_API); // use a valid API key
+
+  const requestLocationPermission = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        if (result === RESULTS.GRANTED) {
+          setLocationGranted(true);
+        } else {
+          setLocationGranted(false);
+        }
+      } 
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const requestFCMToken = async (user_id: string) => {
     const authStatus = await messaging().requestPermission();
@@ -531,15 +563,66 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signOutUser = () => {
     setLoading(true);
-    signOut()
+    let url = `https://grubberapi.com/api/v1/profiles/fcm-token/${userProfile.user_id}`
+    const data = {
+      token: ''
+    }
+    axios.put(url, data)
       .then(response => {
-        setUserAccount(null);
-        setLoading(false);
+        signOut()
+          .then(response => {
+            setUserAccount(null);
+            setLoading(false);
+          })
+          .catch(error => {
+            console.error(error);
+            setLoading(false);
+          });
       })
       .catch(error => {
-        console.error(error);
-        setLoading(false);
+        console.error('Error storing fcm token in database:', error);
+        throw error;
       });
+  };
+
+  const deleteAccount = () => {
+    let url = `https://grubberapi.com/api/v1/profiles/${userProfile.user_id}`
+    axios.delete(url)
+      .then((response) => {
+        setUserAccount(null)
+        setUserProfile({
+          user_id: '',
+          username: '',
+          email: '',
+          phone: '',
+          location: '',
+          first_name: '',
+          last_name: '',
+          full_name: '',
+          profile_picture: '',
+          bio: '',
+          public: true,
+          followers: 0,
+          following: 0,
+          notifications: true
+        })
+        // deleteUser()
+      })
+      .catch((error) => {
+        console.log('Error signing in user: ', error)
+        setLoginLoading(false)
+        setValidLogin(false)
+      });
+  };
+
+  const deleteUser = async () => {
+    try {
+      await deleteUser();
+      Alert.alert('Account deleted successfully');
+      // Navigate to a different screen or log the user out after account deletion
+    } catch (error) {
+      console.log('Error deleting user:', error);
+    }
   };
 
   const getUserActivity = () => {
@@ -840,7 +923,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   }
 
-  const addPostToFavorites = (fcmtoken: string, post_id: number) => {
+  const addPostToFavorites = (post_id: number) => {
     let url = `https://grubberapi.com/api/v1/favorites`
     const data = {
       user_id: userProfile.user_id,
@@ -876,6 +959,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
   };
 
+  const addListToFavorites = (list_id: number) => {
+    console.log('lists: ', list_id)
+    let url = `https://grubberapi.com/api/v1/favorites`;
+    const data = {
+      user_id: userProfile.user_id,
+      post_id: null,
+      list_id: list_id,
+      place_id: null
+    };
+    axios.post(url, data)
+      .then(response => {
+        getFavorites(userProfile.user_id);
+      })
+      .catch(error => {
+        console.error('Error creating favorites:', error);
+        throw error;
+      });
+  };
+
   const getFavorites = (user_id: string) => {
     let url = `https://grubberapi.com/api/v1/favorites/${user_id}`
     axios.get(url)
@@ -889,6 +991,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const removeFavorites = (favorites_id: string) => {
+    console.log('remove favorite by id: ', favorites_id)
     let url = `https://grubberapi.com/api/v1/favorites/${favorites_id}`
     axios.delete(url)
       .then(response => {
@@ -1040,6 +1143,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loading,
         appLoading,
         validLogin, 
+        locationGranted,
         profileImage,
         updateProfilePic,
         username, 
@@ -1085,6 +1189,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         passwordReset,
         passwordResetWithUsername,
         addPostToFavorites,
+        addListToFavorites,
         getFavorites,
         removeFavorites,
         setFavoritesView,
@@ -1093,7 +1198,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         updateUserProfile,
         createImageActivity,
         getUserActivity,
-        generateNotification
+        generateNotification,
+        deleteAccount
       }}
     >
       {children}

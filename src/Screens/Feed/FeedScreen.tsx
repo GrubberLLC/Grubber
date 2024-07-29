@@ -103,7 +103,21 @@ const FeedScreen = () => {
                 })
               }
             </ScrollView>
-          : null 
+          : <ScrollView 
+              className='flex-1'
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={[ColorGuide['primary']]}
+                  tintColor={ColorGuide['primary']}
+                />
+              }
+            >
+              <View>
+                <Text className='flex items-center justify-center' style={{color: 'white'}}>No Posts In Your Feed!</Text>
+              </View>
+            </ScrollView>
       }
     </View>
   )

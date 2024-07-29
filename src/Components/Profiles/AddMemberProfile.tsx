@@ -3,6 +3,9 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { useList } from '../../Context/ListContext'
 import ColorGuide from '../../ColorGuide'
 
+import Verified from '../../Assets/Verified-icon.png'
+import Verified100 from '../../Assets/Verified-100-icon.png'
+
 interface ProfileProps {
   bio: string
   created_at: string,
@@ -39,7 +42,18 @@ const AddMemberProfile: React.FC<PostProfileProps> = ({profile, handleFunction})
         <Image className='flex-1' source={{uri: profile?.profile_picture}}/>
       </View>
       <View className='ml-3 flex-1'>
-        <Text className='text-white font-bold text-base'>{profile?.username}</Text>
+        <View className='flex flex-row'>
+          <Text className='text-white font-bold text-base'>{profile?.username}</Text>
+          <View className='ml-2'>
+            {
+              profile?.launch 
+                ? <Image className='h-4 w-4' source={Verified100}/>
+                : profile?.verified 
+                    ? <Image className='h-4 w-4' source={Verified}/>
+                    : null
+            }
+          </View>
+        </View>
         <Text className='text-white text-xsm'>{profile?.full_name}</Text>
       </View>
       <TouchableOpacity
