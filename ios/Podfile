@@ -22,12 +22,6 @@ target 'Grubber' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  # Add the required permissions pods with modular headers
-  permissions_path = '../node_modules/react-native-permissions/ios'
-
-  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse", :modular_headers => true
-  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways", :modular_headers => true
-  
   # Add Firebase pods
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'

@@ -11,13 +11,13 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		4BA48B1DDDDD4F73B3DE92F5 /* Pods_Grubber_GrubberTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5065054616E46A7139F24A2E /* Pods_Grubber_GrubberTests.framework */; };
+		589163B2964764675EADC1E3 /* Pods_Grubber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508189D8CAF9295F1DBAB6D0 /* Pods_Grubber.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		88BB807E6E99F833A9E4CA56 /* Pods_Grubber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05C8105CAC8C4EE1F502896D /* Pods_Grubber.framework */; };
 		8D42874F2C4AB219002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D42874E2C4AB219002C6347 /* GoogleService-Info.plist */; };
 		8D4287502C4AB219002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D42874E2C4AB219002C6347 /* GoogleService-Info.plist */; };
 		8D4287522C4AB21E002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */; };
 		8D4287532C4AB21E002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */; };
-		92E59B88A944CE86D12694AA /* Pods_Grubber_GrubberTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0251AA27023718DEC3A2BEC7 /* Pods_Grubber_GrubberTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,8 +34,6 @@
 		00E356EE1AD99517003FC87E /* GrubberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GrubberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* GrubberTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GrubberTests.m; sourceTree = "<group>"; };
-		0251AA27023718DEC3A2BEC7 /* Pods_Grubber_GrubberTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Grubber_GrubberTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		05C8105CAC8C4EE1F502896D /* Pods_Grubber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Grubber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Grubber.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Grubber.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Grubber/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Grubber/AppDelegate.mm; sourceTree = "<group>"; };
@@ -43,6 +41,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Grubber/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Grubber/main.m; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Grubber.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber.debug.xcconfig"; path = "Target Support Files/Pods-Grubber/Pods-Grubber.debug.xcconfig"; sourceTree = "<group>"; };
+		5065054616E46A7139F24A2E /* Pods_Grubber_GrubberTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Grubber_GrubberTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		508189D8CAF9295F1DBAB6D0 /* Pods_Grubber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Grubber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5709B34CF0A7D63546082F79 /* Pods-Grubber.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber.release.xcconfig"; path = "Target Support Files/Pods-Grubber/Pods-Grubber.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Grubber-GrubberTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber-GrubberTests.debug.xcconfig"; path = "Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Grubber/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92E59B88A944CE86D12694AA /* Pods_Grubber_GrubberTests.framework in Frameworks */,
+				4BA48B1DDDDD4F73B3DE92F5 /* Pods_Grubber_GrubberTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88BB807E6E99F833A9E4CA56 /* Pods_Grubber.framework in Frameworks */,
+				589163B2964764675EADC1E3 /* Pods_Grubber.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,8 +109,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				05C8105CAC8C4EE1F502896D /* Pods_Grubber.framework */,
-				0251AA27023718DEC3A2BEC7 /* Pods_Grubber_GrubberTests.framework */,
+				508189D8CAF9295F1DBAB6D0 /* Pods_Grubber.framework */,
+				5065054616E46A7139F24A2E /* Pods_Grubber_GrubberTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
