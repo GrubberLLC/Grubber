@@ -5,6 +5,9 @@ import {
   Text,
   View,
   ActivityIndicator,
+  Platform,
+  Alert,
+  Linking,
 } from 'react-native';
 import { useAuth } from './src/Context/UserContext';
 import AuthenticationNavigation from './src/Navigation/AuthenticationNavigation';
@@ -15,6 +18,7 @@ import ColorGuide from './src/ColorGuide';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 Amplify.configure(amplifyconfig);
 
@@ -23,8 +27,63 @@ function App(): React.JSX.Element {
   const [permissions, setPermissions] = useState({});
 
   useLayoutEffect(() => {
+    requestPermissions()
     grabInitialCurrentUser();
   }, []);
+
+const requestPermissions = async () => {
+  if (Platform.OS === 'ios') {
+    const permissions = [
+      PERMISSIONS.IOS.PHOTO_LIBRARY,
+      PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      PERMISSIONS.IOS.LOCATION_ALWAYS,
+    ];
+
+    const permissionResults = await Promise.all(permissions.map(permission => check(permission)));
+
+    const deniedPermissions = permissions.filter((permission, index) => 
+      permissionResults[index] === RESULTS.DENIED || permissionResults[index] === RESULTS.BLOCKED
+    );
+
+    if (deniedPermissions.length > 0) {
+      const requestResults = await Promise.all(deniedPermissions.map(permission => request(permission)));
+      
+      const stillDeniedPermissions = deniedPermissions.filter((permission, index) => 
+        requestResults[index] !== RESULTS.GRANTED
+      );
+
+      if (stillDeniedPermissions.length > 0) {
+        Alert.alert(
+          'Permissions Required',
+          'Some features may not work properly without these permissions. Would you like to open settings to grant them?',
+          [
+            {
+              text: 'No',
+              onPress: () => console.log('Permission denied'),
+              style: 'cancel'
+            },
+            { 
+              text: 'Yes', 
+              onPress: () => Linking.openSettings()
+            }
+          ]
+        );
+      }
+    }
+
+    // Log results
+    console.log('Photo Library:', permissionResults[0]);
+    console.log('Location When In Use:', permissionResults[1]);
+    console.log('Location Always:', permissionResults[2]);
+
+    // Return results object
+    return {
+      photoLibrary: permissionResults[0],
+      locationWhenInUse: permissionResults[1],
+      locationAlways: permissionResults[2]
+    };
+  }};
+
 
   useEffect(() => {
     // Request permission for iOS
