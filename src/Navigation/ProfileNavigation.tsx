@@ -16,6 +16,10 @@ import FavoritesScreen from '../Screens/Profile/FavoritesScreen';
 import LikedPostsScreen from '../Screens/Profile/LikedPostsScreen';
 import CommentedScreen from '../Screens/Profile/CommentedScreen';
 import EditPostScreen from '../Screens/Feed/EditPostScreen';
+import UserProfileScreen from '../Screens/Profile/UserProfileScreen';
+import ListDetailsScreenProfile from '../Screens/Profile/ListDetailsScreenProfile';
+import UserFollowersScreen from '../Screens/Profile/UserFollowersScreen';
+import UserFollowingScreen from '../Screens/Profile/UserFollowingScreen';
 
 const StackNav = createStackNavigator();
 
@@ -40,6 +44,11 @@ const ProfileNavigation = () => {
       <StackNav.Screen name="LikedPostsScreen" component={LikedPostsScreen} />
       <StackNav.Screen name="CommentedScreen" component={CommentedScreen} />
       <StackNav.Screen name="EditPostScreen" component={EditPostScreen} />
+      <StackNav.Screen name="UserProfilesProfileScreen" component={UserProfileScreen} />
+      <StackNav.Screen name="ListDetailsProfileScreen" component={ListDetailsScreenProfile} />
+      <StackNav.Screen name="UserFollowersScreen" component={UserFollowersScreen} />
+      <StackNav.Screen name="UserFollowingScreen" component={UserFollowingScreen} />
+      <StackNav.Screen name="PostDetailsScreenProfile" component={PostDetailsScreen} />
     </StackNav.Navigator>
   );
 };

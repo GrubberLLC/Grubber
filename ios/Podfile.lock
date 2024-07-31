@@ -123,9 +123,9 @@ PODS:
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
   - Permission-LocationAlways (4.1.5):
-    - RNPermissions (>= 3.0)
+    - RNPermissions
   - Permission-LocationWhenInUse (4.1.5):
-    - RNPermissions (>= 3.0)
+    - RNPermissions
   - PromisesObjC (2.4.0)
   - RCT-Folly (2022.05.16.00):
     - boost
@@ -1465,8 +1465,8 @@ SPEC CHECKSUMS:
   hermes-engine: 9cecf9953a681df7556b8cc9c74905de8f3293c0
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
-  Permission-LocationAlways: 92847f0f58b233d3a8b7a908441d17d2f58c26a4
-  Permission-LocationWhenInUse: 52455e7449c2ce5f2a187d4c77948d96bd43350e
+  Permission-LocationAlways: a68bf2b1eb8538e43746de32b55b3e089b500389
+  Permission-LocationWhenInUse: c6a9c0f8cb3accb64e5b0677efa347811ccad90b
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: ca1d7414aba0b27efcfa2ccd37637edb1ab77d96

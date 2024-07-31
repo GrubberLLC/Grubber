@@ -64,9 +64,9 @@ const PlaceListTile = ({ place }) => {
         <Image className='flex-1' source={{ uri: place?.image }} />
         <View style={{ backgroundColor: 'rgba(0, 0, 0, .6)', height: screenHeight, width: screenWidth }} className='absolute z-5 flex flex-col justify-between p-2'>
          <View className='w-full flex flex-row justify-end'>
-            <TouchableOpacity onPress={() => toggleFavorite(place?.place_id)} className=''>
+            {/* <TouchableOpacity onPress={() => toggleFavorite(place?.place_id)} className='mr-3'>
               <Bookmark height={26} width={26} color={'white'} fill={userFavoritedPlace.length > 0 ? 'white' : 'none'} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {
               place.created_by === userProfile?.user_id
                 ? <TouchableOpacity onPress={() => confirmDelete()} className='ml-2'>

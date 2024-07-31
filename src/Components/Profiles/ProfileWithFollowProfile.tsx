@@ -36,11 +36,11 @@ interface PostProfileProps {
   onUnfollow: (user: any) => void
 }
 
-const ProfileWithFollow: React.FC<PostProfileProps> = ({profile, followStatus, followUser, onFollow, onUnfollow}) => {
+const ProfileWithFollowProfile: React.FC<PostProfileProps> = ({profile, followStatus, followUser, onFollow, onUnfollow}) => {
   const navigation = useNavigation()
 
   return (
-    <TouchableOpacity onPress={() => {navigation.navigate('UserProfileScreen', {user_id: profile?.user_id})}} className='w-full flex flex-row items-center px-3 py-3 border-y-2 border-y-neutral-800'>
+    <TouchableOpacity onPress={() => {navigation.navigate('UserProfilesProfileScreen', {user_id: profile?.user_id})}} className='w-full flex flex-row items-center px-3 py-3 border-y-2 border-y-neutral-800'>
       <View className='h-10 w-10 rounded-full overflow-hidden' style={{backgroundColor: ColorGuide['bg-dark-6']}}>
         <Image className='flex-1' source={{uri: profile?.profile_picture}}/>
       </View>
@@ -84,4 +84,4 @@ const ProfileWithFollow: React.FC<PostProfileProps> = ({profile, followStatus, f
   )
 }
 
-export default ProfileWithFollow
+export default ProfileWithFollowProfile

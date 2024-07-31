@@ -6,6 +6,7 @@ import ColorGuide from '../../ColorGuide'
 import FollowresHeader from '../../Components/Headers/FollowresHeader'
 import PostProfile from '../../Components/Profiles/PostProfile'
 import FollowingHeader from '../../Components/Headers/FollowingHeader'
+import ProfileWithFollowProfile from '../../Components/Profiles/ProfileWithFollowProfile'
 
 const FollowingScreen = () => {
 
@@ -42,7 +43,7 @@ const FollowingScreen = () => {
                 user.user_id === userProfile?.user_id
                   ? null 
                   : <View key={user.user_id}>
-                      <ProfileWithFollow profile={user} followStatus={isSelected} followUser={followingUser} onFollow={onFollowUser} onUnfollow={onUnfollowUser}/>
+                      <ProfileWithFollowProfile profile={user} followStatus={isSelected} followUser={followingUser} onFollow={onFollowUser} onUnfollow={onUnfollowUser}/>
                     </View>
               }
             </View>

@@ -28,6 +28,8 @@ interface ListTileProps {
 const ListTile: React.FC<ListTileProps> = ({list}) => {
   const navigation = useNavigation()
 
+  
+
   const redirectToListDetailScreen = (list: ListProps) => {
     navigation.navigate('ListDetailsScreen', {list: list})
   }

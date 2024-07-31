@@ -30,7 +30,7 @@ interface PostProfileProps {
   profile: ProfileProps | null
 }
 
-const PostProfile: React.FC<PostProfileProps> = ({profile}) => {
+const PostProfileFeed: React.FC<PostProfileProps> = ({profile}) => {
   const navigation = useNavigation()
 
   const redirectToListDetailScreen = (user_id: any) => {
@@ -61,4 +61,4 @@ const PostProfile: React.FC<PostProfileProps> = ({profile}) => {
   )
 }
 
-export default PostProfile
+export default PostProfileFeed

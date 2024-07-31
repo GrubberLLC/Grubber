@@ -37,10 +37,10 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need your location to show nearby restaurants.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to show nearby restaurants.</string>
+  <string>We need your location to show nearby restaurants.</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>We need your location to show nearby restaurants even when the app is in the background.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your photos are used to allow you to select images to attach to your posts.</string>
 	<key>UIBackgroundModes</key>
