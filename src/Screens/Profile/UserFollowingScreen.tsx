@@ -6,7 +6,10 @@ import ColorGuide from '../../ColorGuide'
 import FollowresHeader from '../../Components/Headers/FollowresHeader'
 import PostProfile from '../../Components/Profiles/PostProfile'
 import FollowingHeader from '../../Components/Headers/FollowingHeader'
+<<<<<<< HEAD
 import ProfileWithFollowProfile from '../../Components/Profiles/ProfileWithFollowProfile'
+=======
+>>>>>>> dev
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../Types/NavigationTypes';

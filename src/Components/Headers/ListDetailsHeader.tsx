@@ -22,7 +22,11 @@ const ListDetailsHeader: React.FC<ListDetailHeaderProp> = ({ list_name, list_id,
   useEffect(() => {
     // Fetch the updated list of favorites whenever the component mounts or updates
     getFavorites(userProfile.user_id);
+<<<<<<< HEAD
   }, [userProfile.user_id, getFavorites]);
+=======
+  }, [userProfile?.user_id, getFavorites]);
+>>>>>>> dev
 
   const redirectToNewList = () => {
     navigation.navigate('ListSettingsScreen', { list: list });

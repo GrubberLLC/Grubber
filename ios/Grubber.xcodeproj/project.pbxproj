@@ -18,6 +18,11 @@
 		8D4287522C4AB21E002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */; };
 		8D4287532C4AB21E002C6347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */; };
 		E0CDECEB17CE34AF55A2294B /* Pods_Grubber_GrubberTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD336DD3C7305D1B89E994F /* Pods_Grubber_GrubberTests.framework */; };
+		5B1C7D44107BBC533321BB08 /* Pods_Grubber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A88BE2D66B8B1DBCAEE9BDF2 /* Pods_Grubber.framework */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8DCDCCEB2C59DD69007395F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8DCDCCEA2C59DD69007395F8 /* GoogleService-Info.plist */; };
+		8DCDCCEC2C59DD69007395F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8DCDCCEA2C59DD69007395F8 /* GoogleService-Info.plist */; };
+		C4DA30820A403BDF1FAE6652 /* Pods_Grubber_GrubberTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CEA14106235DB7F54D3E8B /* Pods_Grubber_GrubberTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +55,16 @@
 		942750DF240E338CECB6C84D /* Pods-Grubber-GrubberTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber-GrubberTests.debug.xcconfig"; path = "Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C74E96EF2C7D25CC25D60033 /* Pods_Grubber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Grubber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2CD4B5E3DD09D3D0D1C29A4 /* Pods-Grubber.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber.debug.xcconfig"; path = "Target Support Files/Pods-Grubber/Pods-Grubber.debug.xcconfig"; sourceTree = "<group>"; };
+		28CEA14106235DB7F54D3E8B /* Pods_Grubber_GrubberTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Grubber_GrubberTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6277817B672B611A343574BD /* Pods-Grubber.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber.debug.xcconfig"; path = "Target Support Files/Pods-Grubber/Pods-Grubber.debug.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Grubber/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		896FC4B52396A1280B516D50 /* Pods-Grubber-GrubberTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber-GrubberTests.release.xcconfig"; path = "Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests.release.xcconfig"; sourceTree = "<group>"; };
+		8DCDCCEA2C59DD69007395F8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8DE65D372C3355E4005E456B /* Grubber.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Grubber.entitlements; path = Grubber/Grubber.entitlements; sourceTree = "<group>"; };
+		A88BE2D66B8B1DBCAEE9BDF2 /* Pods_Grubber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Grubber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C807959789330D059BA568E2 /* Pods-Grubber-GrubberTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber-GrubberTests.debug.xcconfig"; path = "Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F32C1EB5CFE169A775DF2C3C /* Pods-Grubber.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grubber.release.xcconfig"; path = "Target Support Files/Pods-Grubber/Pods-Grubber.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0CDECEB17CE34AF55A2294B /* Pods_Grubber_GrubberTests.framework in Frameworks */,
+				C4DA30820A403BDF1FAE6652 /* Pods_Grubber_GrubberTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +82,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7739F29DBA57F2BB6224FE0B /* Pods_Grubber.framework in Frameworks */,
+				5B1C7D44107BBC533321BB08 /* Pods_Grubber.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +109,6 @@
 		13B07FAE1A68108700A75B9A /* Grubber */ = {
 			isa = PBXGroup;
 			children = (
-				8D42874E2C4AB219002C6347 /* GoogleService-Info.plist */,
 				8DE65D372C3355E4005E456B /* Grubber.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -111,6 +126,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				C74E96EF2C7D25CC25D60033 /* Pods_Grubber.framework */,
 				6FD336DD3C7305D1B89E994F /* Pods_Grubber_GrubberTests.framework */,
+				A88BE2D66B8B1DBCAEE9BDF2 /* Pods_Grubber.framework */,
+				28CEA14106235DB7F54D3E8B /* Pods_Grubber_GrubberTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -125,7 +142,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				8D4287512C4AB21E002C6347 /* GoogleService-Info.plist */,
+				8DCDCCEA2C59DD69007395F8 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Grubber */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GrubberTests */,
@@ -154,6 +171,10 @@
 				055DADF6A489952879B7F83D /* Pods-Grubber.release.xcconfig */,
 				942750DF240E338CECB6C84D /* Pods-Grubber-GrubberTests.debug.xcconfig */,
 				55A89D7A68141A17DA219EBF /* Pods-Grubber-GrubberTests.release.xcconfig */,
+				6277817B672B611A343574BD /* Pods-Grubber.debug.xcconfig */,
+				F32C1EB5CFE169A775DF2C3C /* Pods-Grubber.release.xcconfig */,
+				C807959789330D059BA568E2 /* Pods-Grubber-GrubberTests.debug.xcconfig */,
+				896FC4B52396A1280B516D50 /* Pods-Grubber-GrubberTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -171,6 +192,12 @@
 				00E356EC1AD99517003FC87E /* Resources */,
 				A9D3E477D74A78C35AB160A4 /* [CP] Embed Pods Frameworks */,
 				C678758213C652142824C9ED /* [CP] Copy Pods Resources */,
+				5D25669BAC1C899CC6AF886A /* [CP] Check Pods Manifest.lock */,
+				00E356EA1AD99517003FC87E /* Sources */,
+				00E356EB1AD99517003FC87E /* Frameworks */,
+				00E356EC1AD99517003FC87E /* Resources */,
+				40A3AC22EC620CD7831E20DF /* [CP] Embed Pods Frameworks */,
+				8F7DFFED8A18277BBF8312D6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -187,6 +214,7 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Grubber" */;
 			buildPhases = (
 				05BDC309A137DC7F0B04C83A /* [CP] Check Pods Manifest.lock */,
+				B8B0ADBDE1FB4E77CD626C7B /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
@@ -194,6 +222,9 @@
 				A39365D09604C5A7D97E240D /* [CP] Embed Pods Frameworks */,
 				972A5DEDAC1EC25AE3EF26D2 /* [CP] Copy Pods Resources */,
 				E3045690F699EB369E16A1F8 /* [CP-User] [RNFB] Core Configuration */,
+				9AFFDC03B74129918B5DFED5 /* [CP] Embed Pods Frameworks */,
+				5CFC131FCFEDC77D5577F247 /* [CP] Copy Pods Resources */,
+				DDA9A22F75AD6E6A0A81B852 /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -245,8 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D4287502C4AB219002C6347 /* GoogleService-Info.plist in Resources */,
-				8D4287532C4AB21E002C6347 /* GoogleService-Info.plist in Resources */,
+				8DCDCCEC2C59DD69007395F8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,9 +285,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				8D4287522C4AB21E002C6347 /* GoogleService-Info.plist in Resources */,
+				8DCDCCEB2C59DD69007395F8 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				8D42874F2C4AB219002C6347 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +310,97 @@
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
 		05BDC309A137DC7F0B04C83A /* [CP] Check Pods Manifest.lock */ = {
+		40A3AC22EC620CD7831E20DF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5CFC131FCFEDC77D5577F247 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Grubber/Pods-Grubber-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Grubber/Pods-Grubber-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Grubber/Pods-Grubber-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5D25669BAC1C899CC6AF886A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Grubber-GrubberTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8F7DFFED8A18277BBF8312D6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Grubber-GrubberTests/Pods-Grubber-GrubberTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9AFFDC03B74129918B5DFED5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Grubber/Pods-Grubber-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Grubber/Pods-Grubber-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Grubber/Pods-Grubber-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8B0ADBDE1FB4E77CD626C7B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -308,6 +428,10 @@
 			files = (
 			);
 			inputFileListPaths = (
+		DDA9A22F75AD6E6A0A81B852 /* [CP-User] [RNFB] Core Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
@@ -439,6 +563,7 @@
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 942750DF240E338CECB6C84D /* Pods-Grubber-GrubberTests.debug.xcconfig */;
+			baseConfigurationReference = C807959789330D059BA568E2 /* Pods-Grubber-GrubberTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -468,6 +593,7 @@
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 55A89D7A68141A17DA219EBF /* Pods-Grubber-GrubberTests.release.xcconfig */;
+			baseConfigurationReference = 896FC4B52396A1280B516D50 /* Pods-Grubber-GrubberTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -494,6 +620,7 @@
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D2CD4B5E3DD09D3D0D1C29A4 /* Pods-Grubber.debug.xcconfig */;
+			baseConfigurationReference = 6277817B672B611A343574BD /* Pods-Grubber.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -503,6 +630,9 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Grubber/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				INFOPLIST_KEY_CFBundleDisplayName = Grubber;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -524,6 +654,7 @@
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 055DADF6A489952879B7F83D /* Pods-Grubber.release.xcconfig */;
+			baseConfigurationReference = F32C1EB5CFE169A775DF2C3C /* Pods-Grubber.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -532,6 +663,9 @@
 				DEVELOPMENT_TEAM = 6V8QT3S4CY;
 				INFOPLIST_FILE = Grubber/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				INFOPLIST_KEY_CFBundleDisplayName = Grubber;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -629,10 +763,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -711,10 +842,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
