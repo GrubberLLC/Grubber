@@ -8387,6 +8387,11 @@ react-native-get-random-values@^1.11.0, react-native-get-random-values@>=1.9.0:
   dependencies:
     fast-base64-decode "^1.0.0"
 
+react-native-image-crop-picker@^0.41.2:
+  version "0.41.2"
+  resolved "https://registry.npmjs.org/react-native-image-crop-picker/-/react-native-image-crop-picker-0.41.2.tgz"
+  integrity sha512-GcDu/adXU/1y/MrxsbOfqcGRGWC2pTttt5VGy/jyRJ6GXfoC29fTQf8SG5kGtc5schSR6K+mKYO4uW6eJPljlQ==
+
 react-native-image-picker@^7.1.2:
   version "7.1.2"
   resolved "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-7.1.2.tgz"
@@ -8462,7 +8467,7 @@ react-native-video@^5.2.1:
     prop-types "^15.7.2"
     shaka-player "^2.5.9"
 
-react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>= 0.64.3", react-native@>=0.33, react-native@>=0.46, react-native@>=0.56, react-native@>=0.58.4, react-native@>=0.59, react-native@>=0.59.0, react-native@>=0.70, react-native@>=0.70.0, react-native@0.73.6:
+react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>= 0.64.3", react-native@>=0.33, react-native@>=0.40.0, react-native@>=0.46, react-native@>=0.56, react-native@>=0.58.4, react-native@>=0.59, react-native@>=0.59.0, react-native@>=0.70, react-native@>=0.70.0, react-native@0.73.6:
   version "0.73.6"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.73.6.tgz"
   integrity sha512-oqmZe8D2/VolIzSPZw+oUd6j/bEmeRHwsLn1xLA5wllEYsZ5zNuMsDus235ONOnCRwexqof/J3aztyQswSmiaA==
